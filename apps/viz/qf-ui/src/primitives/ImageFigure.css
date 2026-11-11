@@ -1,0 +1,19 @@
+/** Responsive image geometry. USAGE: imported by ImageFigure.tsx. */
+/* --------------------------------------------------------------------------- *
+ * Figure
+ * --------------------------------------------------------------------------- */
+@layer qf-components {
+  .ui-image-figure {
+    margin: 0;
+    min-width: 0;
+  }
+  .ui-image-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .ui-image-figure[data-fit="natural"] img {
+    width: auto;
+    max-width: none;
+  }
+}

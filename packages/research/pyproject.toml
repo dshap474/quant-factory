@@ -1,0 +1,32 @@
+# Research environment dependency manifest. Usage: `uv sync --frozen --group dev` from the repository root.
+
+[project]
+name = "quant-factory-research-environment"
+version = "0.1.0"
+description = "Non-package dependency environment for quant-factory research labs."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "cvxpy>=1.4.0",
+    "joblib>=1.3.0",
+    "lightgbm>=4.0.0",
+    "matplotlib>=3.8",
+    "numba>=0.64.0",
+    "numpy>=1.26.0,<2.0",
+    "pandas>=2.2.0",
+    "polars>=1.36.1",
+    "requests>=2.33.0",
+    "quant-factory-config",
+    "quant-factory-data",
+    "quant-factory-features",
+    "scikit-learn>=1.5.0",
+    "scipy>=1.11.0",
+    "seaborn>=0.13.0",
+    "statsmodels>=0.14.0",
+    "ta>=0.11.0",
+    "tqdm>=4.0",
+    "xgboost>=2.0.0",
+    "yfinance>=0.2.60",
+]
+
+[tool.uv]
+package = false

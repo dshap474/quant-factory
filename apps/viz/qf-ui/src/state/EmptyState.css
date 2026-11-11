@@ -1,0 +1,16 @@
+/**
+ * EmptyState recipe styles (.ui-empty-state*).
+ *
+ * USAGE: imported by EmptyState.tsx
+ */
+
+@layer qf-components {
+  .ui-empty-state {
+    background: color-mix(in oklch, var(--color-card) 78%, var(--color-background));
+  }
+
+  .ui-empty-state-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+  }
+}

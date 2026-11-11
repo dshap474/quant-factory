@@ -1,0 +1,56 @@
+/**
+ * Control-size scale classes (.ui-size-xs .. .ui-size-xl, .ui-icon-only).
+ * Each size sets --ui-control-h / --ui-icon-size; recipes read them with a
+ * `var(--control-height)` fallback so an unsized control is md.
+ *
+ * USAGE: imported by control-size.ts
+ */
+
+@layer qf-components {
+  .ui-size-xs {
+    --ui-control-h: var(--control-height-xs);
+    --ui-icon-size: 0.75rem;
+    min-height: var(--control-height-xs);
+  }
+
+  .ui-size-sm {
+    --ui-control-h: var(--control-height-sm);
+    --ui-icon-size: 0.875rem;
+    min-height: var(--control-height-sm);
+  }
+
+  .ui-size-md {
+    --ui-control-h: var(--control-height-md);
+    --ui-icon-size: 1rem;
+    min-height: var(--control-height-md);
+  }
+
+  .ui-size-lg {
+    --ui-control-h: var(--control-height-lg);
+    --ui-icon-size: 1.125rem;
+    min-height: var(--control-height-lg);
+  }
+
+  .ui-size-xl {
+    --ui-control-h: var(--control-height-xl);
+    --ui-icon-size: 1.25rem;
+    min-height: var(--control-height-xl);
+  }
+
+  /* Icon-only: square at the control height with a centred, scaled glyph. lucide's 24px
+     default is wrong inside a control; 16px at md is the shared size. The pair selector
+     outranks the single-class recipe padding in Button.css. */
+  :is(.ui-button, .ui-link).ui-icon-only {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ui-control-h, var(--control-height));
+    min-width: var(--ui-control-h, var(--control-height));
+    padding-inline: 0;
+  }
+
+  :is(.ui-button, .ui-link).ui-icon-only svg {
+    width: var(--ui-icon-size, 1rem);
+    height: var(--ui-icon-size, 1rem);
+  }
+}

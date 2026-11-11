@@ -1,0 +1,46 @@
+/**
+ * Step strip recipe (.ui-step-strip and its complete/current/upcoming items).
+ *
+ * USAGE: imported by StepStrip.tsx
+ */
+
+@layer qf-components {
+  .ui-step-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ui-step-strip-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .ui-step-strip-item:not(:last-child)::after {
+    content: "›";
+    color: var(--color-border-strong);
+  }
+
+  .ui-step-strip-item.is-complete {
+    color: var(--color-fg-secondary);
+  }
+
+  .ui-step-strip-item.is-current {
+    color: var(--color-fg-primary);
+    font-weight: 500;
+  }
+
+  @media (max-width: 760px) {
+    .ui-step-strip {
+      gap: var(--space-2);
+    }
+  }
+}

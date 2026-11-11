@@ -1,0 +1,132 @@
+/**
+ * StepNav recipe styles (.ui-step-nav*): numbered circles on a hairline rail, title beside.
+ *
+ * USAGE: imported by StepNav.tsx
+ */
+
+@layer qf-components {
+  .ui-step-nav-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ui-step-nav-item {
+    position: relative;
+  }
+
+  /* The rail joins each 24px marker (8px button inset) to the next one. */
+  .ui-step-nav-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 2rem;
+    bottom: calc(-1 * var(--space-2));
+    left: 1.25rem;
+    width: 1px;
+    background: var(--color-border);
+    pointer-events: none;
+  }
+
+  .ui-step-nav-button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-fg-tertiary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ui-step-nav-button:hover {
+    background-image: linear-gradient(var(--color-state-hover), var(--color-state-hover));
+    color: var(--color-fg-secondary);
+  }
+
+  .ui-step-nav-button.is-selected {
+    background-image: linear-gradient(var(--color-state-selected), var(--color-state-selected));
+    color: var(--color-fg-primary);
+  }
+
+  .ui-step-nav-button:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: -2px;
+  }
+
+  .ui-step-nav-marker {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-raised);
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .ui-step-nav-button.is-selected .ui-step-nav-marker {
+    border-color: var(--color-fg-primary);
+    background: var(--color-fg-primary);
+    color: var(--color-surface-raised);
+  }
+
+  .ui-step-nav-text {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+
+  .ui-step-nav-title {
+    overflow: hidden;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Horizontal: one wrapping row; a short rule after each step joins it to the next. */
+  .ui-step-nav[data-orientation="horizontal"] .ui-step-nav-list {
+    flex-flow: row wrap;
+    align-items: center;
+    row-gap: var(--space-1);
+  }
+
+  .ui-step-nav[data-orientation="horizontal"] .ui-step-nav-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .ui-step-nav[data-orientation="horizontal"] .ui-step-nav-item:not(:last-child)::after {
+    position: static;
+    width: 1.5rem;
+    height: 1px;
+  }
+
+  .ui-step-nav[data-orientation="horizontal"] .ui-step-nav-button {
+    width: auto;
+    gap: var(--space-2);
+    padding-inline: var(--space-2) var(--space-3);
+    border-radius: var(--radius-pill);
+  }
+
+  .ui-step-nav-detail {
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+}

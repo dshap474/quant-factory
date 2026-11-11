@@ -1,0 +1,60 @@
+# Blockworks Python client
+
+> Repository-maintained synchronous, read-only Python SDK for the Blockworks API.
+> This index describes this client; it is not official Blockworks documentation.
+
+## Start here
+
+- [README](../README.md): Installation, credentials, quickstart, namespaces, responses, errors, and streaming exports.
+- [Executable example](../examples/read_and_stream.py): Fetch asset price history and export CSV to an explicit destination.
+- [Route inventory](coverage.csv): All 226 pinned GET routes mapped to SDK methods; inventory is not live-validation evidence.
+
+## SDK essentials
+
+Use `from blockworks_client import BlockworksClient` and a context manager.
+`BlockworksClient()` reads `BLOCKWORKS_API_KEY` at construction. Supply it through the
+environment, never on the command line. Never print credentials or injected environment values.
+
+Namespaces: `tabular`, `timeseries`, `charts`, `unlocks`, `monitoring`, `watchlists`.
+For coins, discover IDs with `client.tabular.list("assets", ...)`, then request
+`client.timeseries.single("asset-price", "1d", asset_id, timeframe="7d")`.
+Read `response.body["data"]["point_schema"]` to interpret compact point arrays;
+do not assume a fixed OHLCV column order. Provider fields, nulls, and timestamps
+are preserved. The client does not fill gaps or normalize market data.
+
+Methods return `BlockworksResponse` with `body`, `status`, `headers`, and
+`request_id`. Native filters use exact provider names; convenience arguments use
+SDK names such as `page_size`. See README for method signatures and conventions.
+
+Reads make one request unless explicitly using `iter_pages` or `iter_batches`.
+Series batches are capped at ten. Pagination is bounded and does not promise a
+snapshot of a changing dataset. Use `export_list`, `export_batch`, `export_single`,
+or `export_to` for CSV/JSONL; decoded methods reject `acceptFormat`.
+
+Four upstream mutation operations are deliberately excluded. There is no async
+API, implicit cache, scheduler, canonical storage, or automatic time-window stitching.
+Python 3.12 is supported. Do not infer SDK support from newer upstream docs.
+
+## Maintenance and pinned contracts
+
+- [Architecture](architecture.md): Ownership, source layout, spec update procedure, and shared transport boundaries.
+- [Spec manifest](../specs/manifest.json): Pinned specification URLs, hashes, and retrieval date.
+- [Schema overlays](../specs/overrides.json): Narrow reviewed corrections to upstream schemas.
+- [Generated route metadata](../src/blockworks_client/_generated.py): Supported paths, query names, enums, and required parameters.
+- [Changelog](CHANGELOG.md): Package changes.
+
+## Official upstream documentation
+
+Search the official docs for provider concepts, endpoints, and parameters. Search
+the local SDK docs above for what this client supports.
+
+- [Official documentation index (live)](https://docs.blockworks.com/llms.txt): Current upstream index.
+- [Official full documentation](https://docs.blockworks.com/llms-full.txt): Combined upstream documentation; load selectively when needed.
+- [Data API overview](https://docs.blockworks.com/getting-started/data-api): Upstream concepts and API guidance.
+
+
+The official docs describe the provider API. Local README
+and pinned route inventory describe this SDK's supported behavior. The official
+docs also cover products outside this SDK (event feed, MCP server, Datashares,
+webhooks, write operations). If they differ, report the discrepancy and verify it
+before changing SDK limits or assumptions.

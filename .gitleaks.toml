@@ -1,0 +1,12 @@
+# Gitleaks configuration: the default rules plus narrow, reviewed allowlists.
+# USAGE: gitleaks git .
+
+[extend]
+useDefault = true
+
+# blockworks-client pins the SHA-256 digests of its public OpenAPI snapshots.
+[[allowlists]]
+description = "SHA-256 digests in the Blockworks spec manifest"
+condition = "AND"
+paths = ['''^packages/platform/clients/blockworks-client/specs/manifest\.json$''']
+regexes = ['''^[0-9a-f]{64}$''']

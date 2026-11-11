@@ -1,0 +1,60 @@
+/**
+ * Section recipe: the uniform between-section gap (.ui-section) and the
+ * section heading (.section-heading).
+ *
+ * USAGE: imported by Section.tsx
+ */
+
+@layer qf-components {
+  /* Uniform stacked-section rhythm; matches TerminalPage (--gap-section). Inside a
+     PageShell the shell's rhythm rule outranks this one (PageShell.css). */
+  .ui-section + .ui-section {
+    margin-top: var(--gap-section);
+  }
+
+  /* A grid or flex parent owns its own gap; the flow-layout sibling margin
+	   would double it, and in a grid the adjacent-sibling selector still matches
+	   siblings sitting in different COLUMNS, offsetting them against each other.
+	   CSS cannot query a parent's `display`, so neutralise it by parent class.
+	   Stack and Cluster render Tailwind `flex …` rather than a `ui-` class, so
+	   the `.flex` utility covers them. */
+  :is(
+      .grid,
+      .flex,
+      .ui-grid,
+      .ui-columns,
+      .ui-chart-grid,
+      .ui-stat-grid,
+      .ui-split-row,
+      .ui-toolbar
+    )
+    > .ui-section
+    + .ui-section {
+    margin-top: 0;
+  }
+
+  /* === Utility: section heading ===
+	   Replaces the duplicated h2 pattern across 6+ routes */
+  .section-heading {
+    font-family: var(--font-sans);
+    font-size: var(--text-section);
+    line-height: var(--text-section--line-height);
+    font-weight: 600;
+    letter-spacing: var(--text-section--letter-spacing);
+    color: var(--color-fg-primary);
+    margin: 0 0 var(--gap-heading) 0;
+  }
+
+  /* Heading plus actions: one row that wraps the actions below on narrow widths. */
+  .ui-section-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-stack);
+    margin: 0 0 var(--gap-heading) 0;
+  }
+  .ui-section-header > .section-heading {
+    margin: 0;
+  }
+}

@@ -1,0 +1,4041 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "OpenAPI specification for the Blockworks Monitoring API.",
+    "title": "Blockworks Monitoring API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.blockworks.com",
+      "description": "Blockworks API"
+    }
+  ],
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "paths": {
+    "/monitoring/v2/categories": {
+      "get": {
+        "summary": "List categories",
+        "description": "Full intel taxonomy \u2014 top-level categories with their nested subcategories. Static data, no filters or pagination.",
+        "operationId": "listMonitoringCategories",
+        "tags": [
+          "monitoring/v2"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MonitoringCategory"
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "slug": "component_management",
+                      "name": "Component Management",
+                      "description": "Covers changes to individual protocol components including onboarding new assets/markets, adjusting parameters, and upgrading specific components",
+                      "subcategories": [
+                        {
+                          "slug": "component_adjustment",
+                          "name": "Component Adjustment",
+                          "description": "Parameter changes or offboardings for specific markets/assets (not protocol-wide)"
+                        },
+                        {
+                          "slug": "onboarding_or_expansion",
+                          "name": "Onboarding or Expansion",
+                          "description": "Existing infrastructure expanded for new asset, market, or network (collateral listings, trading pairs, vault strategies)"
+                        },
+                        {
+                          "slug": "component_upgrade",
+                          "name": "Component Upgrade",
+                          "description": "Improvements to specific protocol components (single market oracle, vault logic)"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "launches_and_releases",
+                      "name": "Launches and Releases",
+                      "description": "Covers the release of new products, features, tokens, developer tools, and software updates",
+                      "subcategories": [
+                        {
+                          "slug": "mainnet_launch",
+                          "name": "Mainnet Launch",
+                          "description": "New blockchain goes live (L1, L2, rollup, appchain); includes pre-launch announcements with substantive technical detail (Pending status)"
+                        },
+                        {
+                          "slug": "new_product_or_feature",
+                          "name": "New Product or Feature",
+                          "description": "Entirely new functionality deployed"
+                        },
+                        {
+                          "slug": "testnet_launch",
+                          "name": "Testnet Launch",
+                          "description": "New test network released"
+                        },
+                        {
+                          "slug": "new_token",
+                          "name": "New Token",
+                          "description": "Launch of entirely new token (TGE, new governance/utility token, spinout)"
+                        },
+                        {
+                          "slug": "developer_tooling",
+                          "name": "Developer Tooling",
+                          "description": "Developer tools released by core team (SDKs, APIs, CLIs)"
+                        },
+                        {
+                          "slug": "software_release",
+                          "name": "Software Release",
+                          "description": "Updated code or client software from core team"
+                        },
+                        {
+                          "slug": "third_party_tooling",
+                          "name": "Third-Party Tooling",
+                          "description": "End-user tools released by external parties (wallets, dashboards)"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "legal_and_regulatory",
+                      "name": "Legal and Regulatory",
+                      "description": "Covers regulatory actions, enforcement, legislation, and legal proceedings affecting crypto",
+                      "subcategories": [
+                        {
+                          "slug": "approvals_licenses_and_registrations",
+                          "name": "Approvals, Licenses, and Registrations",
+                          "description": "Authorizations granted to operate: MTLs, VASP registrations, trust charters"
+                        },
+                        {
+                          "slug": "enforcement_actions",
+                          "name": "Enforcement Actions",
+                          "description": "Formal measures: lawsuits, fines, settlements, cease-and-desist"
+                        },
+                        {
+                          "slug": "investigations_and_inquiries",
+                          "name": "Investigations and Inquiries",
+                          "description": "Preliminary proceedings: subpoenas, Wells Notices, probes"
+                        },
+                        {
+                          "slug": "financial_instruments",
+                          "name": "Financial Instruments",
+                          "description": "ETFs, ETPs, trusts: creation, filing, amendment, approval, denial"
+                        },
+                        {
+                          "slug": "statutes_and_executive_actions",
+                          "name": "Statutes and Executive Actions",
+                          "description": "Laws, amendments, executive orders, pardons, binding government decisions"
+                        },
+                        {
+                          "slug": "agency_rulemaking_guidance_or_policy",
+                          "name": "Agency Rulemaking, Guidance, or Policy",
+                          "description": "Non-legislative agency actions: rulemakings, guidance, policy statements, no-action letters"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "performance",
+                      "name": "Performance",
+                      "description": "Covers bugs, service disruptions, blockchain halts, node outages, and chain splits",
+                      "subcategories": [
+                        {
+                          "slug": "bug_disclosure",
+                          "name": "Bug Disclosure",
+                          "description": "Non-security bug disclosed (affects performance, not funds)"
+                        },
+                        {
+                          "slug": "service_disruption",
+                          "name": "Service Disruption",
+                          "description": "Degraded performance, network still functioning"
+                        },
+                        {
+                          "slug": "blockchain_halt",
+                          "name": "Blockchain Halt",
+                          "description": "Network stops producing blocks, may need intervention"
+                        },
+                        {
+                          "slug": "node_outage",
+                          "name": "Node Outage",
+                          "description": "Specific nodes offline, may affect RPC/performance"
+                        },
+                        {
+                          "slug": "protocol_or_smart_contract_halt",
+                          "name": "Protocol or Smart Contract Halt",
+                          "description": "Protocol contracts paused, chain still running"
+                        },
+                        {
+                          "slug": "chain_split",
+                          "name": "Chain Split",
+                          "description": "Blockchain diverges into separate chains"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "protocol_management",
+                      "name": "Protocol Management",
+                      "description": "Covers network upgrades, governance, parameter changes, strategy, fees, migrations, discontinuations, integrations, and protocol upgrades",
+                      "subcategories": [
+                        {
+                          "slug": "network_upgrade",
+                          "name": "Network Upgrade",
+                          "description": "Coordinated blockchain upgrade requiring node operator participation"
+                        },
+                        {
+                          "slug": "governance_update",
+                          "name": "Governance Update",
+                          "description": "Changes to governance contracts, structure, or processes"
+                        },
+                        {
+                          "slug": "protocol_parameter_change",
+                          "name": "Protocol Parameter Change",
+                          "description": "Global/protocol-wide parameter changes (not asset-specific)"
+                        },
+                        {
+                          "slug": "project_strategy",
+                          "name": "Project Strategy",
+                          "description": "Strategy or roadmap changes"
+                        },
+                        {
+                          "slug": "protocol_fee_adjustment",
+                          "name": "Protocol Fee Adjustment",
+                          "description": "Changes to fees charged or distributed"
+                        },
+                        {
+                          "slug": "migration_or_swap",
+                          "name": "Migration or Swap",
+                          "description": "Token contract migration or swap to different token"
+                        },
+                        {
+                          "slug": "discontinuation",
+                          "name": "Discontinuation",
+                          "description": "Permanent ending of product, service, or feature"
+                        },
+                        {
+                          "slug": "integration_or_partnership",
+                          "name": "Integration or Partnership",
+                          "description": "Formal partnership or integration of external infrastructure"
+                        },
+                        {
+                          "slug": "protocol_upgrade",
+                          "name": "Protocol Upgrade",
+                          "description": "Major upgrade or new version of protocol smart contracts"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "security_and_hacks",
+                      "name": "Security and Hacks",
+                      "description": "Covers exploits, hacks, vulnerability disclosures, and loss of funds incidents",
+                      "subcategories": [
+                        {
+                          "slug": "protocol_exploit",
+                          "name": "Protocol Exploit",
+                          "description": "Attack on core smart contracts, funds lost"
+                        },
+                        {
+                          "slug": "frontend_exploit",
+                          "name": "Frontend Exploit",
+                          "description": "Attacks targeting project frontends (DNS hijacking, CDN compromise, client-side code); contracts intact"
+                        },
+                        {
+                          "slug": "vulnerability_disclosure",
+                          "name": "Vulnerability Disclosure",
+                          "description": "Disclosure of security vulnerabilities that could have enabled unauthorized access, fund theft, or protocol manipulation \u2014 not yet exploited"
+                        },
+                        {
+                          "slug": "custodian_loss_of_funds",
+                          "name": "Custodian Loss of Funds",
+                          "description": "Exchange or custodian loses funds"
+                        },
+                        {
+                          "slug": "consensus_related_exploit",
+                          "name": "Consensus-Related Exploit",
+                          "description": "51% attack or similar consensus violation"
+                        },
+                        {
+                          "slug": "other_hack_or_attack",
+                          "name": "Other Hack or Attack",
+                          "description": "Security incidents not fitting other categories"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "team_and_operations",
+                      "name": "Team and Operations",
+                      "description": "Covers branding, funding initiatives, organization changes, M&A, personnel, and official reports",
+                      "subcategories": [
+                        {
+                          "slug": "new_brand_or_rebrand",
+                          "name": "New Brand or Rebrand",
+                          "description": "Brand or name change"
+                        },
+                        {
+                          "slug": "centralized_funding_initiatives",
+                          "name": "Centralized Funding Initiatives",
+                          "description": "Team/foundation-led funding programs: grants, accelerators"
+                        },
+                        {
+                          "slug": "organization_change",
+                          "name": "Organization Change",
+                          "description": "Entity structure changes: foundation formation/dissolution, jurisdiction changes"
+                        },
+                        {
+                          "slug": "mergers_acquisitions_or_fundraising",
+                          "name": "Mergers, Acquisitions, or Fundraising",
+                          "description": "M&A and funding rounds"
+                        },
+                        {
+                          "slug": "personnel_change",
+                          "name": "Personnel Change",
+                          "description": "Executive, advisor, or multisig signer changes (not layoffs or restructuring \u2014 see Organization Change)"
+                        },
+                        {
+                          "slug": "official_report_or_update",
+                          "name": "Official Report or Update",
+                          "description": "Formal reports: attestations, financials, audits, post-mortems"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "token_listing",
+                      "name": "Token Listing",
+                      "description": "Covers spot listings, delistings, and other listing types on exchanges and platforms",
+                      "subcategories": [
+                        {
+                          "slug": "spot_listing",
+                          "name": "Spot Listing",
+                          "description": "Major centralized exchange enables spot trading for an asset"
+                        },
+                        {
+                          "slug": "delisting",
+                          "name": "Delisting",
+                          "description": "Exchange removes asset from trading"
+                        },
+                        {
+                          "slug": "other_listing",
+                          "name": "Other Listing",
+                          "description": "Non-trading integrations: custody, staking, index inclusion"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "tokenomics",
+                      "name": "Tokenomics",
+                      "description": "Covers airdrops, buybacks, token utility, revenue distribution, supply changes, and token allocations",
+                      "subcategories": [
+                        {
+                          "slug": "airdrop",
+                          "name": "Airdrop",
+                          "description": "Initial token distribution to select user groups, typically at TGE, retrospective based on historical behavior"
+                        },
+                        {
+                          "slug": "token_buybacks",
+                          "name": "Token Buybacks",
+                          "description": "DAO or key contributing entity repurchases the protocol's native tokens"
+                        },
+                        {
+                          "slug": "token_utility",
+                          "name": "Token Utility",
+                          "description": "Updates to a token's use case within its ecosystem"
+                        },
+                        {
+                          "slug": "revenue_distribution",
+                          "name": "Revenue Distribution",
+                          "description": "Protocol profits distributed to native token holders, stakers, or other parties; includes reward redirection"
+                        },
+                        {
+                          "slug": "token_supply",
+                          "name": "Token Supply",
+                          "description": "Changes to circulating or total supply not in original distribution: locks, unlocks, emissions adjustments, non-programmatic mints/burns"
+                        },
+                        {
+                          "slug": "other_tokenomics_update",
+                          "name": "Other Tokenomics Update",
+                          "description": "Catch-all for tokenomics changes not fitting other subcategories"
+                        },
+                        {
+                          "slug": "native_token_allocation",
+                          "name": "Native Token Allocation",
+                          "description": "Creation or adjustment of ongoing/scheduled native token distributions: vesting unlocks, emissions, incentive programs (seasons, points, liquidity mining)"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "treasury_management",
+                      "name": "Treasury Management",
+                      "description": "Covers strategic investments, treasury expenses, and other treasury operations",
+                      "subcategories": [
+                        {
+                          "slug": "strategic_investment",
+                          "name": "Strategic Investment",
+                          "description": "Treasury assets deployed for strategic purposes: acquisitions, token swaps, OTC deals, grants to external projects, investments"
+                        },
+                        {
+                          "slug": "treasury_expense",
+                          "name": "Treasury Expense",
+                          "description": "Operational costs: payroll, contractors, infrastructure, audits, legal, marketing, overhead"
+                        },
+                        {
+                          "slug": "other_treasury_operations",
+                          "name": "Other Treasury Operations",
+                          "description": "Treasury activities that aren't expenses or investments: diversification, rebalancing, transfers, structure changes"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "no_category",
+                      "name": "No Category",
+                      "description": "Fallback classification for developments that do not match any defined category",
+                      "subcategories": [
+                        {
+                          "slug": "no_subcategory",
+                          "name": "No Subcategory",
+                          "description": "Fallback classification for documents that do not match any defined category or subcategory"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/developments": {
+      "get": {
+        "summary": "List developments",
+        "description": "Paginated list of developments with rich filtering. Asset tokens (`assetIds`) may be UUIDs or slugs; unresolved tokens are silently dropped and if none of the supplied tokens resolve, the response is an empty page. Other multi-value filters (`intelCategories`, `intelSubcategories`, `assetSectors`, `assetSubsectors`, `assetEcosystemNetworkIds`) accept comma-separated tokens and apply the same silent-drop semantic \u2014 typos return an empty result rather than an error. Use `eventIds` if you need a token to be validated; it returns 400 with the offending token quoted. Results are ordered most recent first. Every development includes a nested `event` reference linking to its parent event.",
+        "operationId": "listMonitoringDevelopments",
+        "tags": [
+          "monitoring/v2"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 10,
+              "example": 10
+            },
+            "description": "Page size, default 10. Coerced silently: values above 100 are capped to 100; values \u2264 0 (and missing/non-integer values) fall back to the default."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 1,
+              "example": 1
+            },
+            "description": "1-indexed page (default 1)"
+          },
+          {
+            "in": "query",
+            "name": "assetIds",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated asset UUIDs or slugs. Unresolved tokens are silently dropped."
+          },
+          {
+            "in": "query",
+            "name": "eventIds",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated event identifiers. Each token is either a UUID or the slug-with-id-prefix form returned in the `slug` field (e.g. `my-event-a1b2c3d4`). An unresolvable token returns 400; the offending token is quoted in the error message."
+          },
+          {
+            "in": "query",
+            "name": "intelCategories",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated category slugs from /v2/categories"
+          },
+          {
+            "in": "query",
+            "name": "intelSubcategories",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated subcategory slugs from /v2/categories"
+          },
+          {
+            "in": "query",
+            "name": "minimumImportance",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "not-important",
+                "low",
+                "medium",
+                "high"
+              ]
+            },
+            "description": "Minimum importance level (inclusive). Values: not-important, low, medium, high."
+          },
+          {
+            "in": "query",
+            "name": "verified",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Restrict to verified items"
+          },
+          {
+            "in": "query",
+            "name": "actionable",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Restrict to actionable items"
+          },
+          {
+            "in": "query",
+            "name": "governance",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Restrict to governance-related items"
+          },
+          {
+            "in": "query",
+            "name": "assetSectors",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated asset sectors"
+          },
+          {
+            "in": "query",
+            "name": "assetSubsectors",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated asset subsectors"
+          },
+          {
+            "in": "query",
+            "name": "assetPreTge",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Restrict to pre-TGE assets"
+          },
+          {
+            "in": "query",
+            "name": "assetEcosystemNetworkIds",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated ecosystem network ids"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Lower bound on the time window. Compares against `startedAt`. Accepts RFC3339, YYYY-MM-DD, or unix epoch seconds."
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Upper bound on the time window. Compares against `startedAt`. Accepts RFC3339, YYYY-MM-DD, or unix epoch seconds."
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Free-text search (max 200 chars)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MonitoringDevelopment"
+                      }
+                    },
+                    "metadata": {
+                      "$ref": "#/components/schemas/MonitoringPagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "id": "87bb367e-dc20-43e1-839c-d93175d885f3",
+                      "title": "Marc-Andr\u00e9 Dumas Joins The Graph Council",
+                      "summary": "The Graph Foundation has [announced](https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919) the appointment of Marc-Andr\u00e9 Dumas to The Graph Council. Dumas is the founder of Ellipfra, a web3 and blockchain infrastructure firm, and previously served as Technical Lead at Chronicle Labs, where he developed and operated blockchain oracles for MakerDAO. He earlier held roles at MakerDAO, including Team Lead of Backend Services and Senior Integration Specialist, and led integration and engineering teams at Miranda Technologies.",
+                      "industry": "crypto",
+                      "verified": true,
+                      "intelCategories": [
+                        "team_and_operations"
+                      ],
+                      "intelSubcategories": [
+                        "personnel_change"
+                      ],
+                      "importance": "low",
+                      "actionable": false,
+                      "governance": false,
+                      "documents": [
+                        {
+                          "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919#post_3",
+                          "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                        },
+                        {
+                          "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919#post_2",
+                          "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                        },
+                        {
+                          "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919",
+                          "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                        },
+                        {
+                          "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919#post_1",
+                          "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                        }
+                      ],
+                      "startedAt": "2026-04-20T18:07:34Z",
+                      "endedAt": "2026-04-20T18:07:34Z",
+                      "createdAt": "2026-04-20T18:08:25Z",
+                      "updatedAt": "2026-04-20T18:08:26Z",
+                      "assets": [
+                        {
+                          "id": "fcb726c7-364f-4252-8ee8-70b0bbbd8791",
+                          "name": "The Graph",
+                          "slug": "the-graph",
+                          "symbol": "GRT",
+                          "class": "primary"
+                        }
+                      ],
+                      "event": {
+                        "id": "cfcb4aa9-4a22-4f2a-aa9c-16009426f7c6",
+                        "slug": "marc-andr-dumas-joins-the-graph-council-cfcb4a",
+                        "title": "Marc-Andr\u00e9 Dumas Joins The Graph Council",
+                        "developmentCount": 1
+                      }
+                    },
+                    {
+                      "id": "3c8ad9eb-6ab8-4233-a06d-5c0c09e9506c",
+                      "title": "BTC e-mode Deprecation on SparkLend",
+                      "summary": "Phoenix Labs has shared a [notice](https://forum.skyeco.com/t/april-20-2026-notice-of-btc-e-mode-deprecation-on-sparklend/27854) advising SparkLend users borrowing cbBTC through BTC e-mode to close their positions before Jun. 7, 2026 to avoid potential liquidations. SparkLend's BTC e-mode is expected to be deprecated \"in the near future, subject to governance approval.\"",
+                      "industry": "crypto",
+                      "verified": true,
+                      "intelCategories": [
+                        "protocol_management"
+                      ],
+                      "intelSubcategories": [
+                        "discontinuation"
+                      ],
+                      "importance": "low",
+                      "actionable": false,
+                      "governance": false,
+                      "documents": [
+                        {
+                          "url": "https://forum.skyeco.com/t/april-20-2026-notice-of-btc-e-mode-deprecation-on-sparklend/27854",
+                          "title": "[April 20, 2026] Notice of BTC e-mode Deprecation on SparkLend"
+                        },
+                        {
+                          "url": "https://forum.skyeco.com/t/april-20-2026-notice-of-btc-e-mode-deprecation-on-sparklend/27854",
+                          "title": "[April 20, 2026] Notice of BTC e-mode Deprecation on SparkLend"
+                        }
+                      ],
+                      "startedAt": "2026-04-20T18:03:26Z",
+                      "endedAt": "2026-04-20T18:03:26Z",
+                      "createdAt": "2026-04-20T18:05:13Z",
+                      "updatedAt": "2026-04-20T18:05:14Z",
+                      "assets": [
+                        {
+                          "id": "0b3fee37-34e6-4ca0-a838-c5638fb1129f",
+                          "name": "Coinbase Wrapped BTC",
+                          "slug": "coinbase-wrapped-btc",
+                          "symbol": "CBBTC",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "b09a349b-f941-4fff-8820-32398dd88839",
+                          "name": "Spark",
+                          "slug": "spark-sky-protocol",
+                          "symbol": "SPK",
+                          "class": "primary"
+                        }
+                      ],
+                      "event": {
+                        "id": "cf1d1d61-49bf-42dd-b3cd-6cee0073965f",
+                        "slug": "btc-e-mode-deprecation-on-sparklend-cf1d1d",
+                        "title": "BTC e-mode Deprecation on SparkLend",
+                        "developmentCount": 1
+                      }
+                    },
+                    {
+                      "id": "3bb90ba9-c5eb-4891-8baa-0486e4f72a75",
+                      "title": "HPP DAO",
+                      "summary": "The House Party Protocol (HPP) team has [launched](https://medium.com/aergo/hpp-dao-is-now-live-7f3350a32a48) HPP DAO, the protocol's on-chain governance system. The system is built in-house on a staking-based voting mechanism; HPP token stakers receive voting power based on a snapshot taken at the start of each voting period, with one vote per address per proposal. The team states the system was built internally to support integration with HPP's native XP and staking rewards systems, which third-party governance platforms could not accommodate.\n\nHPP DAO operates across three components: a Discourse forum for proposal discussion, a voting layer for on-chain and off-chain votes, and HPP Report, a governance summary publication. Proposals must pass through five sequential stages: Discussion, Formalization, Voting, Execution, and Integration; no stage may be skipped, and rejection at any stage ends that cycle with resubmission permitted. Governance participation is tracked via XP, which will be integrated with HPP's upcoming Staking Seasons to factor into staking rewards. The first governance proposal is expected shortly.",
+                      "industry": "crypto",
+                      "verified": true,
+                      "intelCategories": [
+                        "protocol_management"
+                      ],
+                      "intelSubcategories": [
+                        "governance_update"
+                      ],
+                      "importance": "low",
+                      "actionable": false,
+                      "governance": false,
+                      "documents": [],
+                      "startedAt": "2026-04-20T17:43:47Z",
+                      "endedAt": "2026-04-20T17:43:47Z",
+                      "createdAt": "2026-04-20T17:52:17Z",
+                      "updatedAt": "2026-04-20T17:52:17Z",
+                      "assets": [
+                        {
+                          "id": "0ac4ace4-04c1-4f9a-9179-5b71813665a8",
+                          "name": "House Party Protocol",
+                          "slug": "house-party-protocol",
+                          "symbol": "HPP",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "67a3996b-923a-41d1-ab52-fcb99190e138",
+                          "name": "Aergo",
+                          "slug": "aergo",
+                          "symbol": "AERGO",
+                          "class": "secondary"
+                        }
+                      ],
+                      "event": {
+                        "id": "a7b462c8-654d-4414-9c39-354e3e9f2ff1",
+                        "slug": "hpp-dao-a7b462",
+                        "title": "HPP DAO",
+                        "developmentCount": 1
+                      }
+                    }
+                  ],
+                  "metadata": {
+                    "limit": 3,
+                    "page": 1,
+                    "totalRows": 83302,
+                    "totalPages": 27768
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/developments/{developmentId}": {
+      "get": {
+        "summary": "Get development",
+        "description": "Single development detail. Returns 404 if the development is not found.",
+        "operationId": "getMonitoringDevelopment",
+        "tags": [
+          "monitoring/v2"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "developmentId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "87bb367e-dc20-43e1-839c-d93175d885f3"
+            },
+            "description": "Development UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/MonitoringDevelopment"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "id": "87bb367e-dc20-43e1-839c-d93175d885f3",
+                    "title": "Marc-Andr\u00e9 Dumas Joins The Graph Council",
+                    "summary": "The Graph Foundation has [announced](https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919) the appointment of Marc-Andr\u00e9 Dumas to The Graph Council. Dumas is the founder of Ellipfra, a web3 and blockchain infrastructure firm, and previously served as Technical Lead at Chronicle Labs, where he developed and operated blockchain oracles for MakerDAO. He earlier held roles at MakerDAO, including Team Lead of Backend Services and Senior Integration Specialist, and led integration and engineering teams at Miranda Technologies.",
+                    "industry": "crypto",
+                    "verified": true,
+                    "intelCategories": [
+                      "team_and_operations"
+                    ],
+                    "intelSubcategories": [
+                      "personnel_change"
+                    ],
+                    "importance": "low",
+                    "actionable": false,
+                    "governance": false,
+                    "documents": [
+                      {
+                        "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919#post_3",
+                        "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                      },
+                      {
+                        "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919#post_2",
+                        "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                      },
+                      {
+                        "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919",
+                        "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                      },
+                      {
+                        "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919#post_1",
+                        "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                      }
+                    ],
+                    "startedAt": "2026-04-20T18:07:34Z",
+                    "endedAt": "2026-04-20T18:07:34Z",
+                    "createdAt": "2026-04-20T18:08:25Z",
+                    "updatedAt": "2026-04-20T18:08:26Z",
+                    "assets": [
+                      {
+                        "id": "fcb726c7-364f-4252-8ee8-70b0bbbd8791",
+                        "name": "The Graph",
+                        "slug": "the-graph",
+                        "symbol": "GRT",
+                        "class": "primary"
+                      }
+                    ],
+                    "event": {
+                      "id": "cfcb4aa9-4a22-4f2a-aa9c-16009426f7c6",
+                      "slug": "marc-andr-dumas-joins-the-graph-council-cfcb4a",
+                      "title": "Marc-Andr\u00e9 Dumas Joins The Graph Council",
+                      "developmentCount": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/events": {
+      "get": {
+        "summary": "List events",
+        "description": "Paginated list of events. Events are logical groupings of related developments; the filter surface matches `/v2/developments` since downstream the service joins on the matching developments. Filter semantics also match: silent-drop on unresolved `assetIds` and unknown taxonomy slugs in `intelCategories` / `intelSubcategories`, 400 from `eventIds` on unresolvable tokens. Results are ordered most recent first.",
+        "operationId": "listMonitoringEvents",
+        "tags": [
+          "monitoring/v2"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 10,
+              "example": 10
+            },
+            "description": "Page size, default 10. Coerced silently: values above 100 are capped to 100; values \u2264 0 (and missing/non-integer values) fall back to the default."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 1,
+              "example": 1
+            },
+            "description": "1-indexed page (default 1)"
+          },
+          {
+            "in": "query",
+            "name": "assetIds",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated asset UUIDs or slugs. Unresolved tokens are silently dropped."
+          },
+          {
+            "in": "query",
+            "name": "eventIds",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated event identifiers. Each token is either a UUID or the slug-with-id-prefix form returned in the `slug` field (e.g. `my-event-a1b2c3d4`). An unresolvable token returns 400; the offending token is quoted in the error message."
+          },
+          {
+            "in": "query",
+            "name": "intelCategories",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated category slugs from /v2/categories"
+          },
+          {
+            "in": "query",
+            "name": "intelSubcategories",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated subcategory slugs from /v2/categories"
+          },
+          {
+            "in": "query",
+            "name": "minimumImportance",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "not-important",
+                "low",
+                "medium",
+                "high"
+              ]
+            },
+            "description": "Minimum importance level (inclusive). Values: not-important, low, medium, high."
+          },
+          {
+            "in": "query",
+            "name": "verified",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Restrict to verified items"
+          },
+          {
+            "in": "query",
+            "name": "actionable",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Restrict to actionable items"
+          },
+          {
+            "in": "query",
+            "name": "governance",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Restrict to governance-related items"
+          },
+          {
+            "in": "query",
+            "name": "assetSectors",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated asset sectors"
+          },
+          {
+            "in": "query",
+            "name": "assetSubsectors",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated asset subsectors"
+          },
+          {
+            "in": "query",
+            "name": "assetPreTge",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Restrict to pre-TGE assets"
+          },
+          {
+            "in": "query",
+            "name": "assetEcosystemNetworkIds",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated ecosystem network ids"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Lower bound on the time window. Compares against `startedAt`. Accepts RFC3339, YYYY-MM-DD, or unix epoch seconds."
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Upper bound on the time window. Compares against `startedAt`. Accepts RFC3339, YYYY-MM-DD, or unix epoch seconds."
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Free-text search (max 200 chars)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MonitoringEvent"
+                      }
+                    },
+                    "metadata": {
+                      "$ref": "#/components/schemas/MonitoringPagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "id": "cfcb4aa9-4a22-4f2a-aa9c-16009426f7c6",
+                      "slug": "marc-andr-dumas-joins-the-graph-council-cfcb4a",
+                      "title": "Marc-Andr\u00e9 Dumas Joins The Graph Council",
+                      "summary": "",
+                      "industry": "crypto",
+                      "developmentCount": 1,
+                      "documentCount": 4,
+                      "startedAt": "2026-04-20T18:07:34Z",
+                      "endedAt": "2026-04-20T18:07:34Z",
+                      "createdAt": "2026-04-20T18:16:08Z",
+                      "updatedAt": "2026-04-20T18:16:08Z",
+                      "intelCategories": [
+                        "team_and_operations"
+                      ],
+                      "intelSubcategories": [
+                        "personnel_change"
+                      ],
+                      "importance": "low",
+                      "verified": true,
+                      "actionable": false,
+                      "governance": false,
+                      "assets": [
+                        {
+                          "id": "fcb726c7-364f-4252-8ee8-70b0bbbd8791",
+                          "name": "The Graph",
+                          "slug": "the-graph",
+                          "symbol": "GRT",
+                          "class": "primary"
+                        }
+                      ],
+                      "developments": [
+                        {
+                          "id": "87bb367e-dc20-43e1-839c-d93175d885f3",
+                          "title": "Marc-Andr\u00e9 Dumas Joins The Graph Council",
+                          "summary": "The Graph Foundation has [announced](https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919) the appointment of Marc-Andr\u00e9 Dumas to The Graph Council. Dumas is the founder of Ellipfra, a web3 and blockchain infrastructure firm, and previously served as Technical Lead at Chronicle Labs, where he developed and operated blockchain oracles for MakerDAO. He earlier held roles at MakerDAO, including Team Lead of Backend Services and Senior Integration Specialist, and led integration and engineering teams at Miranda Technologies.",
+                          "startedAt": "2026-04-20T18:07:34Z",
+                          "endedAt": "2026-04-20T18:07:34Z",
+                          "importance": "low",
+                          "verified": true,
+                          "actionable": false,
+                          "governance": false,
+                          "intelCategories": [
+                            "team_and_operations"
+                          ],
+                          "intelSubcategories": [
+                            "personnel_change"
+                          ],
+                          "slug": "development-87bb36"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "cf1d1d61-49bf-42dd-b3cd-6cee0073965f",
+                      "slug": "btc-e-mode-deprecation-on-sparklend-cf1d1d",
+                      "title": "BTC e-mode Deprecation on SparkLend",
+                      "summary": "",
+                      "industry": "crypto",
+                      "developmentCount": 1,
+                      "documentCount": 2,
+                      "startedAt": "2026-04-20T18:03:26Z",
+                      "endedAt": "2026-04-20T18:03:26Z",
+                      "createdAt": "2026-04-20T18:16:07Z",
+                      "updatedAt": "2026-04-20T18:16:07Z",
+                      "intelCategories": [
+                        "protocol_management"
+                      ],
+                      "intelSubcategories": [
+                        "discontinuation"
+                      ],
+                      "importance": "low",
+                      "verified": true,
+                      "actionable": false,
+                      "governance": false,
+                      "assets": [
+                        {
+                          "id": "0b3fee37-34e6-4ca0-a838-c5638fb1129f",
+                          "name": "Coinbase Wrapped BTC",
+                          "slug": "coinbase-wrapped-btc",
+                          "symbol": "CBBTC",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "b09a349b-f941-4fff-8820-32398dd88839",
+                          "name": "Spark",
+                          "slug": "spark-sky-protocol",
+                          "symbol": "SPK",
+                          "class": "primary"
+                        }
+                      ],
+                      "developments": [
+                        {
+                          "id": "3c8ad9eb-6ab8-4233-a06d-5c0c09e9506c",
+                          "title": "BTC e-mode Deprecation on SparkLend",
+                          "summary": "Phoenix Labs has shared a [notice](https://forum.skyeco.com/t/april-20-2026-notice-of-btc-e-mode-deprecation-on-sparklend/27854) advising SparkLend users borrowing cbBTC through BTC e-mode to close their positions before Jun. 7, 2026 to avoid potential liquidations. SparkLend's BTC e-mode is expected to be deprecated \"in the near future, subject to governance approval.\"",
+                          "startedAt": "2026-04-20T18:03:26Z",
+                          "endedAt": "2026-04-20T18:03:26Z",
+                          "importance": "low",
+                          "verified": true,
+                          "actionable": false,
+                          "governance": false,
+                          "intelCategories": [
+                            "protocol_management"
+                          ],
+                          "intelSubcategories": [
+                            "discontinuation"
+                          ],
+                          "slug": "development-3c8ad9"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "a7b462c8-654d-4414-9c39-354e3e9f2ff1",
+                      "slug": "hpp-dao-a7b462",
+                      "title": "HPP DAO",
+                      "summary": "",
+                      "industry": "crypto",
+                      "developmentCount": 1,
+                      "documentCount": 0,
+                      "startedAt": "2026-04-20T17:43:47Z",
+                      "endedAt": "2026-04-20T17:43:47Z",
+                      "createdAt": "2026-04-20T17:56:37Z",
+                      "updatedAt": "2026-04-20T17:56:37Z",
+                      "intelCategories": [
+                        "protocol_management"
+                      ],
+                      "intelSubcategories": [
+                        "governance_update"
+                      ],
+                      "importance": "low",
+                      "verified": true,
+                      "actionable": false,
+                      "governance": false,
+                      "assets": [
+                        {
+                          "id": "0ac4ace4-04c1-4f9a-9179-5b71813665a8",
+                          "name": "House Party Protocol",
+                          "slug": "house-party-protocol",
+                          "symbol": "HPP",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "67a3996b-923a-41d1-ab52-fcb99190e138",
+                          "name": "Aergo",
+                          "slug": "aergo",
+                          "symbol": "AERGO",
+                          "class": "secondary"
+                        }
+                      ],
+                      "developments": [
+                        {
+                          "id": "3bb90ba9-c5eb-4891-8baa-0486e4f72a75",
+                          "title": "HPP DAO",
+                          "summary": "The House Party Protocol (HPP) team has [launched](https://medium.com/aergo/hpp-dao-is-now-live-7f3350a32a48) HPP DAO, the protocol's on-chain governance system. The system is built in-house on a staking-based voting mechanism; HPP token stakers receive voting power based on a snapshot taken at the start of each voting period, with one vote per address per proposal. The team states the system was built internally to support integration with HPP's native XP and staking rewards systems, which third-party governance platforms could not accommodate.\n\nHPP DAO operates across three components: a Discourse forum for proposal discussion, a voting layer for on-chain and off-chain votes, and HPP Report, a governance summary publication. Proposals must pass through five sequential stages: Discussion, Formalization, Voting, Execution, and Integration; no stage may be skipped, and rejection at any stage ends that cycle with resubmission permitted. Governance participation is tracked via XP, which will be integrated with HPP's upcoming Staking Seasons to factor into staking rewards. The first governance proposal is expected shortly.",
+                          "startedAt": "2026-04-20T17:43:47Z",
+                          "endedAt": "2026-04-20T17:43:47Z",
+                          "importance": "low",
+                          "verified": true,
+                          "actionable": false,
+                          "governance": false,
+                          "intelCategories": [
+                            "protocol_management"
+                          ],
+                          "intelSubcategories": [
+                            "governance_update"
+                          ],
+                          "slug": "development-3bb90b"
+                        }
+                      ]
+                    }
+                  ],
+                  "metadata": {
+                    "limit": 3,
+                    "page": 1,
+                    "totalRows": 46199,
+                    "totalPages": 15400
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/events/{eventId}": {
+      "get": {
+        "summary": "Get event",
+        "description": "Single event detail plus its nested developments. Returns 404 if the event is not found.",
+        "operationId": "getMonitoringEvent",
+        "tags": [
+          "monitoring/v2"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "eventId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "cfcb4aa9-4a22-4f2a-aa9c-16009426f7c6"
+            },
+            "description": "Event UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/MonitoringEventDetail"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "id": "cfcb4aa9-4a22-4f2a-aa9c-16009426f7c6",
+                    "slug": "marc-andr-dumas-joins-the-graph-council-cfcb4a",
+                    "title": "Marc-Andr\u00e9 Dumas Joins The Graph Council",
+                    "summary": "",
+                    "industry": "crypto",
+                    "developmentCount": 1,
+                    "documentCount": 4,
+                    "startedAt": "2026-04-20T18:07:34Z",
+                    "endedAt": "2026-04-20T18:07:34Z",
+                    "createdAt": "2026-04-20T18:16:08Z",
+                    "updatedAt": "2026-04-20T18:16:08Z",
+                    "intelCategories": [
+                      "team_and_operations"
+                    ],
+                    "intelSubcategories": [
+                      "personnel_change"
+                    ],
+                    "importance": "low",
+                    "verified": true,
+                    "actionable": false,
+                    "governance": false,
+                    "assets": [
+                      {
+                        "id": "fcb726c7-364f-4252-8ee8-70b0bbbd8791",
+                        "name": "The Graph",
+                        "slug": "the-graph",
+                        "symbol": "GRT",
+                        "class": "primary"
+                      }
+                    ],
+                    "developments": [
+                      {
+                        "id": "87bb367e-dc20-43e1-839c-d93175d885f3",
+                        "title": "Marc-Andr\u00e9 Dumas Joins The Graph Council",
+                        "summary": "The Graph Foundation has [announced](https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919) the appointment of Marc-Andr\u00e9 Dumas to The Graph Council. Dumas is the founder of Ellipfra, a web3 and blockchain infrastructure firm, and previously served as Technical Lead at Chronicle Labs, where he developed and operated blockchain oracles for MakerDAO. He earlier held roles at MakerDAO, including Team Lead of Backend Services and Senior Integration Specialist, and led integration and engineering teams at Miranda Technologies.",
+                        "industry": "crypto",
+                        "verified": true,
+                        "intelCategories": [
+                          "team_and_operations"
+                        ],
+                        "intelSubcategories": [
+                          "personnel_change"
+                        ],
+                        "importance": "low",
+                        "actionable": false,
+                        "governance": false,
+                        "documents": [
+                          {
+                            "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919#post_3",
+                            "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                          },
+                          {
+                            "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919#post_2",
+                            "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                          },
+                          {
+                            "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919",
+                            "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                          },
+                          {
+                            "url": "https://forum.thegraph.com/t/introducing-new-council-member-marc-andre-dumas/6919#post_1",
+                            "title": "Introducing New Council Member: Marc-Andr\u00e9 Dumas"
+                          }
+                        ],
+                        "startedAt": "2026-04-20T18:07:34Z",
+                        "endedAt": "2026-04-20T18:07:34Z",
+                        "createdAt": "2026-04-20T18:08:25Z",
+                        "updatedAt": "2026-04-20T18:08:26Z",
+                        "assets": [
+                          {
+                            "id": "fcb726c7-364f-4252-8ee8-70b0bbbd8791",
+                            "name": "The Graph",
+                            "slug": "the-graph",
+                            "symbol": "GRT",
+                            "class": "primary"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/monitoring-views": {
+      "get": {
+        "summary": "List monitoring views",
+        "description": "Paginated list of monitoring views the caller can read. Visibility includes views the caller owns plus views team-shared with any of the caller's teams, resolved from the `x-client-info` identity header.",
+        "operationId": "listMonitoringViews",
+        "tags": [
+          "monitoring/v2/MonitoringViews"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 10,
+              "example": 10
+            },
+            "description": "Page size, default 10. Coerced silently: values above 100 are capped to 100; values \u2264 0 (and missing/non-integer values) fall back to the default."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 1,
+              "example": 1
+            },
+            "description": "1-indexed page (default 1)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MonitoringView"
+                      }
+                    },
+                    "metadata": {
+                      "$ref": "#/components/schemas/MonitoringPagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "id": "3ae07edf-61b6-4582-ad3b-ff48e50a7f47",
+                      "slug": "listing-events-3ae07edf",
+                      "name": "Listing Events",
+                      "configurationType": "simple",
+                      "teamShared": true,
+                      "isOwner": false,
+                      "matchCount24h": 0,
+                      "lastMatchAt": "2026-04-16T17:34:16Z",
+                      "evaluationStartAt": "2026-01-01T00:00:00Z",
+                      "assetIds": [],
+                      "assetSectors": [],
+                      "assetSubsectors": [],
+                      "assetPreTge": null,
+                      "verified": null,
+                      "actionable": null,
+                      "governance": null,
+                      "assetEcosystemNetworkIds": [],
+                      "intelCategories": [],
+                      "intelSubcategories": [
+                        "spot_listing",
+                        "delisting",
+                        "other_listing"
+                      ],
+                      "minimumImportance": ""
+                    },
+                    {
+                      "id": "6f4209f7-1406-47b3-9416-b7fe6bf1e534",
+                      "slug": "security-performance-6f4209f7",
+                      "name": "Security & Performance",
+                      "configurationType": "simple",
+                      "teamShared": false,
+                      "isOwner": true,
+                      "matchCount24h": 8,
+                      "lastMatchAt": "2026-04-20T17:27:32Z",
+                      "evaluationStartAt": "2008-01-01T00:00:00Z",
+                      "assetIds": [],
+                      "assetSectors": [],
+                      "assetSubsectors": [],
+                      "assetPreTge": null,
+                      "verified": null,
+                      "actionable": null,
+                      "governance": null,
+                      "assetEcosystemNetworkIds": [],
+                      "intelCategories": [
+                        "security_and_hacks",
+                        "performance"
+                      ],
+                      "intelSubcategories": [],
+                      "minimumImportance": "medium"
+                    },
+                    {
+                      "id": "13710395-d849-4f36-9e87-089552dc2844",
+                      "slug": "tokenomics-13710395",
+                      "name": "Tokenomics",
+                      "configurationType": "simple",
+                      "teamShared": true,
+                      "isOwner": false,
+                      "matchCount24h": 1,
+                      "lastMatchAt": "2026-04-20T17:38:01Z",
+                      "evaluationStartAt": "2026-04-07T14:45:35Z",
+                      "assetIds": [],
+                      "assetSectors": [],
+                      "assetSubsectors": [],
+                      "assetPreTge": null,
+                      "verified": null,
+                      "actionable": null,
+                      "governance": null,
+                      "assetEcosystemNetworkIds": [],
+                      "intelCategories": [
+                        "tokenomics"
+                      ],
+                      "intelSubcategories": [],
+                      "minimumImportance": ""
+                    }
+                  ],
+                  "metadata": {
+                    "limit": 20,
+                    "page": 1,
+                    "totalRows": 3,
+                    "totalPages": 1
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/monitoring-views/{monitoringViewId}": {
+      "get": {
+        "summary": "Get monitoring view",
+        "description": "View definition plus aggregate stats. Accepts either a full UUID or the slug-with-id-prefix form (e.g. `my-defi-view-a1b2c3d4`). Returns 404 if the view is not found or the caller cannot access it.",
+        "operationId": "getMonitoringView",
+        "tags": [
+          "monitoring/v2/MonitoringViews"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "monitoringViewId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "3ae07edf-61b6-4582-ad3b-ff48e50a7f47"
+            },
+            "description": "Monitoring view UUID or slug-with-id-prefix"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/MonitoringView"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "id": "3ae07edf-61b6-4582-ad3b-ff48e50a7f47",
+                    "slug": "listing-events-3ae07edf",
+                    "name": "Listing Events",
+                    "configurationType": "simple",
+                    "teamShared": true,
+                    "isOwner": false,
+                    "matchCount24h": 0,
+                    "lastMatchAt": "2026-04-16T17:34:16Z",
+                    "evaluationStartAt": "2026-01-01T00:00:00Z",
+                    "assetIds": [],
+                    "assetSectors": [],
+                    "assetSubsectors": [],
+                    "assetPreTge": null,
+                    "verified": null,
+                    "actionable": null,
+                    "governance": null,
+                    "assetEcosystemNetworkIds": [],
+                    "intelCategories": [],
+                    "intelSubcategories": [
+                      "spot_listing",
+                      "delisting",
+                      "other_listing"
+                    ],
+                    "minimumImportance": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/monitoring-views/{monitoringViewId}/developments": {
+      "get": {
+        "summary": "Developments matched by a monitoring view",
+        "description": "Paginated developments matching the saved view's predicates. Optional free-text `search` further narrows the result set. Response items use the canonical Development shape.",
+        "operationId": "listMonitoringViewDevelopments",
+        "tags": [
+          "monitoring/v2/MonitoringViews"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "monitoringViewId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "3ae07edf-61b6-4582-ad3b-ff48e50a7f47"
+            },
+            "description": "Monitoring view UUID or slug-with-id-prefix"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 10,
+              "example": 10
+            },
+            "description": "Page size, default 10. Coerced silently: values above 100 are capped to 100; values \u2264 0 (and missing/non-integer values) fall back to the default."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 1,
+              "example": 1
+            },
+            "description": "1-indexed page (default 1)"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Free-text search (max 200 chars)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MonitoringDevelopment"
+                      }
+                    },
+                    "metadata": {
+                      "$ref": "#/components/schemas/MonitoringPagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "id": "e177e58e-11e2-4446-a7c9-a43ce3248253",
+                      "title": "Binance.US Listing",
+                      "summary": "Binance.US has [listed](https://x.com/trondao/status/2044817915082428736?s=46) TRON (TRX), and spot trading is now available.",
+                      "industry": "crypto",
+                      "verified": true,
+                      "intelCategories": [
+                        "token_listing"
+                      ],
+                      "intelSubcategories": [
+                        "spot_listing"
+                      ],
+                      "importance": "low",
+                      "actionable": false,
+                      "governance": false,
+                      "documents": [
+                        {
+                          "url": "https://x.com/trondao/status/2044817915082428736",
+                          "title": "@trondao Post on X"
+                        }
+                      ],
+                      "startedAt": "2026-04-16T17:34:16Z",
+                      "endedAt": "2026-04-16T17:34:16Z",
+                      "createdAt": "2026-04-16T17:35:35Z",
+                      "updatedAt": "2026-04-16T17:35:36Z",
+                      "assets": [
+                        {
+                          "id": "1c077d6e-99c7-491c-b24d-1d359011cd81",
+                          "name": "TRON",
+                          "slug": "tron",
+                          "symbol": "TRX",
+                          "class": "primary"
+                        }
+                      ],
+                      "event": {
+                        "id": "414138a6-e41b-4b55-a2aa-7afb0e7df5ac",
+                        "slug": "binance-us-listing-414138",
+                        "title": "Binance.US Listing",
+                        "developmentCount": 1
+                      }
+                    },
+                    {
+                      "id": "afe612b4-129c-42dd-a5c7-1088d440b27d",
+                      "title": "HTX Listing",
+                      "summary": "Following its completion of the token swap process for DAI, HTX has [announced](https://www.htx.com/support/45030386299575) that spot trading for USDS is now available.",
+                      "industry": "crypto",
+                      "verified": true,
+                      "intelCategories": [
+                        "token_listing"
+                      ],
+                      "intelSubcategories": [
+                        "spot_listing"
+                      ],
+                      "importance": "low",
+                      "actionable": false,
+                      "governance": false,
+                      "documents": [],
+                      "startedAt": "2026-04-13T13:00:00Z",
+                      "endedAt": "2026-04-13T13:00:00Z",
+                      "createdAt": "2026-04-13T16:41:57Z",
+                      "updatedAt": "2026-04-13T16:41:57Z",
+                      "assets": [
+                        {
+                          "id": "5b9504b4-fc14-4ec5-af2b-4ba1bd496cfe",
+                          "name": "Sky Dollar",
+                          "slug": "usds",
+                          "symbol": "USDS",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "6b4833f7-4671-4074-9de6-93d6c40bd739",
+                          "name": "Sky Protocol",
+                          "slug": "sky-protocol",
+                          "symbol": "SKY",
+                          "class": "secondary"
+                        }
+                      ],
+                      "event": {
+                        "id": "c0350400-7df2-43ef-9fa0-d825b4ba0c09",
+                        "slug": "htx-listing-c03504",
+                        "title": "HTX Listing",
+                        "developmentCount": 1
+                      }
+                    },
+                    {
+                      "id": "0748411e-9512-411d-b422-943621ac0f3c",
+                      "title": "Robinhood Listing",
+                      "summary": "Robinhood has [listed](https://x.com/RobinhoodApp/status/2041508148662423932) Orca (ORCA) and Raydium (RAY).",
+                      "industry": "crypto",
+                      "verified": true,
+                      "intelCategories": [
+                        "token_listing"
+                      ],
+                      "intelSubcategories": [
+                        "spot_listing"
+                      ],
+                      "importance": "medium",
+                      "actionable": false,
+                      "governance": false,
+                      "documents": [
+                        {
+                          "url": "https://x.com/RobinhoodApp/status/2041508148662423932",
+                          "title": "@RobinhoodApp Post on X"
+                        }
+                      ],
+                      "startedAt": "2026-04-07T13:32:00Z",
+                      "endedAt": "2026-04-07T13:32:00Z",
+                      "createdAt": "2026-04-07T13:50:51Z",
+                      "updatedAt": "2026-04-07T13:50:51Z",
+                      "assets": [
+                        {
+                          "id": "79a255c8-7866-4dea-b368-4f4171617ef8",
+                          "name": "Orca",
+                          "slug": "orca",
+                          "symbol": "ORCA",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "fd41189f-48ce-417b-97a4-3da221dfa5d8",
+                          "name": "Raydium",
+                          "slug": "raydium",
+                          "symbol": "RAY",
+                          "class": "primary"
+                        }
+                      ],
+                      "event": {
+                        "id": "b3564f20-ef9d-470c-95dc-52210a6a40cd",
+                        "slug": "robinhood-listing-b3564f",
+                        "title": "Robinhood Listing",
+                        "developmentCount": 1
+                      }
+                    }
+                  ],
+                  "metadata": {
+                    "limit": 3,
+                    "page": 1,
+                    "totalRows": 432,
+                    "totalPages": 144
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/monitoring-views/{monitoringViewId}/events": {
+      "get": {
+        "summary": "Events matched by a monitoring view",
+        "description": "Paginated events matching the saved view's predicates. Optional free-text `search` further narrows the result set.",
+        "operationId": "listMonitoringViewEvents",
+        "tags": [
+          "monitoring/v2/MonitoringViews"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "monitoringViewId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "3ae07edf-61b6-4582-ad3b-ff48e50a7f47"
+            },
+            "description": "Monitoring view UUID or slug-with-id-prefix"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 10,
+              "example": 10
+            },
+            "description": "Page size, default 10. Coerced silently: values above 100 are capped to 100; values \u2264 0 (and missing/non-integer values) fall back to the default."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 1,
+              "example": 1
+            },
+            "description": "1-indexed page (default 1)"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Free-text search (max 200 chars)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MonitoringEvent"
+                      }
+                    },
+                    "metadata": {
+                      "$ref": "#/components/schemas/MonitoringPagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "id": "414138a6-e41b-4b55-a2aa-7afb0e7df5ac",
+                      "slug": "binance-us-listing-414138",
+                      "title": "Binance.US Listing",
+                      "summary": "Binance.US has listed TRON (TRX) with spot trading now available on their platform.",
+                      "industry": "crypto",
+                      "developmentCount": 1,
+                      "documentCount": 1,
+                      "startedAt": "2026-04-16T17:34:16Z",
+                      "endedAt": "2026-04-16T17:34:16Z",
+                      "createdAt": "2026-04-16T17:40:46Z",
+                      "updatedAt": "2026-04-16T17:40:46Z",
+                      "intelCategories": [
+                        "token_listing"
+                      ],
+                      "intelSubcategories": [
+                        "spot_listing"
+                      ],
+                      "importance": "low",
+                      "verified": true,
+                      "actionable": false,
+                      "governance": false,
+                      "assets": [
+                        {
+                          "id": "1c077d6e-99c7-491c-b24d-1d359011cd81",
+                          "name": "TRON",
+                          "slug": "tron",
+                          "symbol": "TRX",
+                          "class": "primary"
+                        }
+                      ],
+                      "developments": [
+                        {
+                          "id": "e177e58e-11e2-4446-a7c9-a43ce3248253",
+                          "title": "Binance.US Listing",
+                          "summary": "Binance.US has [listed](https://x.com/trondao/status/2044817915082428736?s=46) TRON (TRX), and spot trading is now available.",
+                          "startedAt": "2026-04-16T17:34:16Z",
+                          "endedAt": "2026-04-16T17:34:16Z",
+                          "importance": "low",
+                          "verified": true,
+                          "actionable": false,
+                          "governance": false,
+                          "intelCategories": [
+                            "token_listing"
+                          ],
+                          "intelSubcategories": [
+                            "spot_listing"
+                          ],
+                          "slug": "development-e177e5"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "c0350400-7df2-43ef-9fa0-d825b4ba0c09",
+                      "slug": "htx-listing-c03504",
+                      "title": "HTX Listing",
+                      "summary": "HTX listed USDS for spot trading following the completion of the token swap process for DAI.\n",
+                      "industry": "crypto",
+                      "developmentCount": 1,
+                      "documentCount": 0,
+                      "startedAt": "2026-04-13T13:00:00Z",
+                      "endedAt": "2026-04-13T13:00:00Z",
+                      "createdAt": "2026-04-13T16:50:19Z",
+                      "updatedAt": "2026-04-13T16:50:19Z",
+                      "intelCategories": [
+                        "token_listing"
+                      ],
+                      "intelSubcategories": [
+                        "spot_listing"
+                      ],
+                      "importance": "low",
+                      "verified": true,
+                      "actionable": false,
+                      "governance": false,
+                      "assets": [
+                        {
+                          "id": "5b9504b4-fc14-4ec5-af2b-4ba1bd496cfe",
+                          "name": "Sky Dollar",
+                          "slug": "usds",
+                          "symbol": "USDS",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "6b4833f7-4671-4074-9de6-93d6c40bd739",
+                          "name": "Sky Protocol",
+                          "slug": "sky-protocol",
+                          "symbol": "SKY",
+                          "class": "secondary"
+                        }
+                      ],
+                      "developments": [
+                        {
+                          "id": "afe612b4-129c-42dd-a5c7-1088d440b27d",
+                          "title": "HTX Listing",
+                          "summary": "Following its completion of the token swap process for DAI, HTX has [announced](https://www.htx.com/support/45030386299575) that spot trading for USDS is now available.",
+                          "startedAt": "2026-04-13T13:00:00Z",
+                          "endedAt": "2026-04-13T13:00:00Z",
+                          "importance": "low",
+                          "verified": true,
+                          "actionable": false,
+                          "governance": false,
+                          "intelCategories": [
+                            "token_listing"
+                          ],
+                          "intelSubcategories": [
+                            "spot_listing"
+                          ],
+                          "slug": "development-afe612"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "b3564f20-ef9d-470c-95dc-52210a6a40cd",
+                      "slug": "robinhood-listing-b3564f",
+                      "title": "Robinhood Listing",
+                      "summary": "On April 7, 2026, Robinhood listed Orca (ORCA) and Raydium (RAY) for spot trading on its platform.\n",
+                      "industry": "crypto",
+                      "developmentCount": 1,
+                      "documentCount": 1,
+                      "startedAt": "2026-04-07T13:32:00Z",
+                      "endedAt": "2026-04-07T13:32:00Z",
+                      "createdAt": "2026-04-07T14:00:11Z",
+                      "updatedAt": "2026-04-07T14:00:11Z",
+                      "intelCategories": [
+                        "token_listing"
+                      ],
+                      "intelSubcategories": [
+                        "spot_listing"
+                      ],
+                      "importance": "medium",
+                      "verified": true,
+                      "actionable": false,
+                      "governance": false,
+                      "assets": [
+                        {
+                          "id": "79a255c8-7866-4dea-b368-4f4171617ef8",
+                          "name": "Orca",
+                          "slug": "orca",
+                          "symbol": "ORCA",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "fd41189f-48ce-417b-97a4-3da221dfa5d8",
+                          "name": "Raydium",
+                          "slug": "raydium",
+                          "symbol": "RAY",
+                          "class": "primary"
+                        }
+                      ],
+                      "developments": [
+                        {
+                          "id": "0748411e-9512-411d-b422-943621ac0f3c",
+                          "title": "Robinhood Listing",
+                          "summary": "Robinhood has [listed](https://x.com/RobinhoodApp/status/2041508148662423932) Orca (ORCA) and Raydium (RAY).",
+                          "startedAt": "2026-04-07T13:32:00Z",
+                          "endedAt": "2026-04-07T13:32:00Z",
+                          "importance": "medium",
+                          "verified": true,
+                          "actionable": false,
+                          "governance": false,
+                          "intelCategories": [
+                            "token_listing"
+                          ],
+                          "intelSubcategories": [
+                            "spot_listing"
+                          ],
+                          "slug": "development-074841"
+                        }
+                      ]
+                    }
+                  ],
+                  "metadata": {
+                    "limit": 3,
+                    "page": 1,
+                    "totalRows": 271,
+                    "totalPages": 91
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/monitoring-views/all/developments": {
+      "get": {
+        "summary": "Developments across all accessible monitoring views",
+        "description": "Deduplicated union of developments matching any view the caller can see (personal + team-shared). Response items use the canonical Development shape.",
+        "operationId": "listAllMonitoringViewDevelopments",
+        "tags": [
+          "monitoring/v2/MonitoringViews"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 10,
+              "example": 10
+            },
+            "description": "Page size, default 10. Coerced silently: values above 100 are capped to 100; values \u2264 0 (and missing/non-integer values) fall back to the default."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 1,
+              "example": 1
+            },
+            "description": "1-indexed page (default 1)"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Free-text search (max 200 chars)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MonitoringDevelopment"
+                      }
+                    },
+                    "metadata": {
+                      "$ref": "#/components/schemas/MonitoringPagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "id": "8262fcd8-e0fc-471c-9e45-3f310e183383",
+                      "title": "GALA Emission Model Proposal",
+                      "summary": "The GalaChain team has [proposed](https://news.gala.com/gala/galachain-is-evolving/) a governance vote to overhaul GALA's emission model, replacing the current gap-based system with a disinflationary model. The proposed model starts at a 15% annual emission rate, decays 15% per year, and settles at a permanent floor of 1.5%. The proposal replaces the existing 50 billion GALA hard cap with the declining emission structure. Under the proposal, 50% of all gas fees on GalaChain would be distributed to node operators and 50% burned permanently; under the prior model, burning GALA triggered additional minting. Day 1 node rewards are projected to increase approximately 3.2x from current levels. Voting is open to active Founder's Nodes, with one vote per node, at node.gala.com.\n\nVoting on the proposal will end on Apr. 24, 2026.",
+                      "industry": "crypto",
+                      "verified": true,
+                      "intelCategories": [
+                        "tokenomics"
+                      ],
+                      "intelSubcategories": [
+                        "token_supply"
+                      ],
+                      "importance": "medium",
+                      "actionable": false,
+                      "governance": false,
+                      "documents": [
+                        {
+                          "url": "https://news.gala.com/gala/galachain-is-evolving/",
+                          "title": "GalaChain Is Evolving"
+                        }
+                      ],
+                      "startedAt": "2026-04-20T17:38:01Z",
+                      "endedAt": "2026-04-20T17:38:01Z",
+                      "createdAt": "2026-04-20T17:41:24Z",
+                      "updatedAt": "2026-04-20T17:41:24Z",
+                      "assets": [
+                        {
+                          "id": "a98165fb-f93b-4a46-8ac3-ea61f14ebe59",
+                          "name": "Gala",
+                          "slug": "gala",
+                          "symbol": "GALA",
+                          "class": "primary"
+                        }
+                      ],
+                      "event": {
+                        "id": "d292534c-9c52-49d6-9333-06741a7c9314",
+                        "slug": "gala-emission-model-proposal-d29253",
+                        "title": "GALA Emission Model Proposal",
+                        "developmentCount": 1
+                      }
+                    },
+                    {
+                      "id": "6ee54fb3-b87c-4f03-8773-94eec595042e",
+                      "title": "Euler Response to rsETH Exploit",
+                      "summary": "The Euler Finance team has provided an [update](https://x.com/eulerfinance/status/2046278194400292900) stating that EUL LayerZero OFT bridges remain suspended while the investigation into the Kelp DAO rsETH incident continues. The team states EUL has no exposure to the incident, and the suspension is precautionary, given shared LayerZero infrastructure. Bridging will be restored once the investigation is complete and the team is \u201csatisfied\u201d that the underlying infrastructure is safe.",
+                      "industry": "crypto",
+                      "verified": true,
+                      "intelCategories": [
+                        "security_and_hacks"
+                      ],
+                      "intelSubcategories": [
+                        "vulnerability_disclosure"
+                      ],
+                      "importance": "medium",
+                      "actionable": false,
+                      "governance": false,
+                      "documents": [
+                        {
+                          "url": "https://x.com/eulerfinance/status/2046278194400292900",
+                          "title": "@eulerfinance Post on X"
+                        }
+                      ],
+                      "startedAt": "2026-04-20T17:27:32Z",
+                      "endedAt": "2026-04-20T17:27:32Z",
+                      "createdAt": "2026-04-20T17:31:09Z",
+                      "updatedAt": "2026-04-20T18:12:21Z",
+                      "assets": [
+                        {
+                          "id": "15944d1d-19f9-4195-91e7-4d7d8f12f2cf",
+                          "name": "KernelDAO",
+                          "slug": "kernel-2",
+                          "symbol": "KERNEL",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "afc8f771-6182-49de-a4c7-2bacf22e9b1d",
+                          "name": "Euler",
+                          "slug": "euler",
+                          "symbol": "EUL",
+                          "class": "secondary"
+                        },
+                        {
+                          "id": "b874ad9a-4cd2-4ec5-b140-0b8bbd39ebd5",
+                          "name": "Kelp DAO Restaked ETH",
+                          "slug": "kelp-dao-restaked-eth",
+                          "symbol": "RSETH",
+                          "class": "secondary"
+                        }
+                      ],
+                      "event": {
+                        "id": "f0539460-25f6-4cab-bb32-cf0ec447c5b1",
+                        "slug": "euler-response-to-rseth-exploit-f05394",
+                        "title": "Euler Response to rsETH Exploit",
+                        "developmentCount": 2
+                      }
+                    },
+                    {
+                      "id": "4bb4f491-53c2-4ebd-bd21-55373802aa1f",
+                      "title": "Lido Earn Exposure to rsETH Exploit",
+                      "summary": "The Lido team has [shared](https://x.com/LidoFinance/status/2046250838192947479) additional details on earnETH's exposure to the rsETH exploit. According to the team, the vault holds an Aave levered rsETH/ETH position amounting to ~9% of the vault (~$21.6 million), and elevated lending market utilization is putting cost pressure on the vault's other levered positions. The team and subvault curators are working to deleverage and reduce risk across strategies, though the outcome for the rsETH position depends on decisions by Kelp, LayerZero, and Aave regarding how losses are allocated. The vault curator has also paused withdrawals to ensure fair treatment for depositors while losses are assessed, with an alternative path of reopening withdrawals with the rsETH position intact if resolution is delayed. The $3 million first-loss protection mechanism funded by the Lido DAO treasury would be applied by burning the DAO's vault shares if needed, with the full extent of its use assessed by the Growth Committee after receiving an official incident explanation. stETH and wstETH are not affected.",
+                      "industry": "crypto",
+                      "verified": true,
+                      "intelCategories": [
+                        "security_and_hacks"
+                      ],
+                      "intelSubcategories": [
+                        "vulnerability_disclosure"
+                      ],
+                      "importance": "medium",
+                      "actionable": false,
+                      "governance": false,
+                      "documents": [
+                        {
+                          "url": "https://x.com/LidoFinance/status/2046250838192947479",
+                          "title": "@LidoFinance Post on X"
+                        }
+                      ],
+                      "startedAt": "2026-04-20T15:41:49Z",
+                      "endedAt": "2026-04-20T15:41:49Z",
+                      "createdAt": "2026-04-20T15:42:30Z",
+                      "updatedAt": "2026-04-20T15:42:30Z",
+                      "assets": [
+                        {
+                          "id": "15944d1d-19f9-4195-91e7-4d7d8f12f2cf",
+                          "name": "KernelDAO",
+                          "slug": "kernel-2",
+                          "symbol": "KERNEL",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "753f204a-8cdd-4169-bdd3-aeced7443e65",
+                          "name": "Lido DAO",
+                          "slug": "lido-dao",
+                          "symbol": "LDO",
+                          "class": "secondary"
+                        },
+                        {
+                          "id": "b874ad9a-4cd2-4ec5-b140-0b8bbd39ebd5",
+                          "name": "Kelp DAO Restaked ETH",
+                          "slug": "kelp-dao-restaked-eth",
+                          "symbol": "RSETH",
+                          "class": "secondary"
+                        }
+                      ],
+                      "event": {
+                        "id": "468014aa-3ef4-4105-ae95-04f7a131c482",
+                        "slug": "lido-earn-exposure-to-rseth-exploit-468014",
+                        "title": "Lido Earn Exposure to rsETH Exploit",
+                        "developmentCount": 2
+                      }
+                    }
+                  ],
+                  "metadata": {
+                    "limit": 3,
+                    "page": 1,
+                    "totalRows": 2428,
+                    "totalPages": 810
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/monitoring/v2/monitoring-views/all/events": {
+      "get": {
+        "summary": "Events across all accessible monitoring views",
+        "description": "Deduplicated union of events matching any view the caller can see (personal + team-shared).",
+        "operationId": "listAllMonitoringViewEvents",
+        "tags": [
+          "monitoring/v2/MonitoringViews"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 10,
+              "example": 10
+            },
+            "description": "Page size, default 10. Coerced silently: values above 100 are capped to 100; values \u2264 0 (and missing/non-integer values) fall back to the default."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 1,
+              "example": 1
+            },
+            "description": "1-indexed page (default 1)"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Free-text search (max 200 chars)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MonitoringEvent"
+                      }
+                    },
+                    "metadata": {
+                      "$ref": "#/components/schemas/MonitoringPagination"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "id": "d292534c-9c52-49d6-9333-06741a7c9314",
+                      "slug": "gala-emission-model-proposal-d29253",
+                      "title": "GALA Emission Model Proposal",
+                      "summary": "",
+                      "industry": "crypto",
+                      "developmentCount": 1,
+                      "documentCount": 1,
+                      "startedAt": "2026-04-20T17:38:01Z",
+                      "endedAt": "2026-04-20T17:38:01Z",
+                      "createdAt": "2026-04-20T17:47:15Z",
+                      "updatedAt": "2026-04-20T17:47:15Z",
+                      "intelCategories": [
+                        "tokenomics"
+                      ],
+                      "intelSubcategories": [
+                        "token_supply"
+                      ],
+                      "importance": "medium",
+                      "verified": true,
+                      "actionable": false,
+                      "governance": false,
+                      "assets": [
+                        {
+                          "id": "a98165fb-f93b-4a46-8ac3-ea61f14ebe59",
+                          "name": "Gala",
+                          "slug": "gala",
+                          "symbol": "GALA",
+                          "class": "primary"
+                        }
+                      ],
+                      "developments": [
+                        {
+                          "id": "8262fcd8-e0fc-471c-9e45-3f310e183383",
+                          "title": "GALA Emission Model Proposal",
+                          "summary": "The GalaChain team has [proposed](https://news.gala.com/gala/galachain-is-evolving/) a governance vote to overhaul GALA's emission model, replacing the current gap-based system with a disinflationary model. The proposed model starts at a 15% annual emission rate, decays 15% per year, and settles at a permanent floor of 1.5%. The proposal replaces the existing 50 billion GALA hard cap with the declining emission structure. Under the proposal, 50% of all gas fees on GalaChain would be distributed to node operators and 50% burned permanently; under the prior model, burning GALA triggered additional minting. Day 1 node rewards are projected to increase approximately 3.2x from current levels. Voting is open to active Founder's Nodes, with one vote per node, at node.gala.com.\n\nVoting on the proposal will end on Apr. 24, 2026.",
+                          "startedAt": "2026-04-20T17:38:01Z",
+                          "endedAt": "2026-04-20T17:38:01Z",
+                          "importance": "medium",
+                          "verified": true,
+                          "actionable": false,
+                          "governance": false,
+                          "intelCategories": [
+                            "tokenomics"
+                          ],
+                          "intelSubcategories": [
+                            "token_supply"
+                          ],
+                          "slug": "development-8262fc"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "f0539460-25f6-4cab-bb32-cf0ec447c5b1",
+                      "slug": "euler-response-to-rseth-exploit-f05394",
+                      "title": "Euler Response to rsETH Exploit",
+                      "summary": "Euler Labs disclosed that the KelpDAO rsETH exploit has resulted in ~$1.7 million exposure on Euler across the rsETH/wstETH, rsETH/WETH, and rsETH/WBTC Prime Pairs on Ethereum. The team is actively monitoring the situation for secondary effects as the broader incident is investigated.\n",
+                      "industry": "crypto",
+                      "developmentCount": 1,
+                      "documentCount": 2,
+                      "startedAt": "2026-04-20T13:17:13Z",
+                      "endedAt": "2026-04-20T17:27:32Z",
+                      "createdAt": "2026-04-20T13:26:27Z",
+                      "updatedAt": "2026-04-20T13:26:27Z",
+                      "intelCategories": [
+                        "security_and_hacks"
+                      ],
+                      "intelSubcategories": [
+                        "vulnerability_disclosure"
+                      ],
+                      "importance": "medium",
+                      "verified": true,
+                      "actionable": false,
+                      "governance": false,
+                      "assets": [
+                        {
+                          "id": "15944d1d-19f9-4195-91e7-4d7d8f12f2cf",
+                          "name": "KernelDAO",
+                          "slug": "kernel-2",
+                          "symbol": "KERNEL",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "afc8f771-6182-49de-a4c7-2bacf22e9b1d",
+                          "name": "Euler",
+                          "slug": "euler",
+                          "symbol": "EUL",
+                          "class": "secondary"
+                        },
+                        {
+                          "id": "b874ad9a-4cd2-4ec5-b140-0b8bbd39ebd5",
+                          "name": "Kelp DAO Restaked ETH",
+                          "slug": "kelp-dao-restaked-eth",
+                          "symbol": "RSETH",
+                          "class": "secondary"
+                        }
+                      ],
+                      "developments": [
+                        {
+                          "id": "6ee54fb3-b87c-4f03-8773-94eec595042e",
+                          "title": "Euler Response to rsETH Exploit",
+                          "summary": "The Euler Finance team has provided an [update](https://x.com/eulerfinance/status/2046278194400292900) stating that EUL LayerZero OFT bridges remain suspended while the investigation into the Kelp DAO rsETH incident continues. The team states EUL has no exposure to the incident, and the suspension is precautionary, given shared LayerZero infrastructure. Bridging will be restored once the investigation is complete and the team is \u201csatisfied\u201d that the underlying infrastructure is safe.",
+                          "startedAt": "2026-04-20T17:27:32Z",
+                          "endedAt": "2026-04-20T17:27:32Z",
+                          "importance": "medium",
+                          "verified": true,
+                          "actionable": false,
+                          "governance": false,
+                          "intelCategories": [
+                            "security_and_hacks"
+                          ],
+                          "intelSubcategories": [
+                            "vulnerability_disclosure"
+                          ],
+                          "slug": "development-6ee54f"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "468014aa-3ef4-4105-ae95-04f7a131c482",
+                      "slug": "lido-earn-exposure-to-rseth-exploit-468014",
+                      "title": "Lido Earn Exposure to rsETH Exploit",
+                      "summary": "In response to the rsETH exploit, Lido Earn disclosed that earnETH has exposure to rsETH and paused further deposits as a precaution. The Lido DAO previously approved a $3 million treasury allocation as a first-loss protection mechanism for earnETH users.\n",
+                      "industry": "crypto",
+                      "developmentCount": 1,
+                      "documentCount": 2,
+                      "startedAt": "2026-04-18T20:45:00Z",
+                      "endedAt": "2026-04-20T15:41:49Z",
+                      "createdAt": "2026-04-20T14:10:27Z",
+                      "updatedAt": "2026-04-20T14:10:27Z",
+                      "intelCategories": [
+                        "security_and_hacks"
+                      ],
+                      "intelSubcategories": [
+                        "vulnerability_disclosure"
+                      ],
+                      "importance": "medium",
+                      "verified": true,
+                      "actionable": false,
+                      "governance": false,
+                      "assets": [
+                        {
+                          "id": "15944d1d-19f9-4195-91e7-4d7d8f12f2cf",
+                          "name": "KernelDAO",
+                          "slug": "kernel-2",
+                          "symbol": "KERNEL",
+                          "class": "primary"
+                        },
+                        {
+                          "id": "753f204a-8cdd-4169-bdd3-aeced7443e65",
+                          "name": "Lido DAO",
+                          "slug": "lido-dao",
+                          "symbol": "LDO",
+                          "class": "secondary"
+                        },
+                        {
+                          "id": "b874ad9a-4cd2-4ec5-b140-0b8bbd39ebd5",
+                          "name": "Kelp DAO Restaked ETH",
+                          "slug": "kelp-dao-restaked-eth",
+                          "symbol": "RSETH",
+                          "class": "secondary"
+                        }
+                      ],
+                      "developments": [
+                        {
+                          "id": "4bb4f491-53c2-4ebd-bd21-55373802aa1f",
+                          "title": "Lido Earn Exposure to rsETH Exploit",
+                          "summary": "The Lido team has [shared](https://x.com/LidoFinance/status/2046250838192947479) additional details on earnETH's exposure to the rsETH exploit. According to the team, the vault holds an Aave levered rsETH/ETH position amounting to ~9% of the vault (~$21.6 million), and elevated lending market utilization is putting cost pressure on the vault's other levered positions. The team and subvault curators are working to deleverage and reduce risk across strategies, though the outcome for the rsETH position depends on decisions by Kelp, LayerZero, and Aave regarding how losses are allocated. The vault curator has also paused withdrawals to ensure fair treatment for depositors while losses are assessed, with an alternative path of reopening withdrawals with the rsETH position intact if resolution is delayed. The $3 million first-loss protection mechanism funded by the Lido DAO treasury would be applied by burning the DAO's vault shares if needed, with the full extent of its use assessed by the Growth Committee after receiving an official incident explanation. stETH and wstETH are not affected.",
+                          "startedAt": "2026-04-20T15:41:49Z",
+                          "endedAt": "2026-04-20T15:41:49Z",
+                          "importance": "medium",
+                          "verified": true,
+                          "actionable": false,
+                          "governance": false,
+                          "intelCategories": [
+                            "security_and_hacks"
+                          ],
+                          "intelSubcategories": [
+                            "vulnerability_disclosure"
+                          ],
+                          "slug": "development-4bb4f4"
+                        }
+                      ]
+                    }
+                  ],
+                  "metadata": {
+                    "limit": 3,
+                    "page": 1,
+                    "totalRows": 1254,
+                    "totalPages": 418
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MonitoringSubcategory": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "name",
+          "description"
+        ]
+      },
+      "MonitoringCategory": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "subcategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoringSubcategory"
+            }
+          }
+        },
+        "required": [
+          "slug",
+          "name",
+          "description",
+          "subcategories"
+        ]
+      },
+      "MonitoringDocument": {
+        "type": "object",
+        "description": "Source document (URL + title) backing a development. `documents[]` is a curated set of primary sources selected during analyst verification \u2014 not an exhaustive list of every URL referenced in the development. Inline markdown links inside `summary` may reference additional sources; consumers extracting source URLs should parse both `documents[]` and the inline links if completeness matters. May be empty even when the summary references multiple URLs inline.",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "MonitoringDevelopmentEvent": {
+        "type": "object",
+        "description": "Lightweight reference to the parent event of a development.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "developmentCount": {
+            "type": "integer"
+          }
+        }
+      },
+      "MonitoringDevelopment": {
+        "type": "object",
+        "description": "A single dated development \u2014 the atomic unit of intel coverage. Returned with identical shape from every development-producing endpoint (top-level list, detail, nested under events, and under monitoring views).",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "industry": {
+            "type": "string",
+            "example": "crypto"
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "intelCategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "intelSubcategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "importance": {
+            "type": "string",
+            "enum": [
+              "not-important",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "actionable": {
+            "type": "boolean"
+          },
+          "governance": {
+            "type": "boolean"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoringDocument"
+            }
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "event": {
+            "description": "Back-reference to the parent event. Present on top-level development responses (`/v2/developments` and `/v2/developments/{id}`) and on developments returned by view-scoped/all-views development endpoints. Omitted when the development is already nested under an event (e.g. `MonitoringEventDetail.developments`), where the parent is implicit.",
+            "$ref": "#/components/schemas/MonitoringDevelopmentEvent"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoringAsset"
+            }
+          }
+        }
+      },
+      "MonitoringEvent": {
+        "type": "object",
+        "description": "Logical grouping of related developments. List-form Event responses embed a slim `developments` array, most recent first, so callers can render an event card without a follow-up request. The fully-hydrated Development shape is returned by `GET /v2/events/{eventId}` and the `/v2/developments` endpoints.\n\nEvent-level fields are aggregated across the event's child developments:\n- `intelCategories`, `intelSubcategories` \u2014 set union of children's values.\n- `assets` \u2014 set union of children's assets, with `class` rolled up via primary-takes-precedence (an asset that is `primary` on any child is `primary` on the event).\n- `importance` \u2014 max across children using the order `not-important < low < medium < high`.\n- `documentCount` \u2014 sum of children's `documents[]` lengths.\n- `developmentCount` \u2014 number of child developments; matches the length of the embedded `developments` array.\n- `startedAt` / `endedAt` \u2014 earliest start and latest end across children.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "industry": {
+            "type": "string"
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "intelCategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "intelSubcategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "importance": {
+            "type": "string",
+            "enum": [
+              "not-important",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "actionable": {
+            "type": "boolean"
+          },
+          "governance": {
+            "type": "boolean"
+          },
+          "developmentCount": {
+            "type": "integer"
+          },
+          "documentCount": {
+            "type": "integer"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoringAsset"
+            }
+          },
+          "developments": {
+            "type": "array",
+            "description": "Slim developments under this event, ordered most recent first. Length matches `developmentCount`.",
+            "items": {
+              "$ref": "#/components/schemas/EventDevelopment"
+            }
+          }
+        }
+      },
+      "MonitoringEventDetail": {
+        "type": "object",
+        "description": "Event detail with nested developments.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "industry": {
+            "type": "string"
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "intelCategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "intelSubcategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "importance": {
+            "type": "string",
+            "enum": [
+              "not-important",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "actionable": {
+            "type": "boolean"
+          },
+          "governance": {
+            "type": "boolean"
+          },
+          "developmentCount": {
+            "type": "integer"
+          },
+          "documentCount": {
+            "type": "integer"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "developments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoringDevelopment"
+            }
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoringAsset"
+            }
+          }
+        }
+      },
+      "MonitoringView": {
+        "type": "object",
+        "description": "A saved monitoring view \u2014 a persistent filter over developments/events. `configurationType` is `simple` for filter-based views and `agentic` for prompt-based views.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "configurationType": {
+            "type": "string",
+            "enum": [
+              "simple",
+              "agentic"
+            ]
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Natural-language prompt. Populated only when `configurationType` is `agentic`."
+          },
+          "teamShared": {
+            "type": "boolean"
+          },
+          "isOwner": {
+            "type": "boolean"
+          },
+          "matchCount24h": {
+            "type": "integer",
+            "description": "Shorthand for `matchStats.developmentMatchCount24h`. Retained for backward compatibility."
+          },
+          "lastMatchAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Mirrors `matchStats.lastMatchAt`. Retained for backward compatibility."
+          },
+          "matchStats": {
+            "type": "object",
+            "description": "Aggregate match counts and recency for the view across both developments and events.",
+            "properties": {
+              "developmentMatchCountTotal": {
+                "type": "integer",
+                "description": "Total developments that have ever matched this view."
+              },
+              "developmentMatchCount24h": {
+                "type": "integer",
+                "description": "Developments matched in the last 24 hours."
+              },
+              "eventMatchCountTotal": {
+                "type": "integer",
+                "description": "Distinct events with at least one matching development, all-time."
+              },
+              "eventMatchCount24h": {
+                "type": "integer",
+                "description": "Distinct events with at least one match in the last 24 hours."
+              },
+              "lastMatchAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp of the most recent matching development."
+              }
+            }
+          },
+          "evaluationStartAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evaluationEndAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "assetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assetSectors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assetSubsectors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assetPreTge": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "assetEcosystemNetworkIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "verified": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "actionable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "governance": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "intelCategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "intelSubcategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "minimumImportance": {
+            "type": "string"
+          },
+          "initializing": {
+            "type": "boolean",
+            "description": "True while an agentic view is waiting on its first LLM evaluation pass. Clients can use this to show a loading indicator after creating a new agentic view."
+          },
+          "evaluationProgress": {
+            "type": "object",
+            "description": "Backfill progress for an agentic view's initial evaluation pass. `completed` reaches `total` once every candidate development has been scored. Useful as a progress indicator after a view is created.",
+            "properties": {
+              "total": {
+                "type": "integer"
+              },
+              "completed": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "MonitoringPagination": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "totalRows": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "limit",
+          "page",
+          "totalRows",
+          "totalPages"
+        ]
+      },
+      "MonitoringAsset": {
+        "type": "object",
+        "description": "An asset attached to a development or event. `class` is `primary` (the asset is the focus of the item) or `secondary` (the asset is mentioned but not the focus). Event-level class is rolled up across the event's child developments \u2014 primary takes precedence.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "fcb726c7-364f-4252-8ee8-70b0bbbd8791"
+          },
+          "name": {
+            "type": "string",
+            "example": "The Graph"
+          },
+          "slug": {
+            "type": "string",
+            "example": "the-graph"
+          },
+          "symbol": {
+            "type": "string",
+            "example": "GRT"
+          },
+          "class": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary"
+            ],
+            "example": "primary"
+          }
+        }
+      },
+      "EventDevelopment": {
+        "type": "object",
+        "description": "Slim development representation embedded on list-form Event responses. Carries enough fields to render without a follow-up call (title, summary, importance, verification flags, taxonomy) while staying small enough that a page of events with their developments fits in a single response. Use `GET /v2/developments` or `GET /v2/developments/{developmentId}` to fetch the fully-hydrated development (documents, assets, createdAt/updatedAt, parent event reference).",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "importance": {
+            "type": "string",
+            "enum": [
+              "not-important",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "actionable": {
+            "type": "boolean"
+          },
+          "governance": {
+            "type": "boolean"
+          },
+          "intelCategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "intelSubcategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "in": "header",
+        "name": "X-Blockworks-API-Key",
+        "type": "apiKey"
+      }
+    }
+  }
+}

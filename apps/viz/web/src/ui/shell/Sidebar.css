@@ -1,0 +1,27 @@
+/**
+ * Sidebar footer control layout (the rail route links are qf-ui RailNavLink).
+ *
+ * USAGE: imported by Sidebar.tsx
+ */
+
+@layer qf-components {
+  .footer-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .footer-actions.collapsed {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-actions nav {
+    min-width: 0;
+  }
+
+  .sidebar-search-shortcut {
+    margin-left: auto;
+    margin-right: var(--space-2);
+  }
+}

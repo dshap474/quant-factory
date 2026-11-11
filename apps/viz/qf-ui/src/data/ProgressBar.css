@@ -1,0 +1,54 @@
+/**
+ * Progress bar recipe (.ui-progress-bar track and .ui-progress-bar-fill).
+ *
+ * USAGE: imported by ProgressBar.tsx
+ */
+
+@layer qf-components {
+  .ui-progress-bar {
+    height: 0.45rem;
+    overflow: hidden;
+    background: var(--color-secondary);
+  }
+
+  .ui-progress-bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--color-fg-secondary);
+    transition: width var(--motion-slow) var(--ease-out);
+  }
+
+  .ui-progress-bar.is-md {
+    height: 0.625rem;
+    border-radius: var(--radius-pill);
+  }
+
+  .ui-progress-bar.is-md .ui-progress-bar-fill {
+    border-radius: var(--radius-pill);
+  }
+
+  .ui-progress-bar.is-info .ui-progress-bar-fill {
+    background: var(--color-tone-info);
+  }
+
+  .ui-progress-bar.is-success .ui-progress-bar-fill {
+    background: var(--color-tone-success);
+  }
+
+  .ui-progress-bar.is-warning .ui-progress-bar-fill {
+    background: var(--color-tone-warning);
+  }
+
+  .ui-progress-bar.is-critical .ui-progress-bar-fill {
+    background: var(--color-tone-critical);
+  }
+}
+
+@layer qf-motion {
+  /* Reduced motion kills the fill transition, over any animation utility. */
+  @media (prefers-reduced-motion: reduce) {
+    .ui-progress-bar-fill {
+      transition: none;
+    }
+  }
+}

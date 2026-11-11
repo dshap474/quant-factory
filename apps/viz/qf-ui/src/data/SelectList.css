@@ -1,0 +1,138 @@
+/**
+ * Select list recipe: overline groups of inset-pill rows on the shared selection states.
+ *
+ * USAGE: imported by SelectList.tsx
+ */
+
+@layer qf-components {
+  /* Groups sit a section apart so their headings, not the rows' grey detail lines, mark the breaks. */
+  .ui-select-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-section);
+  }
+
+  .ui-select-list-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .ui-select-list-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-inline: var(--space-3);
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-overline);
+    line-height: var(--text-overline--line-height);
+    font-weight: 600;
+    letter-spacing: var(--text-overline--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .ui-select-list-meta {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-select-list-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ui-select-list-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-fg-secondary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ui-select-list-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .ui-select-list-leading {
+    display: inline-flex;
+    flex: none;
+  }
+
+  .ui-select-list-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-fg-primary);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-select-list-figure {
+    flex: none;
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .ui-select-list-description {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-select-list-extra {
+    display: block;
+  }
+
+  /* Lines under a leading slot start under the title, not under the slot. */
+  .ui-select-list-row.has-leading .ui-select-list-description,
+  .ui-select-list-row.has-leading .ui-select-list-extra {
+    padding-left: var(--space-4);
+  }
+
+  .ui-select-list-row:hover {
+    background: var(--color-state-hover);
+    color: var(--color-fg-primary);
+  }
+
+  .ui-select-list-row:active {
+    background: var(--color-state-pressed);
+  }
+
+  .ui-select-list-row:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .ui-select-list-row.is-selected {
+    background: var(--color-state-selected);
+    color: var(--color-fg-primary);
+  }
+
+  .ui-select-list-row.is-selected:hover {
+    background: var(--color-state-selected-hover);
+  }
+}

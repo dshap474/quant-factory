@@ -1,0 +1,291 @@
+/* Shared single-choice segmented control: a warm off-white pill that slides between options
+   on a raised track with an even inset ring, or (tabs) bare text tabs with a sliding brand
+   underline. */
+
+@layer qf-components {
+  /* ------------------------------------------------------------------------- */
+  /* Track */
+  /* ------------------------------------------------------------------------- */
+
+  /* Options are full control height and the track grows by the inset, so the gap between
+     pill and edge stays even; the track radius is the pill's control radius plus that inset. */
+  .ui-segmented-control {
+    --segmented-inset: calc(var(--space-1) * 1.5);
+    /* Muted and warm, not paper white: the text tone pulled down and toward the brand amber. */
+    --segmented-pill: color-mix(
+      in oklch,
+      color-mix(in oklch, var(--color-fg-secondary) 86%, var(--color-brand)) 95%,
+      var(--color-surface-canvas)
+    );
+    --segmented-pill-fg: var(--color-surface-canvas);
+    position: relative;
+    display: inline-flex;
+    min-height: calc(var(--ui-control-h, var(--control-height)) + 2 * var(--segmented-inset));
+    align-items: stretch;
+    gap: var(--segmented-inset);
+    padding: var(--segmented-inset);
+    border: 0;
+    border-radius: var(--radius-dialog);
+    background: var(--color-surface-raised);
+    /* A sunken fill alone sits within a hair of the canvas; the hairline gives the track an edge. */
+    box-shadow: inset 0 0 0 1px var(--color-border);
+  }
+
+  /* A strip wider than its host scrolls sideways inside itself instead of pushing
+     the page wider; the component keeps the selected item scrolled into view. */
+  .ui-segmented-control {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .ui-segmented-control::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Items */
+  /* ------------------------------------------------------------------------- */
+
+  .ui-segmented-control-item {
+    min-height: var(--ui-control-h, var(--control-height));
+    flex-shrink: 0;
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-fg-secondary);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+    transition: color var(--duration-sm) var(--ease-out);
+  }
+
+  /* Equal options: each grows from zero, so they split the track evenly, and none narrows
+     past the widest label plus its padding (--ui-segment-min, set by the component). */
+  .ui-segmented-control:not(.is-tabs) .ui-segmented-control-item {
+    flex: 1 1 0;
+    min-width: var(--ui-segment-min, max-content);
+  }
+
+  /* Too narrow for equal options: the switcher is a dropdown that fills the same box. */
+  .ui-segmented-control.is-collapsed {
+    display: block;
+    min-height: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .ui-segmented-control.is-collapsed .ui-segmented-select {
+    width: 100%;
+  }
+
+  .ui-segmented-select-fallback {
+    display: flex;
+    min-height: var(--control-height);
+    align-items: center;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-control);
+    font-size: var(--text-ui-sm);
+  }
+
+  .ui-segmented-control-item:hover:not(:disabled) {
+    background: var(--color-surface-control);
+    color: var(--color-fg-primary);
+  }
+
+  .ui-segmented-control-item:active:not(:disabled) {
+    background-color: transparent;
+    background-image: linear-gradient(var(--color-state-pressed), var(--color-state-pressed));
+    color: var(--color-fg-primary);
+  }
+
+  /* The chosen option reads dark on the pill. The sliding pill paints its fill once
+     useTabIndicator has placed it; until then (first paint, no layout) the item carries it. */
+  .ui-segmented-control-item[aria-checked="true"],
+  .ui-segmented-control-item[aria-checked="true"]:hover:not(:disabled) {
+    background: var(--segmented-pill);
+    box-shadow: none;
+    color: var(--segmented-pill-fg);
+  }
+
+  .ui-segmented-control[data-indicator="on"] .ui-segmented-control-item[aria-checked="true"],
+  .ui-segmented-control[data-indicator="on"]
+    .ui-segmented-control-item[aria-checked="true"]:hover:not(:disabled) {
+    background: transparent;
+  }
+
+  .ui-segmented-pill {
+    position: absolute;
+    top: var(--segmented-inset);
+    bottom: var(--segmented-inset);
+    left: 0;
+    width: var(--ui-tab-w, 0px);
+    border-radius: var(--radius-control);
+    background: var(--segmented-pill);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(var(--ui-tab-x, 0px));
+  }
+
+  [data-indicator="on"] > .ui-segmented-pill {
+    opacity: 1;
+  }
+
+  [data-indicator-ready] > .ui-segmented-pill {
+    transition:
+      transform 240ms var(--ease-out),
+      width 240ms var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-indicator-ready] > .ui-segmented-pill {
+      transition: none;
+    }
+  }
+
+  .ui-segmented-control-item:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+  }
+
+  .ui-segmented-control.is-sm .ui-segmented-control-item {
+    padding-inline: var(--space-2);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Tabs variant: page view switcher. Bare text on no track; hover shows a ghost
+     pill, the chosen tab brightens and the brand underline slides under it. */
+  /* ------------------------------------------------------------------------- */
+
+  /* Tabs touch (the hover pill is the spacing), the underline sits 4px under the pill,
+     and rest labels drop back so the chosen one reads clearly brighter. */
+  .ui-segmented-control.is-tabs {
+    --ui-tab-rest: color-mix(in oklch, var(--color-fg-primary) 62%, transparent);
+    min-height: 0;
+    gap: 0;
+    padding: 0 0 var(--space-1);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .ui-segmented-control.is-tabs .ui-segmented-control-item,
+  .ui-segmented-control.is-tabs .ui-segmented-control-item:hover:not(:disabled),
+  .ui-segmented-control.is-tabs .ui-segmented-control-item:active:not(:disabled) {
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .ui-segmented-control.is-tabs .ui-segmented-control-item {
+    min-height: var(--control-height-lg);
+    border-radius: var(--radius-control);
+    background-color: transparent;
+    color: var(--ui-tab-rest);
+    transition:
+      color var(--duration-sm) var(--ease-out),
+      background-color var(--duration-sm) var(--ease-out);
+  }
+
+  .ui-segmented-control.is-tabs .ui-segmented-control-item:hover:not(:disabled) {
+    background-color: var(--color-state-hover);
+    color: var(--color-fg-primary);
+  }
+
+  .ui-segmented-control.is-tabs .ui-segmented-control-item:active:not(:disabled) {
+    background-color: var(--color-state-pressed);
+  }
+
+  /* The chosen tab: full-strength label and the shared gold underline. */
+  .ui-segmented-control.is-tabs .ui-segmented-control-item[aria-checked="true"] {
+    background-color: transparent;
+    color: var(--color-fg-primary);
+  }
+
+  .ui-segmented-control.is-tabs
+    .ui-segmented-control-item[aria-checked="true"]:hover:not(:disabled) {
+    background-color: var(--color-state-hover);
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Sliding tab indicator (tabs variant and RouteTabs): useTabIndicator writes
+     --ui-tab-x / --ui-tab-w from the chosen item; the bar spans its label. */
+  /* ------------------------------------------------------------------------- */
+
+  .ui-tabs-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: calc(var(--ui-tab-w, 0px) - 2 * var(--space-3));
+    height: 2px;
+    border-radius: var(--radius-pill);
+    background: var(--color-brand);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(calc(var(--ui-tab-x, 0px) + var(--space-3)));
+  }
+
+  [data-indicator="on"] > .ui-tabs-indicator {
+    opacity: 1;
+  }
+
+  [data-indicator-ready] > .ui-tabs-indicator {
+    transition:
+      transform 220ms var(--ease-out),
+      width 220ms var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-indicator-ready] > .ui-tabs-indicator {
+      transition: none;
+    }
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Folded tabs and the More trigger (tab-overflow.tsx) */
+  /* ------------------------------------------------------------------------- */
+
+  .ui-segmented-control-item[hidden],
+  .ui-route-tabs-item[hidden] {
+    display: none;
+  }
+
+  /* More reads as one more tab: same height, type and resting colour. */
+  .ui-tabs-more {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--control-height-lg);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    color: color-mix(in oklch, var(--color-fg-primary) 62%, transparent);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .ui-tabs-more:hover,
+  .ui-tabs-more[data-popup-open] {
+    background: var(--color-state-hover);
+    color: var(--color-fg-primary);
+  }
+
+  .ui-tabs-more:focus-visible {
+    outline-offset: -2px;
+  }
+}

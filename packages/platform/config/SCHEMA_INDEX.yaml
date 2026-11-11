@@ -1,0 +1,32 @@
+version: 1
+description: "Cross-domain schema/contract index for quant-factory"
+
+domains:
+  features:
+    status: active
+    manifests:
+      feature_catalog: "packages/features/src/features/api/__init__.py::PUBLISHABLE_FAMILIES"
+      feature_registry: "db/features/REGISTRY.yaml"
+      feature_schema: "db/features/SCHEMA.yaml"
+    docs:
+      agents: "packages/features/AGENTS.md"
+      system: "packages/features/AGENTS.md"
+      architecture: "packages/features/README.md"
+
+  signals:
+    status: active
+    manifests:
+      signal_catalog: "packages/signals/src/signals/manifest.py"
+      signal_schema: "db/signals/SCHEMA.yaml"
+    docs:
+      agents: "packages/signals/AGENTS.md"
+      system: "packages/signals/AGENTS.md"
+
+  strategies:
+    status: active
+    manifests:
+      strategy_catalog: "packages/strategies/src/strategies/manifest.py"
+      strategy_schema: "db/strategies/SCHEMA.yaml"
+    docs:
+      agents: "packages/strategies/AGENTS.md"
+      system: "packages/strategies/AGENTS.md"

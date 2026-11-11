@@ -1,0 +1,192 @@
+/**
+ * Prose recipe styles (.prose-dark markdown typography).
+ *
+ * USAGE: imported by Prose.tsx
+ */
+
+@layer qf-components {
+  /* === Markdown prose styling === */
+  .prose-dark {
+    color: var(--color-fg-secondary);
+    font-size: var(--text-prose);
+    line-height: var(--text-prose--line-height);
+  }
+  .prose-dark h1,
+  .prose-dark h2,
+  .prose-dark h3,
+  .prose-dark h4 {
+    color: var(--color-fg-primary);
+    font-weight: 600;
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-2);
+  }
+  .prose-dark > :first-child {
+    margin-top: 0;
+  }
+  /* The host owns the space after the prose; the last block adds no trailing margin. */
+  .prose-dark > :last-child {
+    margin-bottom: 0;
+  }
+  .prose-dark h1 {
+    font-size: var(--text-section);
+    line-height: var(--text-section--line-height);
+    letter-spacing: var(--text-section--letter-spacing);
+  }
+  .prose-dark h2 {
+    font-size: inherit;
+  }
+  .prose-dark h3,
+  .prose-dark h4 {
+    font-size: inherit;
+    color: var(--color-fg-secondary);
+  }
+  .prose-dark p {
+    margin-bottom: var(--space-3);
+  }
+  .prose-dark ul,
+  .prose-dark ol {
+    padding-left: var(--space-5);
+    margin-bottom: var(--space-3);
+  }
+  .prose-dark li {
+    margin-bottom: var(--space-1);
+  }
+  .prose-dark ul {
+    list-style-type: disc;
+  }
+  .prose-dark ol {
+    list-style-type: decimal;
+  }
+  .prose-dark code {
+    background: var(--color-surface-control);
+    padding: 0 var(--space-1);
+    border-radius: var(--radius-badge);
+    font-family: var(--font-mono);
+    font-size: var(--text-ui-sm);
+  }
+  .prose-dark pre {
+    background: var(--color-surface-sunken);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    padding: var(--inset-surface);
+    overflow-x: auto;
+    margin-bottom: var(--space-4);
+  }
+  .prose-dark pre code {
+    background: transparent;
+    padding: 0;
+  }
+  .prose-dark blockquote {
+    border-left: 2px solid var(--color-border-strong);
+    padding-left: var(--space-4);
+    color: var(--color-fg-tertiary);
+    margin-bottom: var(--space-3);
+  }
+  .prose-dark a {
+    color: var(--color-fg-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .prose-dark a:hover {
+    text-decoration-color: var(--color-fg-secondary);
+  }
+  .prose-dark hr {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin: var(--space-5) 0;
+  }
+
+  /* === TeX math (typeset by KaTeX, whose own sheet sets display margins) ===
+     A display equation is a row: the equation (its own horizontal scroll area when it is
+     wider than the column) and an optional number after it. */
+  .prose-dark .qf-math[data-display="true"] {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .prose-dark .qf-math .katex-display {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+  }
+  .prose-dark .qf-math .katex {
+    color: var(--color-fg-primary);
+  }
+
+  /* === Back-of-book index: entries in columns, sub-entries indented under them === */
+  .prose-dark.prose-index {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    columns: 15rem;
+    column-gap: var(--space-6);
+  }
+  .prose-index-letters {
+    column-span: all;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .prose-dark .prose-index-letters a {
+    color: var(--color-fg-secondary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .prose-dark .prose-index-letters a:hover {
+    color: var(--color-fg-primary);
+  }
+  .prose-index h2 {
+    break-after: avoid;
+    margin-top: var(--space-4);
+  }
+  .prose-index p,
+  .prose-index li {
+    margin-bottom: 0;
+    break-inside: avoid;
+  }
+  /* Some conversions set one entry per line with no blank line between: keep the lines. */
+  .prose-index p {
+    white-space: pre-line;
+  }
+  /* Hanging indents: an entry's wrapped lines sit under its text, not at the margin. */
+  .prose-index p,
+  .prose-index li {
+    padding-left: var(--space-4);
+    text-indent: calc(-1 * var(--space-4));
+  }
+  .prose-index p:not(:has(> strong)) {
+    padding-left: var(--space-8);
+  }
+  .prose-index ul {
+    list-style: none;
+    padding-left: var(--space-4);
+    margin-bottom: 0;
+  }
+
+  /* === Fluid document column === */
+  .prose-measure {
+    width: 100%;
+    min-width: 0;
+    margin: 0 auto;
+    overflow-wrap: anywhere;
+  }
+  .prose-measure img {
+    max-width: 100%;
+    height: auto;
+  }
+  .prose-measure h1,
+  .prose-measure h2,
+  .prose-measure h3,
+  .prose-measure h4 {
+    text-wrap: balance;
+  }
+  .prose-measure p,
+  .prose-measure li {
+    text-wrap: pretty;
+  }
+}

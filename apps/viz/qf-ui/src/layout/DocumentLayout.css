@@ -1,0 +1,45 @@
+/**
+ * Fluid document column plus sticky aside.
+ *
+ * USAGE: imported by DocumentLayout.tsx.
+ */
+
+@layer qf-components {
+  /* The layout measures its own width, not the viewport, so a collapsed navigator
+     widens it into the two-column form. */
+  .ui-document-layout {
+    min-width: 0;
+    container-type: inline-size;
+  }
+
+  .ui-document-layout-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--gap-section);
+  }
+
+  .ui-document-layout-main,
+  .ui-document-layout-aside {
+    min-width: 0;
+  }
+
+  /* The document keeps its prose measure flush left instead of centring in the pane. */
+  .ui-document-layout-main .prose-measure {
+    margin-inline: 0;
+  }
+
+  /* Keep a usable rail while giving the document all remaining width. */
+  @container (min-width: 60rem) {
+    .ui-document-layout-grid {
+      grid-template-columns: minmax(0, 1fr) 18rem;
+      align-items: start;
+    }
+
+    .ui-document-layout-aside {
+      position: sticky;
+      top: 0;
+      padding-left: var(--gap-section);
+      border-left: 1px solid var(--color-border-subtle);
+    }
+  }
+}

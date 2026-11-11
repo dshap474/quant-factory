@@ -1,0 +1,518 @@
+/**
+ * Pipeline architecture map: hairline lanes over a schematic grid.
+ *
+ * USAGE: imported by PipelineArchitectureMap.tsx
+ */
+
+@layer qf-components {
+  /* ------------------------------------------------------------------------- */
+  /* Frame */
+  /* ------------------------------------------------------------------------- */
+
+  .pipeline-architecture-map {
+    --pipeline-divider: var(--color-border-subtle);
+
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    color: var(--color-foreground);
+    background: var(--color-background);
+    container: pipeline-map / inline-size;
+  }
+
+  .catalog-terminal-workspace .pipeline-architecture-map {
+    height: 100%;
+  }
+
+  .pipeline-architecture-map--platform {
+    border: 1px solid var(--pipeline-divider);
+  }
+
+  .pipeline-architecture-header {
+    box-sizing: border-box;
+    display: flex;
+    height: var(--shell-bar-height);
+    min-height: var(--shell-bar-height);
+    flex: 0 0 var(--shell-bar-height);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: 0 var(--inset-page);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .pipeline-architecture-title {
+    display: flex;
+    min-width: 0;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .pipeline-architecture-title h1,
+  .pipeline-architecture-title h2 {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .pipeline-architecture-title h1 {
+    font-size: var(--text-title);
+    line-height: var(--text-title--line-height);
+    letter-spacing: var(--text-title--letter-spacing);
+  }
+
+  .pipeline-architecture-title h2 {
+    font-size: var(--text-section);
+    line-height: var(--text-section--line-height);
+    letter-spacing: var(--text-section--letter-spacing);
+  }
+
+  .pipeline-architecture-title code {
+    color: var(--color-muted-foreground);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    white-space: nowrap;
+  }
+
+  /* The contract is prose ("data → features → signals → strategies"), so it reads in
+     sans even though the element is <code>. */
+  code.pipeline-architecture-contract {
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    white-space: nowrap;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Lanes */
+  /* ------------------------------------------------------------------------- */
+
+  /* `align-items: start` sizes each lane to its own content instead of stretching
+     it to the tallest lane. `flex: 1` stays: it stretches the BAND (this
+     container) to fill the height both hosts hand the map, which is what keeps
+     the schematic framed between the header and the status strip. The lane
+     dividers therefore cannot live on the lanes any more — with start alignment
+     each `border-left` would stop at its own lane's content height — so they are
+     painted here as a full-height background layer instead.
+
+     The divider layer repeats with a period of one lane width and paints the
+     last 1px of each period; the whole layer is offset by exactly 1px so the
+     rules land on the lane boundaries and the trailing one falls off the right
+     edge of the box. Do not tile that shifted layer: a wrapped tile would paint a
+     second rule beside the navigator's existing boundary. */
+  .pipeline-lanes {
+    display: grid;
+    min-height: 0;
+    flex: 1;
+    align-items: start;
+    grid-template-columns: repeat(var(--pipeline-lane-count, 3), minmax(0, 1fr));
+    overflow: auto;
+    overscroll-behavior: contain;
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(100% / var(--pipeline-lane-count, 3) - 1px),
+      var(--pipeline-divider) calc(100% / var(--pipeline-lane-count, 3) - 1px),
+      var(--pipeline-divider) calc(100% / var(--pipeline-lane-count, 3))
+    );
+    background-size: 100% 100%;
+    background-position: 1px 0;
+    background-repeat: no-repeat;
+  }
+
+  .pipeline-lanes--3 {
+    --pipeline-lane-count: 3;
+  }
+
+  .pipeline-lanes--6 {
+    --pipeline-lane-count: 6;
+  }
+
+  .pipeline-lane {
+    display: flex;
+    min-width: 0;
+    container: pipeline-lane / inline-size;
+    flex-direction: column;
+    padding: var(--space-5) var(--inset-page);
+    color: var(--color-foreground);
+    text-decoration: none;
+  }
+
+  .pipeline-lane-cell {
+    position: relative;
+    min-width: 0;
+  }
+
+  /* Over the card's padding, so the path copy control never moves its text. */
+  .pipeline-lane-copy {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    color: var(--color-fg-tertiary);
+  }
+
+  @media (hover: hover) {
+    .pipeline-lane-copy {
+      opacity: 0;
+    }
+
+    .pipeline-lane-cell:hover .pipeline-lane-copy,
+    .pipeline-lane-copy:focus-within {
+      opacity: 1;
+    }
+  }
+
+  /* On the cell, so moving onto the copy control keeps the card highlighted. */
+  .pipeline-lane-cell:hover .pipeline-lane--link,
+  .pipeline-lane--link:focus-visible {
+    color: var(--color-foreground);
+    background: var(--color-state-hover);
+  }
+
+  .pipeline-lane--link:focus-visible {
+    z-index: var(--z-lift);
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .pipeline-lane-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .pipeline-lane-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 500;
+  }
+
+  .pipeline-lane-arrow {
+    color: var(--color-fg-tertiary);
+  }
+
+  .pipeline-lane-head strong {
+    font-size: var(--text-section);
+    font-weight: 600;
+    letter-spacing: var(--text-section--letter-spacing);
+    line-height: var(--text-section--line-height);
+  }
+
+  .pipeline-lane-description {
+    color: var(--color-muted-foreground);
+    font-size: var(--text-caption);
+  }
+
+  .pipeline-lane-head code {
+    margin-top: var(--space-1);
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+  }
+
+  .pipeline-rows {
+    display: grid;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--pipeline-divider);
+  }
+
+  .pipeline-rows li {
+    display: grid;
+    min-height: 2rem;
+    grid-template-columns: minmax(6rem, auto) minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-1) 0;
+    border-bottom: 1px solid var(--pipeline-divider);
+  }
+
+  .pipeline-rows li.pipeline-row--link {
+    display: block;
+    padding: 0;
+  }
+
+  .pipeline-row-link {
+    display: grid;
+    min-height: 2rem;
+    grid-template-columns: minmax(6rem, auto) minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-1) var(--space-2);
+    margin-inline: calc(0px - var(--space-2));
+    border-radius: var(--radius-control);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Inset rounded highlight, like list rows: the negative margin keeps the text on
+     the lane edge while the hover fill extends 8px past it. */
+  .pipeline-row-link:hover {
+    background: var(--color-state-hover);
+  }
+
+  .pipeline-row-link:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .pipeline-row-key,
+  .pipeline-row-detail {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Row keys are dataset paths and family ids: they stay mono. */
+  .pipeline-row-key[data-identifier] {
+    color: var(--color-foreground);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+  }
+
+  .pipeline-row-detail {
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+  }
+
+  /* Loading rows are real rows with a bar per text line, so the lane keeps its geometry. */
+  .pipeline-row-bar {
+    display: inline-block;
+    width: 55%;
+    height: 0.7em;
+    border-radius: var(--radius-badge);
+    background: color-mix(in oklab, var(--color-secondary) 60%, transparent);
+  }
+
+  .pipeline-row-bar.is-detail {
+    width: 80%;
+  }
+
+  .pipeline-lane-empty {
+    margin: var(--space-4) 0 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--pipeline-divider);
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+  }
+
+  /* Family ids run long: stack key over detail so neither column starves. */
+  .pipeline-architecture-map--platform .pipeline-rows li,
+  .pipeline-architecture-map--platform .pipeline-row-link,
+  .pipeline-architecture-map--signals .pipeline-rows li,
+  .pipeline-architecture-map--signals .pipeline-row-link,
+  .pipeline-architecture-map--strategies .pipeline-rows li,
+  .pipeline-architecture-map--strategies .pipeline-row-link,
+  .pipeline-architecture-map--research .pipeline-rows li,
+  .pipeline-architecture-map--research .pipeline-row-link,
+  .pipeline-architecture-map--agents .pipeline-rows li,
+  .pipeline-architecture-map--agents .pipeline-row-link,
+  .pipeline-architecture-map--ml-engine .pipeline-rows li,
+  .pipeline-architecture-map--ml-engine .pipeline-row-link {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+
+  /* Family rows carry full metric lists: wrap to a second line, never ellipsise. */
+  .pipeline-architecture-map--platform .pipeline-row-detail,
+  .pipeline-architecture-map--features .pipeline-row-detail,
+  .pipeline-architecture-map--signals .pipeline-row-detail,
+  .pipeline-architecture-map--strategies .pipeline-row-detail,
+  .pipeline-architecture-map--research .pipeline-row-detail,
+  .pipeline-architecture-map--agents .pipeline-row-detail,
+  .pipeline-architecture-map--ml-engine .pipeline-row-detail {
+    overflow: visible;
+    line-height: var(--text-ui-sm--line-height);
+    overflow-wrap: anywhere;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  /* The platform map is the only six-lane scope: trim its lane rhythm so the stacked
+     rows fit the dashboard viewport without a document scrollbar. Its header keeps
+     the shared 56px band. */
+  .pipeline-architecture-map--platform .pipeline-lane {
+    padding: var(--space-4) var(--inset-page) var(--space-3);
+  }
+
+  .pipeline-architecture-map--platform .pipeline-rows {
+    margin-top: var(--space-3);
+  }
+
+  .pipeline-architecture-map--platform .pipeline-rows li,
+  .pipeline-architecture-map--platform .pipeline-row-link {
+    min-height: 0;
+    gap: 0;
+    padding-block: var(--space-1);
+  }
+
+  .pipeline-architecture-map--platform .pipeline-row-key {
+    line-height: var(--text-caption--line-height);
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Section workspace host */
+  /* ------------------------------------------------------------------------- */
+
+  /* Index pages routed inside a section workspace render the map edge-to-edge. The map
+     scrolls inside its own lanes, so the host reserves no scrollbar gutter: a reserved
+     gutter would stop the strip and lane rules short of the workspace edge. */
+  .section-workspace-content:has(> .pipeline-architecture-map) {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    scrollbar-gutter: auto;
+  }
+
+  .section-workspace-content > .pipeline-architecture-map {
+    height: 100%;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Status strip */
+  /* ------------------------------------------------------------------------- */
+
+  .pipeline-strip {
+    box-sizing: border-box;
+    display: grid;
+    min-height: var(--shell-footer-height);
+    flex: 0 0 auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 1.6fr);
+    border-top: 1px solid var(--pipeline-divider);
+  }
+
+  /* Three lanes above three strip cells: share the lane boundaries so each vertical rule
+     runs as one line from the header to the bottom edge. */
+  @container pipeline-map (width > 52rem) {
+    .pipeline-architecture-map:has(> .pipeline-lanes--3) .pipeline-strip {
+      --pipeline-lane-count: 3;
+
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      background-image: repeating-linear-gradient(
+        to right,
+        transparent 0,
+        transparent calc(100% / var(--pipeline-lane-count) - 1px),
+        var(--pipeline-divider) calc(100% / var(--pipeline-lane-count) - 1px),
+        var(--pipeline-divider) calc(100% / var(--pipeline-lane-count))
+      );
+      background-position: 1px 0;
+      background-repeat: no-repeat;
+    }
+
+    /* The strip paints the lane rules itself (same layer as the lanes), so the cell
+       borders would be a second, sub-pixel-offset line. */
+    .pipeline-architecture-map:has(> .pipeline-lanes--3) .pipeline-strip-cell
+      + .pipeline-strip-cell {
+      border-left: 0;
+    }
+  }
+
+  .pipeline-strip-cell {
+    display: flex;
+    min-width: 0;
+    /* The strip owns the complete bar height, including its border. Subtracting a
+       CSS pixel here drifts at zoom levels that round hairlines to device pixels. */
+    min-height: 0;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--inset-page);
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pipeline-strip-cell + .pipeline-strip-cell {
+    border-left: 1px solid var(--pipeline-divider);
+  }
+
+  .pipeline-strip-key {
+    color: var(--color-fg-tertiary);
+    font-weight: 500;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Responsive layout */
+  /* ------------------------------------------------------------------------- */
+
+  /* Lane counts follow the map's own width, not the viewport: the map sits beside
+     a navigator that can be wide, narrow, or collapsed, so the same window can
+     hand it very different widths. Each step keeps lanes at roughly 16rem+. */
+  @container pipeline-map (max-width: 52rem) {
+    .pipeline-lanes--3 {
+      --pipeline-lane-count: 2;
+    }
+
+    .pipeline-lanes--3 .pipeline-lane-cell:nth-child(n + 3) {
+      border-top: 1px solid var(--pipeline-divider);
+    }
+  }
+
+  @container pipeline-map (max-width: 66rem) {
+    .pipeline-lanes--6 {
+      --pipeline-lane-count: 3;
+    }
+
+    .pipeline-lanes--6 .pipeline-lane-cell:nth-child(n + 4) {
+      border-top: 1px solid var(--pipeline-divider);
+    }
+  }
+
+  @container pipeline-map (max-width: 46rem) {
+    .pipeline-strip {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pipeline-strip-cell {
+      min-height: var(--shell-bar-height);
+    }
+
+    .pipeline-strip-cell + .pipeline-strip-cell {
+      border-top: 1px solid var(--pipeline-divider);
+      border-left: 0;
+    }
+  }
+
+  @container pipeline-map (max-width: 34rem) {
+    .pipeline-architecture-header {
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: center;
+      gap: var(--space-1);
+      padding-block: 0;
+    }
+
+    .pipeline-lanes,
+    .pipeline-lanes--6 {
+      --pipeline-lane-count: 1;
+    }
+
+    .pipeline-lane + .pipeline-lane {
+      border-top: 1px solid var(--pipeline-divider);
+    }
+  }
+
+  /* A narrow lane stacks key over detail so a long key never starves the detail. */
+  @container pipeline-lane (max-width: 20rem) {
+    .pipeline-rows li,
+    .pipeline-row-link {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-1);
+    }
+  }
+}

@@ -1,0 +1,118 @@
+/**
+ * Scroll-region recipe: axis, gutter, flex-fill behavior, and the overflow edge fade.
+ *
+ * USAGE: imported by ScrollArea.tsx.
+ */
+
+@layer qf-components {
+  .ui-scroll-area {
+    /* Width of the "there is more content this way" fade. */
+    --ui-scroll-fade: 1.5rem;
+    --ui-scroll-fade-start: 0px;
+    --ui-scroll-fade-end: 0px;
+    --ui-scroll-fade-top: 0px;
+    --ui-scroll-fade-bottom: 0px;
+    /* Height of a pinned table header; the top fade starts below it. */
+    --ui-scroll-inset-top: 0px;
+    /* Width of a scrollbar the right-edge fade must leave visible. */
+    --ui-scroll-bar-end: 0px;
+
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Trap wheel chaining only on an axis that actually overflows: Chrome applies
+     overscroll-behavior even to a region with nothing to scroll, which would swallow the
+     page's wheel scroll whenever the pointer is over it. None, not contain: contain keeps
+     the rubber-band bounce at the end of the scroll. */
+  .ui-scroll-area[data-overflow-x="true"] {
+    overscroll-behavior-x: none;
+  }
+
+  /* A table hands the vertical wheel on at its ends: at its top or bottom, a fresh scroll
+     moves whatever is around it, so content above or below the table stays reachable. */
+  .ui-scroll-area[data-overflow-y="true"]:not(:has(table)) {
+    overscroll-behavior-y: contain;
+  }
+
+  .ui-scroll-area.is-y {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  .ui-scroll-area.is-x {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  /* No reserved gutter: tables live here, and a gutter reserved while nothing scrolls
+     cuts every row rule short of the frame's edge. */
+  .ui-scroll-area.is-both {
+    overflow: auto;
+  }
+
+  /* Host must be a bounded flex column; with the 0 basis an unbounded host collapses the region to zero height. */
+  .ui-scroll-area.is-fill {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  /* ---- Edge affordance ----
+     macOS overlay scrollbars are invisible at rest, so a clipped column reads as the
+     end of the table. ScrollArea.tsx publishes the overflow state; each side fades only
+     when there is more content that way, and a mask is attached only while one is. The
+     fade is never wider than the content left that way, so it shrinks into the edge. */
+  .ui-scroll-area[data-edge-start="x"] {
+    --ui-scroll-fade-start: min(
+      var(--ui-scroll-fade),
+      var(--ui-scroll-room-start, var(--ui-scroll-fade))
+    );
+  }
+
+  .ui-scroll-area[data-edge-end="x"] {
+    --ui-scroll-fade-end: min(
+      var(--ui-scroll-fade),
+      var(--ui-scroll-room-end, var(--ui-scroll-fade))
+    );
+  }
+
+  .ui-scroll-area[data-edge-top="y"] {
+    --ui-scroll-fade-top: min(
+      var(--ui-scroll-fade),
+      var(--ui-scroll-room-top, var(--ui-scroll-fade))
+    );
+  }
+
+  .ui-scroll-area[data-edge-bottom="y"] {
+    --ui-scroll-fade-bottom: min(
+      var(--ui-scroll-fade),
+      var(--ui-scroll-room-bottom, var(--ui-scroll-fade))
+    );
+  }
+
+  .ui-scroll-area[data-edge-start="x"],
+  .ui-scroll-area[data-edge-end="x"],
+  .ui-scroll-area[data-edge-top="y"],
+  .ui-scroll-area[data-edge-bottom="y"] {
+    mask-image:
+      linear-gradient(
+        to right,
+        transparent 0,
+        var(--mask-opaque) var(--ui-scroll-fade-start),
+        var(--mask-opaque) calc(100% - var(--ui-scroll-bar-end) - var(--ui-scroll-fade-end)),
+        transparent calc(100% - var(--ui-scroll-bar-end)),
+        var(--mask-opaque) calc(100% - var(--ui-scroll-bar-end))
+      ),
+      linear-gradient(
+        to bottom,
+        var(--mask-opaque) var(--ui-scroll-inset-top),
+        transparent var(--ui-scroll-inset-top),
+        var(--mask-opaque) calc(var(--ui-scroll-inset-top) + var(--ui-scroll-fade-top)),
+        var(--mask-opaque) calc(100% - var(--ui-scroll-fade-bottom)),
+        transparent 100%
+      );
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+  }
+}

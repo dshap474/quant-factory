@@ -1,0 +1,19 @@
+# Current version of the reference scaffold: implemented (rerun.py, run.py), not yet run.
+version = 2
+backtest_run_at = "2026-01-01T00:00:00Z"  # placeholder until the first recorded run
+backtest_run_at_source = "seal_commit"
+phase = "implemented"     # preregistered | implemented | audited | run | recorded
+status = "active"         # active | supported | falsified | inconclusive | descriptive | not_tested
+parent = "v001"
+question = "Does scaling the v001 momentum tilt by inverse volatility raise annualized Sharpe over the equal-weight control by at least +0.10?"
+# Once the recorded run exists, add:
+#   run_id = "<run id>"
+#   finding = "<one-line result>"
+#   [headline]
+#   metric = "sharpe"
+#   control = 0.0
+#   candidate = 0.0
+#   difference = 0.0
+#   interval = [0.0, 0.0]
+#   [checks]
+#   control_parity = true

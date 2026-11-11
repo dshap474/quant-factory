@@ -1,0 +1,119 @@
+/**
+ * Multi-pane chart geometry and shared pane chrome.
+ *
+ * USAGE: imported by MultiPaneTimeSeriesChart.tsx.
+ */
+
+.qf-multi-pane-chart-layout {
+  display: grid;
+  height: 100%;
+  min-height: 0;
+  background: var(--qf-chart-surface);
+}
+
+.qf-multi-pane-chart-stack {
+  position: relative;
+  display: grid;
+  min-height: 0;
+}
+
+.qf-multi-pane-chart-pane {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+  background: var(--qf-chart-surface);
+}
+
+.qf-multi-pane-chart-pane-label {
+  min-width: 0;
+  padding: var(--qf-chart-space-2) var(--qf-chart-inset) var(--qf-chart-space-1);
+  color: var(--qf-chart-muted-text);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-caption);
+  font-weight: 500;
+  line-height: var(--qf-chart-leading-caption);
+}
+
+.qf-multi-pane-chart-pane-content {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* A pane is already sized by the stack; the standalone status floor would push the
+   message below the pane's clip. */
+.qf-multi-pane-chart-pane-content .qf-chart-state {
+  min-height: 0;
+}
+
+.qf-multi-pane-chart-controls {
+  min-width: 0;
+  padding: 0;
+  background: var(--qf-chart-surface);
+}
+
+/* Unlinked panes are separate charts in one card: the pane label's top padding, not a
+   rule, separates them. */
+
+/* Linked panes: the label floats over the plot so every row is plot height, the plots
+   share one time axis, and the stack carries one crosshair. The divider between panes
+   is drawn like the shared axis line so the stack reads as one chart. */
+.qf-multi-pane-chart-pane.is-linked {
+  position: relative;
+  grid-template-rows: minmax(0, 1fr);
+  border-bottom: 1px solid var(--qf-chart-axis);
+}
+
+.qf-multi-pane-chart-pane.is-linked:last-of-type {
+  border-bottom: 0;
+}
+
+.qf-multi-pane-chart-pane.is-linked .qf-multi-pane-chart-pane-label {
+  position: absolute;
+  top: 0;
+  z-index: var(--qf-chart-z-mark);
+  padding: var(--qf-chart-space-2) 0 0;
+  pointer-events: none;
+}
+
+.qf-multi-pane-chart-crosshair {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: var(--qf-chart-z-mark);
+  width: 1px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--qf-chart-crosshair) 0 var(--qf-chart-crosshair-dash),
+    transparent var(--qf-chart-crosshair-dash) calc(var(--qf-chart-crosshair-dash) * 2)
+  );
+  pointer-events: none;
+}
+
+/* One tooltip for the whole stack; sections stack the panes' rows top to bottom. */
+.qf-multi-pane-chart-tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--qf-chart-z-tooltip);
+  transition: transform var(--qf-chart-tooltip-motion);
+  pointer-events: none;
+  width: max-content;
+  max-width: min(420px, 100%);
+}
+
+.qf-multi-pane-chart-tooltip .tooltip-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qf-multi-pane-chart-tooltip .tooltip-value {
+  flex-shrink: 0;
+}
+
+.qf-multi-pane-chart-tooltip-section + .qf-multi-pane-chart-tooltip-section {
+  margin-top: var(--qf-chart-space-2);
+}

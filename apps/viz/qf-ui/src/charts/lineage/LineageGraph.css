@@ -1,0 +1,163 @@
+/**
+ * Lineage graph recipe (.qf-lineage-graph: scroller, subway-map edges and toned nodes,
+ * and the vertical layout's text rows).
+ *
+ * USAGE: imported by LineageGraph.tsx
+ */
+
+.qf-lineage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--qf-chart-space-2);
+  min-width: 0;
+}
+
+.qf-lineage-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.qf-lineage-graph {
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.qf-lineage-graph.is-vertical {
+  max-height: 32rem;
+}
+
+.qf-lineage-graph-svg {
+  display: block;
+  flex: none;
+}
+
+/* Edges */
+.qf-lineage-edge {
+  fill: none;
+  stroke: var(--qf-chart-border-strong);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.qf-lineage-edge.is-trunk {
+  stroke: var(--qf-chart-muted-text);
+  stroke-width: 3;
+}
+
+.qf-lineage-edge.is-off,
+.qf-lineage-node.is-off {
+  opacity: 0.3;
+}
+
+/* Nodes */
+.qf-lineage-node {
+  cursor: pointer;
+}
+
+.qf-lineage-node:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: 0;
+}
+
+.qf-lineage-dot {
+  fill: var(--node-tone);
+  stroke: var(--qf-chart-surface);
+  stroke-width: 2;
+}
+
+.qf-lineage-mark {
+  fill: none;
+  stroke: var(--node-tone);
+  stroke-width: 1.5;
+}
+
+.qf-lineage-node.is-selected .qf-lineage-dot {
+  stroke: var(--qf-chart-strong-text);
+}
+
+.qf-lineage-node:hover .qf-lineage-dot {
+  stroke: var(--qf-chart-muted-text);
+}
+
+.qf-lineage-label {
+  fill: var(--qf-chart-muted-text);
+  font-size: var(--qf-chart-text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.qf-lineage-node.tone-neutral {
+  --node-tone: var(--qf-chart-tone-neutral);
+}
+.qf-lineage-node.tone-info {
+  --node-tone: var(--qf-chart-tone-info);
+}
+.qf-lineage-node.tone-success {
+  --node-tone: var(--qf-chart-positive);
+}
+.qf-lineage-node.tone-warning {
+  --node-tone: var(--qf-chart-tone-warning);
+}
+.qf-lineage-node.tone-critical {
+  --node-tone: var(--qf-chart-negative);
+}
+
+/* Vertical layout: graph column beside one text row per node */
+.qf-lineage-columns {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.qf-lineage-rows {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.qf-lineage-row {
+  display: flex;
+  align-items: center;
+  gap: var(--qf-chart-space-3);
+  width: 100%;
+  height: var(--lineage-step);
+  padding: 0 var(--qf-chart-space-2);
+  color: var(--qf-chart-strong-text);
+  font-size: var(--qf-chart-text-caption);
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: var(--qf-chart-radius-badge);
+  cursor: pointer;
+}
+
+.qf-lineage-row:hover {
+  background-color: var(--qf-chart-state-hover);
+}
+
+.qf-lineage-row:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: -2px;
+}
+
+.qf-lineage-row.is-selected {
+  background-color: var(--qf-chart-state-selected);
+}
+
+.qf-lineage-row.is-off {
+  color: var(--qf-chart-label);
+}
+
+.qf-lineage-row-label {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  width: 3.5rem;
+  color: var(--qf-chart-muted-text);
+}
+
+.qf-lineage-row-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

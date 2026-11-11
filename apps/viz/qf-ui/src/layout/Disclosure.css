@@ -1,0 +1,72 @@
+/**
+ * Disclosure recipe: summary row, chevron state, meta, content inset.
+ *
+ * USAGE: imported by Disclosure.tsx.
+ */
+
+@layer qf-components {
+  .ui-disclosure {
+    min-width: 0;
+  }
+
+  .ui-disclosure.is-row {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ui-disclosure-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-height);
+    padding-inline: var(--space-2);
+    color: var(--color-foreground);
+    font-size: var(--text-body);
+    font-weight: 500;
+    line-height: var(--text-body--line-height);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .ui-disclosure-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Immediate hover surface; no color animation. */
+  .ui-disclosure-summary:hover {
+    background: var(--color-state-hover);
+  }
+
+  .ui-disclosure-summary:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .ui-disclosure-chevron {
+    flex: 0 0 auto;
+    color: var(--color-muted-foreground);
+  }
+
+  .ui-disclosure[open] > .ui-disclosure-summary .ui-disclosure-chevron {
+    transform: rotate(90deg);
+  }
+
+  .ui-disclosure-title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ui-disclosure-meta {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-disclosure-content {
+    padding: var(--space-2) var(--space-2) var(--space-3);
+  }
+}

@@ -1,0 +1,96 @@
+/**
+ * Categorical chart key: swatch column beside a name and detail.
+ *
+ * USAGE: imported by ChartKey.tsx.
+ */
+
+.qf-chart-key {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--qf-chart-space-3, 12px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.qf-chart-key-item {
+  display: flex;
+  align-items: center;
+  gap: var(--qf-chart-space-2, 8px);
+  min-width: 0;
+}
+
+/* The same thin horizontal line as the series legend marker. */
+.qf-chart-key-swatch {
+  flex-shrink: 0;
+  width: 16px;
+  height: 2px;
+  border-radius: var(--qf-chart-radius-pill);
+  background: var(--qf-chart-key-color, var(--qf-chart-label));
+}
+
+.qf-chart-key-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.qf-chart-key-name,
+.qf-chart-key-detail {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.qf-chart-key-name {
+  color: var(--qf-chart-strong-text);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-caption);
+  font-weight: 500;
+  line-height: var(--qf-chart-leading-caption);
+}
+
+.qf-chart-key-detail {
+  color: var(--qf-chart-label);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-caption);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--qf-chart-leading-caption);
+}
+
+.qf-chart-key.is-interactive {
+  gap: 0;
+}
+
+.qf-chart-key-button {
+  display: flex;
+  align-items: center;
+  gap: var(--qf-chart-space-2, 8px);
+  width: 100%;
+  min-height: 28px;
+  padding: 0 var(--qf-chart-space-2, 8px);
+  border: 0;
+  border-radius: var(--qf-chart-radius-control);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: default;
+}
+
+.qf-chart-key-button:hover {
+  background: var(--qf-chart-key-hover-surface);
+}
+
+.qf-chart-key-button:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: 0;
+}
+
+.qf-chart-key-item.is-emphasized .qf-chart-key-button {
+  background: var(--qf-chart-key-hover-surface);
+}
+
+.qf-chart-key-item.is-dimmed {
+  opacity: 0.42;
+}

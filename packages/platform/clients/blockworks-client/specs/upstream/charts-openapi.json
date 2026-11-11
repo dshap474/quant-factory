@@ -1,0 +1,424 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Blockworks Charts API",
+    "description": "Blockworks Charts, the charts published to Blockworks Dashboards, and the rows behind them. List the charts your key can read, then fetch a chart's data by id. Authenticate by sending your API key in the X-Blockworks-API-Key header.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.blockworks.com",
+      "description": "Blockworks API"
+    }
+  ],
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Charts",
+      "description": "Charts published to Blockworks Dashboards, and their data."
+    }
+  ],
+  "paths": {
+    "/v1/charts": {
+      "get": {
+        "operationId": "listCharts",
+        "tags": ["Charts"],
+        "summary": "List Charts",
+        "description": "Returns one page of the Blockworks Charts your key can read: the charts published to Blockworks Dashboards. Each entry carries the chart `id` that Get Chart Data takes, the chart title, and the titles of the dashboards the chart appears on. Pass `search` to keep only charts whose title, or whose dashboard's title, contains the term.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number, starting at 1.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Charts per page.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Case-insensitive substring matched against the chart title and the titles of the dashboards it appears on.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "stablecoin"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One page of charts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChartPage"
+                },
+                "example": {
+                  "page": 1,
+                  "total": 2,
+                  "data": [
+                    {
+                      "id": 4821,
+                      "title": "Stablecoin Supply by Issuer",
+                      "dashboards": ["Stablecoins", "Market Overview"]
+                    },
+                    {
+                      "id": 5107,
+                      "title": "Stablecoin Transfer Volume by Chain",
+                      "dashboards": ["Stablecoins"]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. A query parameter is out of range or of the wrong type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "message": ["limit must not be greater than 100"],
+                  "error": "Bad Request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. The API key is missing or was rejected.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable. The key could not be verified right now. Retry the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 503,
+                  "message": "Service Unavailable"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/charts/{visualizationId}/data": {
+      "get": {
+        "operationId": "getChartData",
+        "tags": ["Charts"],
+        "summary": "Get Chart Data",
+        "description": "Returns the rows behind one published chart, as produced by the chart's most recent completed run. Each row is an object whose keys are the columns of the chart's query, so the shape differs from chart to chart. Filter, sort, project and page the rows with the query parameters. The same data is also served at `/v1/charts/{dashboardSlug}/{visualizationSlug}/data` for a chart addressed by the slugs in its dashboard URL.",
+        "parameters": [
+          {
+            "name": "visualizationId",
+            "in": "path",
+            "required": true,
+            "description": "The chart `id` from List Charts.",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 4821
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number, starting at 1.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Rows per page.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000,
+              "default": 10000
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Keeps only rows where some value, in any column, contains this term (case-insensitive). Applied before paging.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "select",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated column names to keep in each row. Omit to return every column.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": ["date", "issuer", "supply_usd"]
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "required": false,
+            "description": "Column to sort the rows by. Without it, rows come back in the order the chart's query produced them.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "date"
+          },
+          {
+            "name": "order_dir",
+            "in": "query",
+            "required": false,
+            "description": "Sort direction, used with `order_by`.",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "default": "asc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One page of the chart's rows.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChartDataPage"
+                },
+                "example": {
+                  "page": 1,
+                  "total": 3,
+                  "data": [
+                    {
+                      "date": "2026-09-18",
+                      "issuer": "Tether",
+                      "supply_usd": 171245638102.41
+                    },
+                    {
+                      "date": "2026-09-18",
+                      "issuer": "Circle",
+                      "supply_usd": 74902117655.08
+                    },
+                    {
+                      "date": "2026-09-18",
+                      "issuer": "Ethena",
+                      "supply_usd": 14538207391.6
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. The id is not a number, or a query parameter is out of range.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "message": "Invalid visualization id",
+                  "error": "Bad Request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. The API key is missing or was rejected.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. No published chart has this id (`Chart not found`), or the chart has not completed a run yet (`Data not found for this chart. Please try again later.`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "message": "Chart not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable. The key could not be verified right now. Retry the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 503,
+                  "message": "Service Unavailable"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Blockworks-API-Key",
+        "description": "API key sent in the `X-Blockworks-API-Key` header. Send it on its own: the charts endpoints reject a request that carries a second credential."
+      }
+    },
+    "schemas": {
+      "Chart": {
+        "type": "object",
+        "required": ["id", "title", "dashboards"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The chart id. Pass it to Get Chart Data."
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "description": "The chart title as shown on the dashboard."
+          },
+          "dashboards": {
+            "type": "array",
+            "description": "Titles of the Blockworks Dashboards the chart appears on. Empty for a chart on no dashboard.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ChartPage": {
+        "type": "object",
+        "required": ["page", "total", "data"],
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "The page returned."
+          },
+          "total": {
+            "type": "integer",
+            "description": "Number of charts matching the request across all pages."
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Chart"
+            }
+          }
+        }
+      },
+      "ChartDataPage": {
+        "type": "object",
+        "required": ["page", "total", "data"],
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "The page returned."
+          },
+          "total": {
+            "type": "integer",
+            "description": "Number of rows matching the request across all pages, after `search` is applied."
+          },
+          "data": {
+            "type": "array",
+            "description": "One object per row. The keys are the columns of the chart's query, narrowed by `select` when it is passed.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["statusCode", "message"],
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "description": "The HTTP status code, repeated in the body."
+          },
+          "message": {
+            "description": "What went wrong. A string, or an array of strings when several parameters failed validation.",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "error": {
+            "type": "string",
+            "description": "The status text, present on 400 and 404 responses."
+          }
+        }
+      }
+    }
+  }
+}

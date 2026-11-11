@@ -1,0 +1,217 @@
+/**
+ * Stat list recipe: label/value type plus tiles, bordered strip, and rows arrangements.
+ *
+ * USAGE: imported by StatGrid.tsx.
+ */
+
+@layer qf-components {
+  /* Type */
+  .ui-stat-grid {
+    display: grid;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .ui-stat-item {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .ui-stat-label {
+    margin: 0;
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 500;
+    line-height: var(--text-caption--line-height);
+  }
+
+  .ui-stat-value {
+    min-width: 0;
+    margin: 0;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+
+  .ui-stat-value.is-success {
+    color: var(--color-positive);
+  }
+
+  .ui-stat-value.is-critical {
+    color: var(--color-negative);
+  }
+
+  .ui-stat-delta {
+    margin-left: var(--space-1);
+    font-weight: 400;
+  }
+
+  .ui-stat-delta.is-accent {
+    color: var(--color-fg-primary);
+  }
+
+  .ui-stat-delta.is-positive {
+    color: var(--color-positive);
+  }
+
+  .ui-stat-delta.is-negative {
+    color: var(--color-negative);
+  }
+
+  .ui-stat-delta.is-muted {
+    color: var(--color-muted-foreground);
+  }
+
+  /* Containers */
+  .ui-stat-grid.is-grid {
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: var(--space-3) var(--space-4);
+  }
+
+  .ui-stat-grid.is-strip {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  }
+
+  .ui-stat-grid.is-strip.is-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ui-stat-grid.is-strip.is-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ui-stat-grid.is-strip.is-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .ui-stat-grid.is-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+  }
+
+  /* Items */
+  .ui-stat-grid.is-strip .ui-stat-item {
+    padding: var(--space-3) var(--space-4);
+    border-left: 1px solid var(--color-border-subtle);
+  }
+
+  .ui-stat-grid.is-rows .ui-stat-item {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, 0.45fr) minmax(0, 1fr);
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .ui-stat-grid.is-strip .ui-stat-item:first-child {
+    border-left: 0;
+  }
+
+  .ui-stat-grid.is-rows .ui-stat-item:first-child {
+    border-top: 0;
+  }
+
+  .ui-stat-grid.is-inline .ui-stat-item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-1);
+  }
+
+  /* Labels and values */
+  .ui-stat-grid.is-rows .ui-stat-label {
+    align-self: center;
+  }
+
+  .ui-stat-grid.is-grid .ui-stat-value {
+    margin-top: var(--space-1);
+  }
+
+  .ui-stat-grid.is-strip .ui-stat-value {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1);
+    min-height: 1.5rem;
+    margin-top: var(--space-1);
+  }
+
+  .ui-stat-grid.is-rows .ui-stat-value {
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 400;
+  }
+
+  .ui-stat-grid.is-inline .ui-stat-label {
+    font-weight: 500;
+  }
+
+  .ui-stat-grid.is-inline .ui-stat-value {
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 500;
+  }
+
+  .ui-stat-grid.is-strip .ui-stat-delta {
+    margin-left: 0;
+  }
+
+  /* Boxed: tabular strip/rows on the shared surface recipe */
+  .ui-stat-grid.is-boxed {
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-surface-raised);
+  }
+
+  .ui-stat-grid.is-rows.is-boxed .ui-stat-item {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .ui-stat-grid.is-strip.is-boxed.is-cols-2 .ui-stat-item:nth-child(2n + 1),
+  .ui-stat-grid.is-strip.is-boxed.is-cols-3 .ui-stat-item:nth-child(3n + 1),
+  .ui-stat-grid.is-strip.is-boxed.is-cols-4 .ui-stat-item:nth-child(4n + 1) {
+    border-left: 0;
+  }
+
+  .ui-stat-grid.is-strip.is-boxed.is-cols-2 .ui-stat-item:nth-child(n + 3),
+  .ui-stat-grid.is-strip.is-boxed.is-cols-3 .ui-stat-item:nth-child(n + 4),
+  .ui-stat-grid.is-strip.is-boxed.is-cols-4 .ui-stat-item:nth-child(n + 5) {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  @media (max-width: 920px) {
+    .ui-stat-grid.is-strip.is-boxed.is-cols-3,
+    .ui-stat-grid.is-strip.is-boxed.is-cols-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ui-stat-grid.is-strip.is-boxed.is-cols-3 .ui-stat-item:nth-child(odd),
+    .ui-stat-grid.is-strip.is-boxed.is-cols-4 .ui-stat-item:nth-child(odd) {
+      border-left: 0;
+    }
+
+    .ui-stat-grid.is-strip.is-boxed.is-cols-3 .ui-stat-item:nth-child(n + 3),
+    .ui-stat-grid.is-strip.is-boxed.is-cols-4 .ui-stat-item:nth-child(n + 3) {
+      border-top: 1px solid var(--color-border-subtle);
+    }
+  }
+
+  @media (max-width: 620px) {
+    .ui-stat-grid.is-strip.is-boxed {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ui-stat-grid.is-strip.is-boxed .ui-stat-item {
+      border-left: 0;
+    }
+
+    .ui-stat-grid.is-strip.is-boxed .ui-stat-item:nth-child(n + 2) {
+      border-top: 1px solid var(--color-border-subtle);
+    }
+  }
+}

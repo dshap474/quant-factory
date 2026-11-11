@@ -1,0 +1,19 @@
+/**
+ * Record list: a fixed label column with left-aligned values, so long recorded text
+ * (paragraphs, ids, commit hashes) reads as a column instead of hugging the right edge.
+ *
+ * USAGE: imported by RecordList.tsx.
+ */
+
+@layer qf-components {
+  .ui-record-list[data-orientation="horizontal"] .ui-data-list-item {
+    display: grid;
+    grid-template-columns: minmax(8rem, 16rem) minmax(0, 1fr);
+    justify-content: stretch;
+  }
+
+  .ui-record-list[data-orientation="horizontal"] .ui-data-list-value,
+  .ui-record-list[data-orientation="horizontal"] .ui-data-list-value[data-numeric] {
+    text-align: left;
+  }
+}

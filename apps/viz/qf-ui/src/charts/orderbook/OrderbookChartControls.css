@@ -1,0 +1,56 @@
+/** Portable responsive orderbook window controls. USAGE: imported by OrderbookChartControls. */
+
+/* --------------------------------------------------------------------------- */
+/* Layout */
+/* --------------------------------------------------------------------------- */
+
+.qf-orderbook-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--qf-chart-space-3);
+  width: 100%;
+  min-width: 0;
+}
+
+.qf-orderbook-jump,
+.qf-orderbook-navigation {
+  display: flex;
+  align-items: center;
+  gap: var(--qf-chart-space-2);
+}
+
+.qf-orderbook-jump input {
+  width: 30ch;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.qf-orderbook-navigation {
+  margin-left: auto;
+}
+
+.qf-orderbook-jump {
+  flex-wrap: wrap;
+}
+
+.qf-orderbook-scale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--qf-chart-space-1);
+}
+
+.qf-orderbook-window-controls,
+.qf-orderbook-display-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--qf-chart-space-3);
+  min-width: 0;
+}
+
+.qf-orderbook-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--qf-chart-space-4);
+  min-width: 0;
+}

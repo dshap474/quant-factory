@@ -1,0 +1,11 @@
+{
+  "cik": "0000320193",
+  "entityType": "operating",
+  "filings": {
+    "recent": {
+      "accessionNumber": ["0000320193-24-000001"],
+      "filingDate": ["2024-01-26"],
+      "form": ["10-Q"]
+    }
+  }
+}

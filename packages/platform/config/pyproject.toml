@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quant-factory-config"
+version = "0.1.0"
+description = "Shared configuration helpers for quant-factory."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "pyyaml>=6.0.2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/config"]
+

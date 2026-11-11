@@ -1,0 +1,27 @@
+# Purpose: package the narrow official-SDK Hyperliquid facade for quant-factory.
+# USAGE: uv run --project packages/platform/clients/hyperliquid-client pytest tests -q
+
+# --------------------------------------------------------------------------- #
+# Build and package
+# --------------------------------------------------------------------------- #
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hyperliquid-client"
+version = "0.2.0"
+description = "Narrow, hard-gated REST and stream facade over the official Hyperliquid Python SDK."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "hyperliquid-python-sdk==0.24.0",
+]
+
+# --------------------------------------------------------------------------- #
+# Wheel
+# --------------------------------------------------------------------------- #
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hyperliquid_client"]

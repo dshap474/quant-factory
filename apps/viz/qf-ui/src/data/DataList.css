@@ -1,0 +1,76 @@
+/**
+ * Key/value description list: muted mono labels, foreground values, horizontal or
+ * vertical pairs, numeric values right-aligned in tabular mono.
+ *
+ * USAGE: imported by DataList.tsx.
+ */
+
+@layer qf-components {
+  .ui-data-list {
+    display: grid;
+    margin: 0;
+    gap: 0.5rem;
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .ui-data-list[data-divided] {
+    gap: 0;
+  }
+
+  .ui-data-list-item {
+    min-width: 0;
+  }
+
+  .ui-data-list[data-divided] .ui-data-list-item {
+    padding-block: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .ui-data-list[data-divided] .ui-data-list-item:last-child {
+    border-bottom: 0;
+  }
+
+  .ui-data-list[data-orientation="vertical"] .ui-data-list-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .ui-data-list[data-orientation="horizontal"] .ui-data-list-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .ui-data-list-label {
+    margin: 0;
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 500;
+  }
+
+  .ui-data-list-value {
+    margin: 0;
+    min-width: 0;
+    color: var(--color-foreground);
+    overflow-wrap: anywhere;
+  }
+
+  .ui-data-list[data-orientation="horizontal"] .ui-data-list-value {
+    text-align: right;
+  }
+
+  .ui-data-list-value[data-numeric] {
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .ui-data-list[data-orientation="vertical"] .ui-data-list-value[data-numeric] {
+    text-align: left;
+  }
+}

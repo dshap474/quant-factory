@@ -1,0 +1,118 @@
+/**
+ * Searchable select trigger and portaled panel geometry; search/option chrome is inherited.
+ * The wrapper's focus-within ring frames only the trigger: the panel lives in a portal.
+ *
+ * USAGE: imported by SearchSelect.tsx.
+ */
+
+@layer qf-components {
+  .ui-search-select {
+    position: relative;
+    display: inline-block;
+    max-width: 24rem;
+  }
+
+  /* The trigger is a control button wearing the field recipe (see Input.css). */
+  .ui-search-select-trigger.ui-button-control {
+    max-width: 100%;
+    background: var(--color-surface-control);
+  }
+
+  .ui-search-select-trigger.ui-button-control:hover:not(:disabled) {
+    background: var(--color-surface-control);
+    border-color: var(--color-border-strong);
+  }
+
+  .ui-search-select-label {
+    color: var(--color-muted-foreground);
+    font-weight: 600;
+  }
+
+  .ui-search-select-value {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-foreground);
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-search-select-chevron {
+    flex: 0 0 auto;
+    color: var(--color-muted-foreground);
+  }
+
+  /* Portaled Popover surface (positioning, stacking and chrome come from Overlay.css);
+     only the panel's own geometry is set here. */
+  .ui-popover.ui-search-select-panel {
+    width: min(18rem, 80vw);
+    min-width: 0;
+    gap: var(--space-2);
+    padding: var(--space-2);
+  }
+
+  .ui-search-select-search {
+    width: 100%;
+    padding: var(--space-1) var(--space-2);
+  }
+
+  /* Virtualized: the list is sized to the full roster and rows are translated into place. */
+  .ui-search-select-list {
+    position: relative;
+  }
+
+  .ui-search-select-option {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: var(--control-height-sm);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-badge);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+  }
+
+  /* Highlight is the hover overlay; the selected option (.ui-button-nav.is-selected)
+     keeps its selected fill and deepens to selected-hover while highlighted. */
+  .ui-search-select-option[data-highlighted]:not(.is-selected) {
+    background-color: transparent;
+    background-image: linear-gradient(var(--color-state-hover), var(--color-state-hover));
+  }
+
+  .ui-search-select-option.is-selected[data-highlighted] {
+    background-image: linear-gradient(
+      var(--color-state-selected-hover),
+      var(--color-state-selected-hover)
+    );
+  }
+
+  /* Rows have a fixed height: long values stay on one line and truncate. */
+  .ui-search-select-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-search-select-detail {
+    margin-inline-start: auto;
+    padding-inline-start: var(--space-3);
+    color: var(--color-muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-search-select-match {
+    color: var(--color-foreground);
+    font-weight: 600;
+  }
+
+  .ui-search-select-empty,
+  .ui-search-select-count {
+    margin: 0;
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-muted-foreground);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+}

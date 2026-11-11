@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "overrides": [
+    {
+      "spec": "data-api-openapi.json",
+      "pointer": "#/paths/~1query~1tabular~1catalog/get/responses/200/content/application~1json/schema/properties/error",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null error in success envelopes."
+    },
+    {
+      "spec": "data-api-openapi.json",
+      "pointer": "#/paths/~1query~1timeseries~1catalog/get/responses/200/content/application~1json/schema/properties/error",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null error in success envelopes."
+    },
+    {
+      "spec": "monitoring-watchlists-openapi.json",
+      "pointer": "#/paths/~1user-management~1v1~1watchlists/get/responses/200/content/application~1json/schema/properties/error",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null error in empty-list successes."
+    },
+    {
+      "spec": "token-unlocks-openapi.json",
+      "pointer": "#/components/schemas/AllocationAggregate/properties/totalAllocationUSD",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null USD values."
+    },
+    {
+      "spec": "token-unlocks-openapi.json",
+      "pointer": "#/components/schemas/AllocationAggregate/properties/cumulativeUnlockedUSD",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null USD values."
+    },
+    {
+      "spec": "token-unlocks-openapi.json",
+      "pointer": "#/components/schemas/AllocationAggregate/properties/unlocksRemainingUSD",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null USD values."
+    },
+    {
+      "spec": "token-unlocks-openapi.json",
+      "pointer": "#/components/schemas/AllocationTranche/properties/totalAllocationUSD",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null USD values."
+    },
+    {
+      "spec": "token-unlocks-openapi.json",
+      "pointer": "#/components/schemas/AllocationTranche/properties/cumulativeUnlockedUSD",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null USD values."
+    },
+    {
+      "spec": "token-unlocks-openapi.json",
+      "pointer": "#/components/schemas/AllocationTranche/properties/unlocksRemainingUSD",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null USD values."
+    },
+    {
+      "spec": "token-unlocks-openapi.json",
+      "pointer": "#/components/schemas/AllocationTranche/properties/sources",
+      "change": {
+        "nullable": true
+      },
+      "reason": "Allow null sources."
+    },
+    {
+      "spec": "token-unlocks-openapi.json",
+      "pointer": "#/components/schemas/UnlockEvent/properties/dailyLinearRateChange",
+      "change": {
+        "nullable": true,
+        "inlineAllOf": "#/components/schemas/UnlockEventTranche"
+      },
+      "reason": "Allow null events; original nullable allOf still evaluates the nonnullable referenced object. Inline that one referenced schema at this property and make it nullable."
+    }
+  ]
+}

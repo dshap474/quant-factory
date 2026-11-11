@@ -1,0 +1,64 @@
+/**
+ * In-frame chart status: loading skeleton, error and empty messages.
+ *
+ * USAGE: imported by ChartState.tsx.
+ */
+
+.qf-chart-state {
+  display: grid;
+  height: 100%;
+  /* A frame showing only a status has no plot to size it; keep it readable in a narrow cell. */
+  min-height: 25rem;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-4, 1rem);
+  color: var(--qf-chart-muted-text);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-ui-sm);
+  line-height: var(--qf-chart-leading-label);
+  text-align: center;
+}
+
+/* An aspect-ratio shell already fixes the frame geometry: the status fills that
+   body instead of forcing it taller, so loading and loaded charts share one box. */
+.chart-container-shell .qf-chart-state {
+  min-height: 0;
+}
+
+.qf-chart-state[data-status="error"] {
+  color: var(--qf-chart-negative);
+}
+
+.qf-chart-state-message {
+  min-width: 0;
+}
+
+/* Loading fills the frame body with the shared skeleton pulse (same fill and
+   rhythm as LoadingSkeleton), so loading and loaded charts share one box. */
+.qf-chart-state[data-status="loading"] {
+  align-content: stretch;
+  justify-items: stretch;
+  padding: 0;
+}
+
+.qf-chart-state-skeleton {
+  width: 100%;
+  min-height: 100%;
+  border-radius: var(--qf-chart-radius-surface);
+  background: color-mix(in oklab, var(--qf-chart-surface-control) 40%, transparent);
+  animation: qf-chart-state-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes qf-chart-state-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qf-chart-state-skeleton {
+    animation: none;
+  }
+}

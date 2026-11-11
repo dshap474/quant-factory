@@ -1,0 +1,12 @@
+# Scaffold preset. `name` is the persisted signal_id (<family>-<preset>) and `signal_type` must
+# equal the registered family name, or `qf-signals validate` refuses the family. The family is
+# registered `planned`, so nothing publishes it.
+name: example-default
+signal_type: example
+description: "Scaffold preset — replace every field when copying this family"
+feature_category: example
+close_column: close
+asset: crypto:BTC
+lookback_days: 30
+vol_lookback_days: 20
+winsor: 3.0

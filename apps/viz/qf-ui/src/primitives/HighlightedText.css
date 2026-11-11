@@ -1,0 +1,14 @@
+/**
+ * HighlightedText recipe styles (.ui-highlighted-text mark): matches read as primary text on
+ * the selected-state wash, never the browser's yellow.
+ *
+ * USAGE: imported by HighlightedText.tsx
+ */
+
+@layer qf-components {
+  .ui-highlighted-text mark {
+    background: var(--color-state-selected);
+    color: var(--color-fg-primary);
+    border-radius: var(--radius-badge);
+  }
+}

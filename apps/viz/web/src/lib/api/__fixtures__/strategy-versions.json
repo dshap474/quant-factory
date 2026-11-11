@@ -1,0 +1,51 @@
+[
+  {
+    "strategy_type": "example-strategy",
+    "memory_version": "v001",
+    "total_runs": 0,
+    "has_final": false,
+    "best_sharpe": null,
+    "best_return": null,
+    "final_run_id": null,
+    "latest_run": null,
+    "state": "promoted",
+    "source": "canonical",
+    "selected_run_id": null,
+    "experiment": null,
+    "has_surface": false,
+    "run_count": 0
+  },
+  {
+    "strategy_type": "example-strategy",
+    "memory_version": "v002",
+    "total_runs": 0,
+    "has_final": false,
+    "best_sharpe": null,
+    "best_return": null,
+    "final_run_id": null,
+    "latest_run": null,
+    "state": "promoted",
+    "source": "canonical",
+    "selected_run_id": null,
+    "experiment": null,
+    "has_surface": false,
+    "run_count": 0
+  },
+  {
+    "strategy_type": "example-strategy",
+    "memory_version": "v003",
+    "total_runs": 1,
+    "has_final": false,
+    "best_sharpe": 0.72,
+    "best_return": 1.45,
+    "final_run_id": null,
+    "latest_run": "2026-01-01T00:00:00+00:00",
+    "state": "rejected",
+    "source": "research",
+    "selected_run_id": "20260101T000000Z-v003-surface",
+    "experiment": "example-surface",
+    "has_surface": true,
+    "surface_rows": 1000,
+    "run_count": 1
+  }
+]

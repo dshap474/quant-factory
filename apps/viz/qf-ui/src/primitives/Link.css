@@ -1,0 +1,46 @@
+/**
+ * Link recipe (.ui-link, .ui-link-inline, .ui-link-subtle, .ui-link-glyph).
+ * The control variant reuses .ui-button-control from Button.css.
+ *
+ * USAGE: imported by Link.tsx
+ */
+
+@layer qf-components {
+  .ui-link {
+    text-decoration: none;
+    transition: none;
+  }
+
+  /* The inline-link appearance is shared: Button.css's link variant (.ui-button-link)
+     wears it too, so the declarations live here once instead of being kept in sync. */
+  /* Links are neutral text with a static hairline underline, never brand gold. */
+  .ui-link-inline,
+  .ui-button-link {
+    color: var(--color-fg-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .ui-link-inline:hover,
+  .ui-button-link:hover:not(:disabled),
+  .ui-button-link:active:not(:disabled) {
+    text-decoration: underline;
+    text-decoration-color: var(--color-fg-secondary);
+  }
+
+  .ui-link-subtle {
+    color: var(--color-fg-secondary);
+    font-weight: 500;
+  }
+
+  .ui-link-subtle:hover {
+    color: var(--color-fg-primary);
+  }
+
+  .ui-link-glyph {
+    margin-inline-start: var(--space-1);
+    font-size: inherit;
+  }
+}

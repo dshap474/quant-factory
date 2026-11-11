@@ -1,0 +1,92 @@
+/**
+ * Surface recipe styles (.ui-surface and its panel, inset, clip variants; .metrics-strip).
+ *
+ * USAGE: imported by Surface.tsx
+ */
+
+@layer qf-components {
+  .ui-surface {
+    min-width: 0;
+    max-width: 100%;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-surface-raised);
+    color: var(--color-fg-primary);
+  }
+
+  /* A card owns its edge: bands inside it sit on the surface gutter, not the page
+     inset an edge-to-edge host sets. */
+  .ui-surface:not(.ui-surface-panel, .ui-toolbar-band) {
+    --ui-band-inset: initial;
+  }
+
+  /* Flush band inside a page: horizontal rules only. */
+  .ui-surface-panel {
+    border-inline: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  /* Borderless nested region; the transparent border keeps card geometry. */
+  .ui-surface-inset {
+    border-color: transparent;
+    background: var(--color-surface-raised);
+  }
+
+  .ui-surface-clip {
+    overflow: hidden;
+  }
+
+  /* A scroll region the browser makes keyboard-focusable (a table with no
+     controls) cannot show its own ring: the clip, its edge-fade mask and its
+     positioned rows all paint over it. The surface draws the ring instead. */
+  .ui-surface-clip:has(> .ui-scroll-area:focus-visible) {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 0;
+  }
+
+  .ui-surface-clip > .ui-scroll-area:focus-visible {
+    outline: none;
+  }
+
+  .ui-surface-gutter {
+    padding: var(--inset-surface);
+  }
+
+  .ui-surface-panel.is-rules-block-end {
+    border-top: 0;
+  }
+
+  .ui-surface-panel.is-rules-none {
+    border-block: 0;
+  }
+
+  .ui-surface-panel.is-tinted {
+    background: var(--color-surface-raised);
+  }
+
+  @media (max-width: 760px) {
+    .ui-surface-gutter {
+      padding: var(--inset-surface-compact) 0;
+    }
+  }
+
+  .metrics-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+  }
+
+  .metrics-strip .ui-surface {
+    border: 0;
+    border-left: 1px solid var(--color-border);
+    background: transparent;
+    /* Dashboard strip runs tighter than a standalone metric tile. */
+    padding-block: var(--space-3);
+  }
+
+  .metrics-strip .ui-surface:first-child {
+    border-left: 0;
+  }
+}

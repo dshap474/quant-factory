@@ -1,0 +1,5 @@
+# Generated family outputs remain local; retain only nested ignore sentinels.
+!extensions/lib/*/output/
+extensions/lib/*/output/**
+!extensions/lib/*/output/**/
+!extensions/lib/*/output/**/.gitignore

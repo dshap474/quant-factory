@@ -1,0 +1,171 @@
+/**
+ * Complete layout and visual contract for the reusable optimizer grid.
+ *
+ * USAGE: imported by OptimizerGrid.tsx and its internal GridSelect.
+ */
+
+.root {
+  min-width: 0;
+  color: var(--qf-chart-label);
+}
+
+.intro {
+  margin: 0;
+  color: var(--qf-chart-label);
+  font-size: 0.875rem;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  gap: 0.75rem 1rem;
+  margin-top: 0.9rem;
+  padding: 1rem;
+  border: 1px solid var(--qf-chart-toolbar-border);
+  border-radius: var(--qf-chart-radius-surface);
+  background: var(--qf-chart-surface);
+}
+
+.field {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.fieldLabel {
+  color: var(--qf-chart-label);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.select {
+  position: relative;
+  min-width: 0;
+}
+
+.selectTrigger {
+  display: flex;
+  width: 100%;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--qf-chart-toolbar-button-border);
+  border-radius: var(--qf-chart-radius-control);
+  background: var(--qf-chart-toolbar-button-bg);
+  color: var(--qf-chart-toolbar-button-text);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.selectTrigger:hover,
+.selectTrigger[aria-expanded="true"] {
+  border-color: var(--qf-chart-toolbar-button-hover-border);
+  background: var(--qf-chart-toolbar-button-hover-bg);
+}
+
+.selectTrigger:focus-visible {
+  outline: 2px solid var(--qf-chart-toolbar-button-active-border);
+  outline-offset: 2px;
+}
+
+.selectTrigger svg {
+  flex: 0 0 auto;
+  transition: transform var(--duration-micro, 150ms) var(--ease-default, ease);
+}
+
+.selectTrigger[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.selectList {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  z-index: var(--qf-chart-z-menu);
+  width: max(100%, max-content);
+  min-width: 100%;
+  max-width: min(24rem, calc(100vw - 2rem));
+  padding: 0.25rem;
+  border: 1px solid var(--qf-chart-tooltip-border);
+  border-radius: var(--qf-chart-radius-surface);
+  background: var(--qf-chart-tooltip-bg);
+  box-shadow: var(--shadow-overlay, none);
+}
+
+.selectOption {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 0.45rem 0.625rem;
+  border: 0;
+  border-radius: var(--qf-chart-radius-control);
+  background: transparent;
+  color: var(--qf-chart-tooltip-text);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.selectOption:hover,
+.selectOption:focus-visible,
+.selectOption[aria-selected="true"] {
+  background: var(--qf-chart-toolbar-button-active-bg);
+  color: var(--qf-chart-toolbar-button-active-text);
+  outline: none;
+}
+
+.scroll {
+  margin-top: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.chart {
+  min-width: 42rem;
+}
+
+.legend,
+.selection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.8rem;
+  color: var(--qf-chart-label);
+  font-size: 0.75rem;
+}
+
+.gradient {
+  width: 10rem;
+  height: 0.45rem;
+  border: 1px solid var(--qf-chart-axis);
+  border-radius: var(--qf-chart-radius-pill);
+  background: linear-gradient(90deg, var(--optimizer-grid-surface), var(--optimizer-grid-accent));
+}
+
+.selection {
+  justify-content: flex-start;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--qf-chart-toolbar-border);
+}
+
+.selection strong {
+  color: var(--qf-chart-tooltip-text);
+}
+
+.selection code {
+  color: inherit;
+  font-family: var(--qf-chart-font-data);
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+    padding: 0.75rem;
+  }
+}

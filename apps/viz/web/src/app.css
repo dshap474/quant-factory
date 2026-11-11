@@ -1,0 +1,24 @@
+/**
+ * Global stylesheet entry for the viz SPA.
+ *
+ * Only imports live here. Design tokens (fonts, @theme, semantic aliases) and base
+ * styles come from `@quant-factory/qf-ui/styles.css` (qf-ui/src/styles/); every
+ * component recipe lives next to the component that renders it (e.g.
+ * qf-ui/src/primitives/Button.css) and is loaded by that component's import.
+ *
+ * USAGE: imported once from main.tsx, before any component module.
+ */
+
+/* Declared cascade order: Tailwind utilities beat every shared-UI recipe, and shared-UI
+   conflicts resolve by layer instead of module import order. A @layer statement must
+   precede the @import it orders.
+   `qf-motion` sits above `utilities` because the reduced-motion policy is an
+   accessibility override that must also cancel animation utilities such as
+   `animate-pulse`; it is the one layer allowed to outrank a utility. */
+@layer theme, base, qf-components, qf-variants, components, utilities, qf-motion;
+
+@import "tailwindcss";
+@import "@quant-factory/qf-ui/styles.css";
+
+/* Dashboard extensions live outside this package root, so Tailwind cannot auto-detect them. */
+@source "../../extensions";

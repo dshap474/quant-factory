@@ -1,0 +1,20 @@
+# Local research material
+/corpus/**
+!/corpus/sources/
+!/corpus/sources/.gitkeep
+!/corpus/inbox/
+!/corpus/inbox/.gitkeep
+!/corpus/wiki/
+!/corpus/wiki/.gitkeep
+
+# Local experiments: never tracked.
+/sandbox/**
+!/sandbox/.gitkeep
+# Hidden dirs (venvs, vendored clones, fake homes, caches), outputs and local copies stay local.
+/sandbox/**/.*/
+/sandbox/**/__pycache__/
+/sandbox/**/node_modules/
+/sandbox/**/output/
+/sandbox/**/outputs/
+/sandbox/**/results/
+/sandbox/**/runs/

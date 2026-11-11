@@ -1,0 +1,40 @@
+/**
+ * Auto-fill grid recipe with preset item widths and role-named gaps.
+ *
+ * USAGE: imported by Grid.tsx.
+ */
+
+@layer qf-components {
+  .ui-grid {
+    --ui-grid-min: 12rem;
+    --ui-grid-gap: var(--gap-block);
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--ui-grid-min), 1fr));
+    gap: var(--ui-grid-gap);
+  }
+
+  .ui-grid.is-min-sm {
+    --ui-grid-min: 9rem;
+  }
+
+  .ui-grid.is-min-md {
+    --ui-grid-min: 12rem;
+  }
+
+  .ui-grid.is-min-lg {
+    --ui-grid-min: 14rem;
+  }
+
+  .ui-grid.is-gap-stack {
+    --ui-grid-gap: var(--gap-stack);
+  }
+
+  .ui-grid.is-gap-heading {
+    --ui-grid-gap: var(--gap-heading);
+  }
+
+  .ui-grid.is-gap-block {
+    --ui-grid-gap: var(--gap-block);
+  }
+}

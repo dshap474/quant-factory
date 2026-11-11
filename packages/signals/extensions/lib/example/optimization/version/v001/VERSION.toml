@@ -1,0 +1,12 @@
+# Illustrative sealed version record. Status is honestly "not_tested": no run ever
+# happened, and a supported/falsified seal is valid only when its
+# HYPOTHESIS_OUTCOME.md binds a real run artifact under
+# db/research/signals/<family>/.
+version = 1
+parent = "none"
+question = "Does the sign of 30-day BTC momentum carry positive OOS information about next-day BTC return?"
+finding = "NOT TESTED: illustrative scaffold version sealed without a run, so no IC exists."
+backtest_run_at = "2026-01-02T00:00:00Z"
+backtest_run_at_source = "version_commit"
+phase = "recorded"        # preregistered | implemented | audited | run | recorded
+status = "not_tested"     # active | supported | falsified | inconclusive | descriptive | not_tested

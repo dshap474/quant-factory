@@ -1,0 +1,178 @@
+/**
+ * Button recipe styles (.ui-button, .ui-button-control, .ui-button-primary,
+ * .ui-button-destructive, .ui-button-nav, .ui-button-link).
+ * Size steps and the icon-only square live in control-size.css.
+ *
+ * USAGE: imported by Button.tsx
+ */
+
+@layer qf-components {
+  /* === Shared interactive primitives === */
+  .ui-button {
+    font: inherit;
+  }
+
+  /* Plain (ghost): state overlays over a transparent fill, never animated. */
+  .ui-button:hover:not(:disabled) {
+    background-color: transparent;
+    background-image: linear-gradient(var(--color-state-hover), var(--color-state-hover));
+    color: var(--color-fg-primary);
+  }
+
+  .ui-button:active:not(:disabled) {
+    background-color: transparent;
+    background-image: linear-gradient(var(--color-state-pressed), var(--color-state-pressed));
+    color: var(--color-fg-primary);
+  }
+
+  /* Control (secondary), primary and destructive share one raised geometry. */
+  .ui-button-control,
+  .ui-button-primary,
+  .ui-button-destructive {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-raised);
+    color: var(--color-fg-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    font-weight: 500;
+    cursor: pointer;
+    min-height: var(--ui-control-h, var(--control-height));
+    transition: none;
+  }
+
+  .ui-button-control:hover:not(:disabled) {
+    background-color: var(--color-surface-raised);
+    background-image: linear-gradient(var(--color-state-hover), var(--color-state-hover));
+    color: var(--color-fg-primary);
+    border-color: var(--color-border-strong);
+  }
+
+  .ui-button-control:active:not(:disabled) {
+    background-color: var(--color-surface-raised);
+    background-image: linear-gradient(var(--color-state-pressed), var(--color-state-pressed));
+    color: var(--color-fg-primary);
+    border-color: var(--color-border-strong);
+  }
+
+  :is(.ui-button-control, .ui-button-primary, .ui-button-destructive):disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+  }
+
+  .ui-button-control.active,
+  .ui-button-control[aria-pressed="true"] {
+    color: var(--color-fg-primary);
+    border-color: var(--color-border-strong);
+    background-color: var(--color-surface-raised);
+    background-image: linear-gradient(var(--color-state-selected), var(--color-state-selected));
+  }
+
+  /* Primary: the one gold button. Optional; no production call site in this pass. */
+  .ui-button-primary {
+    background: var(--color-primary);
+    border-color: transparent;
+    color: var(--color-brand-foreground);
+  }
+
+  .ui-button-primary:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    background-image: linear-gradient(var(--color-state-hover), var(--color-state-hover));
+    color: var(--color-brand-foreground);
+  }
+
+  .ui-button-primary:active:not(:disabled) {
+    background-color: var(--color-primary);
+    background-image: linear-gradient(var(--color-state-pressed), var(--color-state-pressed));
+    color: var(--color-brand-foreground);
+  }
+
+  /* Destructive: critical tone on its soft surface. */
+  .ui-button-destructive {
+    background: var(--color-tone-critical-surface);
+    border-color: var(--color-tone-critical-border);
+    color: var(--color-tone-critical);
+  }
+
+  .ui-button-destructive:hover:not(:disabled) {
+    background-color: var(--color-tone-critical-surface);
+    background-image: linear-gradient(var(--color-state-hover), var(--color-state-hover));
+    color: var(--color-tone-critical);
+  }
+
+  .ui-button-destructive:active:not(:disabled) {
+    background-color: var(--color-tone-critical-surface);
+    background-image: linear-gradient(var(--color-state-pressed), var(--color-state-pressed));
+    color: var(--color-tone-critical);
+  }
+
+  /* Nav buttons (vertical lists): state overlays for hover, press and selection. Bars are
+     reserved for the shell navigator's current row, so a nav button never draws one. */
+  .ui-button-nav {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-3);
+    min-height: var(--control-height-sm);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-fg-primary);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    text-align: left;
+    cursor: pointer;
+    transition: none;
+  }
+
+  .ui-button-nav:hover:not(:disabled) {
+    background-color: transparent;
+    background-image: linear-gradient(var(--color-state-hover), var(--color-state-hover));
+  }
+
+  .ui-button-nav:active:not(:disabled) {
+    background-color: transparent;
+    background-image: linear-gradient(var(--color-state-pressed), var(--color-state-pressed));
+  }
+
+  .ui-button-nav.is-selected,
+  .ui-button-nav[aria-pressed="true"] {
+    background-color: transparent;
+    background-image: linear-gradient(var(--color-state-selected), var(--color-state-selected));
+  }
+
+  .ui-button-nav.is-selected:hover:not(:disabled),
+  .ui-button-nav[aria-pressed="true"]:hover:not(:disabled) {
+    background-image: linear-gradient(
+      var(--color-state-selected-hover),
+      var(--color-state-selected-hover)
+    );
+  }
+
+  /* A link-variant button IS a link, so its colour and underline come from the
+     shared inline-link recipe in Link.css. Only the button reset lives here. */
+  .ui-button-link {
+    display: inline;
+    min-height: 0;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+    transition: none;
+  }
+
+  /* Re-assert the link colour and flat surface over the .ui-button hover recipe. */
+  .ui-button-link:hover:not(:disabled),
+  .ui-button-link:active:not(:disabled) {
+    color: var(--color-fg-primary);
+    background: transparent;
+  }
+}

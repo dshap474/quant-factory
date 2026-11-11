@@ -1,0 +1,22 @@
+[
+  {
+    "strategy_type": "example-trend",
+    "description": "Strategy type: example-trend",
+    "total_runs": 3,
+    "version_count": 1,
+    "versions": ["v001"],
+    "finalized_versions": 1,
+    "best_sharpe": 0.9,
+    "latest_run": "2026-01-15T09:00:00"
+  },
+  {
+    "strategy_type": "example-strategy",
+    "description": "Strategy type: example-strategy",
+    "total_runs": 1,
+    "version_count": 3,
+    "versions": ["v001", "v002", "v003"],
+    "finalized_versions": 0,
+    "best_sharpe": 0.72,
+    "latest_run": "2026-01-01T00:00:00+00:00"
+  }
+]

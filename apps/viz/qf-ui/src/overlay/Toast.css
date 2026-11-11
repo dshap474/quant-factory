@@ -1,0 +1,103 @@
+/**
+ * Toast viewport (bottom-right stack) and toast cards on the overlay surface; a
+ * tone adds its surface and a 2px leading stripe.
+ * Enter/exit motion is .qf-motion-sheet-bottom; nothing animates on hover.
+ *
+ * USAGE: imported by Toast.tsx.
+ */
+
+@layer qf-components {
+  .ui-toast-viewport {
+    position: fixed;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    z-index: var(--z-toast);
+    display: flex;
+    width: min(24rem, calc(100vw - 2rem));
+    flex-direction: column;
+    gap: var(--space-2);
+    pointer-events: none;
+  }
+
+  .ui-toast {
+    position: relative;
+    box-sizing: border-box;
+    display: grid;
+    gap: var(--space-1);
+    border: 0;
+    border-radius: var(--radius-surface);
+    background: var(--color-surface-overlay);
+    padding: var(--space-3) calc(var(--space-3) + var(--control-height-sm)) var(--space-3)
+      var(--space-3);
+    color: var(--color-fg-primary);
+    box-shadow: var(--shadow-overlay);
+    pointer-events: auto;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .ui-toast[data-tone="info"] {
+    box-shadow:
+      var(--shadow-overlay),
+      inset 2px 0 0 var(--color-tone-info);
+    background: var(--color-tone-info-surface);
+  }
+
+  .ui-toast[data-tone="success"] {
+    box-shadow:
+      var(--shadow-overlay),
+      inset 2px 0 0 var(--color-tone-success);
+    background: var(--color-tone-success-surface);
+  }
+
+  .ui-toast[data-tone="warning"] {
+    box-shadow:
+      var(--shadow-overlay),
+      inset 2px 0 0 var(--color-tone-warning);
+    background: var(--color-tone-warning-surface);
+  }
+
+  .ui-toast[data-tone="critical"] {
+    box-shadow:
+      var(--shadow-overlay),
+      inset 2px 0 0 var(--color-tone-critical);
+    background: var(--color-tone-critical-surface);
+  }
+
+  .ui-toast-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-weight: 500;
+  }
+
+  .ui-toast[data-tone="info"] .ui-toast-title {
+    color: var(--color-tone-info);
+  }
+
+  .ui-toast[data-tone="success"] .ui-toast-title {
+    color: var(--color-tone-success);
+  }
+
+  .ui-toast[data-tone="warning"] .ui-toast-title {
+    color: var(--color-tone-warning);
+  }
+
+  .ui-toast[data-tone="critical"] .ui-toast-title {
+    color: var(--color-tone-critical);
+  }
+
+  .ui-toast-description {
+    margin: 0;
+    color: var(--color-fg-secondary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    overflow-wrap: anywhere;
+  }
+
+  .ui-toast .ui-overlay-close {
+    top: var(--space-1);
+    right: var(--space-1);
+  }
+}

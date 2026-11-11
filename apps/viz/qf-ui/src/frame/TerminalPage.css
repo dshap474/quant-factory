@@ -1,0 +1,192 @@
+/**
+ * Terminal detail-page frame: header band + hairline sections.
+ *
+ * USAGE: imported by TerminalPage.tsx
+ */
+
+@layer qf-components {
+  /* ------------------------------------------------------------------------- */
+  /* Frame */
+  /* ------------------------------------------------------------------------- */
+
+  /* Detail pages routed inside a section workspace render the frame edge-to-edge. */
+  .section-workspace-content:has(> .terminal-page) {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .terminal-page {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    background: var(--color-background);
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Header details */
+  /* ------------------------------------------------------------------------- */
+
+  .terminal-page-facts {
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Body and sections */
+  /* ------------------------------------------------------------------------- */
+
+  .terminal-page-body {
+    min-height: 0;
+    flex: 1;
+    /* Header band to first content is one block gap; the page ends on the inset. */
+    padding: var(--gap-block) var(--inset-page) var(--inset-page);
+    overflow: auto;
+    overscroll-behavior: none;
+    scrollbar-gutter: stable;
+  }
+
+  /* Fill children shrink to the pane; when a short window leaves less room than
+     their floors, the body scrolls rather than clipping the bottom panel. */
+  .terminal-page-body.is-fill {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* Page-wide controls open the body: one right-aligned row, one block gap above the
+     content it governs (the frame owns that gap, so callers cannot drop it). */
+  .terminal-page-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--gap-heading);
+    margin-bottom: var(--gap-block);
+  }
+
+  /* A fill body has no padding; the toolbar keeps the page inset on its own. */
+  .terminal-page-body.is-fill > .terminal-page-toolbar {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+    padding: var(--gap-block) var(--inset-page);
+  }
+
+  .terminal-section + .terminal-section {
+    margin-top: var(--gap-section);
+  }
+
+  /* Layout hosts already own the section gap; sibling margins would double it. */
+  :is(.grid, .flex, .ui-grid, .ui-columns, .ui-chart-grid, .ui-split-row)
+    > .terminal-section
+    + .terminal-section {
+    margin-top: 0;
+  }
+
+  /* A view switcher placed straight on the page (tabs above the content they switch),
+     alone or in a row with its controls, sits one block gap above that content; the
+     section rhythm only spaces sections. */
+  .terminal-page-body > :where(
+      .ui-segmented-control,
+      .ui-route-tabs,
+      :not(.ui-section, .terminal-section):has(> :is(.ui-route-tabs, .ui-segmented-control.is-tabs))
+    )
+    + * {
+    margin-top: var(--gap-block);
+  }
+
+  .terminal-section.is-fill {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    /* Grid/flex hosts own the spacing between fill sections. */
+    margin-top: 0;
+  }
+
+  .terminal-section-head {
+    display: flex;
+    min-height: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--gap-heading);
+  }
+
+  .terminal-section-head h2 {
+    margin: 0;
+    color: var(--color-fg-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-section);
+    font-weight: 600;
+    line-height: var(--text-section--line-height);
+  }
+
+  .terminal-section.is-fill > .terminal-section-head {
+    flex: 0 0 auto;
+  }
+
+  .terminal-section-right {
+    min-width: 0;
+    overflow-x: auto;
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/* Narrow header */
+/* ------------------------------------------------------------------------- */
+
+/* Machine facts are a single unwrappable run: on narrow screens they take their
+   natural width and the title ellipsis absorbs the difference, up to the full rail.
+   Past that (a view switcher on a phone) the run scrolls sideways inside itself
+   (callers keep the run on one line, e.g. `<Cluster wrap={false}>`),
+   the same way route tab strips do, instead of pushing the rail wider than the
+   workspace. This deliberately overrides the PageHeader base recipe, so it is
+   declared in the variants layer rather than left to source order. */
+@layer qf-variants {
+  .page-header-actions > .terminal-page-facts {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    text-overflow: clip;
+  }
+
+  /* The sideways scroller clips at its edge, so its controls draw the ring inset. */
+  .page-header-actions > .terminal-page-facts :focus-visible {
+    outline-offset: -2px;
+  }
+
+  .page-header-actions > .terminal-page-facts::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* The run keeps its natural width inside the scroller rather than crushing its
+     items to their minimum. */
+  .page-header-actions > .terminal-page-facts > * {
+    min-width: max-content;
+  }
+
+  @media (max-width: 760px) {
+    .page-header-actions:has(> .terminal-page-facts) {
+      max-width: 100%;
+      flex: 0 1 auto;
+    }
+  }
+}

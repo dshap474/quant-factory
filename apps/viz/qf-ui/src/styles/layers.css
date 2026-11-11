@@ -1,0 +1,13 @@
+/**
+ * Cascade-layer order for qf-ui and its Tailwind v4 host: Tailwind utilities beat every
+ * kit recipe, kit conflicts resolve by layer instead of stylesheet order, and the
+ * reduced-motion layer outranks utilities.
+ *
+ * Every JS entry point imports this file first, so the order holds even when the kit's
+ * component CSS reaches the bundle before the host stylesheet. Hosts still declare the
+ * same statement at the top of their global stylesheet, before `@import "tailwindcss"`.
+ *
+ * USAGE: imported by src/index.ts, src/tables/index.ts and src/command/index.ts.
+ */
+
+@layer theme, base, qf-components, qf-variants, components, utilities, qf-motion;

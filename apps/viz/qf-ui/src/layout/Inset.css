@@ -1,0 +1,50 @@
+/**
+ * Inset recipe: padding on the inset scale, on every side or one axis.
+ *
+ * USAGE: imported by Inset.tsx.
+ */
+
+@layer qf-components {
+  .ui-inset {
+    --ui-inset: var(--inset-surface);
+
+    min-width: 0;
+  }
+
+  .ui-inset.is-none {
+    --ui-inset: 0;
+  }
+
+  .ui-inset.is-sm {
+    --ui-inset: var(--inset-surface-compact);
+  }
+
+  .ui-inset.is-md {
+    --ui-inset: var(--inset-surface);
+  }
+
+  .ui-inset.is-lg {
+    --ui-inset: var(--inset-page);
+  }
+
+  .ui-inset.is-tabs {
+    --ui-inset: calc(var(--inset-page) - var(--space-3));
+  }
+
+  .ui-inset.is-axis-both {
+    padding: var(--ui-inset);
+  }
+
+  .ui-inset.is-axis-inline {
+    padding-inline: var(--ui-inset);
+  }
+
+  .ui-inset.is-axis-block {
+    padding-block: var(--ui-inset);
+  }
+
+  /* The scrolling-pane edge (matches .section-workspace-content and .route-content). */
+  .ui-inset.is-pane {
+    padding: var(--gap-block) var(--inset-page) var(--inset-page);
+  }
+}

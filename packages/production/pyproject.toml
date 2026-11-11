@@ -1,0 +1,62 @@
+# Purpose: package the shared, authority-gated strategy deployment runtime.
+# USAGE: uv run --package quant-factory-production qf-production --help
+
+# --------------------------------------------------------------------------- #
+# Build and package
+# --------------------------------------------------------------------------- #
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quant-factory-production"
+version = "0.1.0"
+description = "Shared runtime scaffolding for deployed strategies."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "pyyaml>=6.0.2",
+    "quant-factory-strategies",
+]
+
+[tool.uv.sources]
+quant-factory-strategies = { workspace = true }
+
+# --------------------------------------------------------------------------- #
+# Dependency checks
+# --------------------------------------------------------------------------- #
+
+[tool.deptry]
+known_first_party = ["production"]
+
+[tool.deptry.package_module_name_map]
+quant-factory-strategies = "strategies"
+
+# --------------------------------------------------------------------------- #
+# Operator commands
+# --------------------------------------------------------------------------- #
+
+[project.scripts]
+qf-production = "production.cli:main"
+
+# --------------------------------------------------------------------------- #
+# Wheel
+# --------------------------------------------------------------------------- #
+
+[tool.hatch.build]
+dev-mode-dirs = ["extensions", "src"]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["src/production"]
+sources = ["src"]
+
+# --------------------------------------------------------------------------- #
+# Source distribution
+# --------------------------------------------------------------------------- #
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/AGENTS.md",
+    "/extensions/**",
+]

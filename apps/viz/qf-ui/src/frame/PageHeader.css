@@ -1,0 +1,235 @@
+/**
+ * Shared route-title rail used by app and section workspaces.
+ *
+ * USAGE: imported by PageHeader.tsx.
+ */
+
+@layer qf-components {
+  .page-header {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: 0 var(--inset-page);
+  }
+  /* Back control and title block side by side, so the header's space-between keeps them left. */
+  .page-header-lead {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .page-header-back {
+    display: flex;
+    flex: none;
+  }
+
+  /* Title line (28px) over the optional subtitle line (16px) inside the 56px rail; with
+     no subtitle the title line centres vertically. */
+  .page-header-copy {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .page-header-title-line {
+    display: flex;
+    min-width: 0;
+    align-items: baseline;
+    gap: var(--gap-heading);
+  }
+
+  .page-header h1 {
+    flex: 0 1 auto;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-title);
+    font-weight: 600;
+    letter-spacing: var(--text-title--letter-spacing);
+    line-height: var(--text-title--line-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .page-header-kicker {
+    flex: none;
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-overline);
+    font-weight: var(--text-overline--font-weight);
+    letter-spacing: var(--text-overline--letter-spacing);
+    line-height: var(--text-overline--line-height);
+    text-transform: uppercase;
+  }
+
+  .page-header-badges {
+    display: inline-flex;
+    flex: none;
+    align-self: center;
+    gap: var(--space-1);
+  }
+
+  .page-header-subtitle {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--color-fg-secondary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Header facts (badges, run ids) stay on one line inside the title rail: each
+     fact is a shrinkable flex item, so a long id ellipsizes instead of pushing
+     the rail wider than the workspace. */
+  .page-header-actions {
+    display: flex;
+    min-width: 0;
+    flex: 0 1 auto;
+    margin-left: auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    overflow: clip;
+    overflow-clip-margin: 2px;
+  }
+
+  /* A header field is an operator control: preserve its complete hit area and
+     let the adjacent title ellipsize instead of clipping the selected value. */
+  .page-header-actions:has(.ui-field) {
+    flex: 0 0 auto;
+    max-width: none;
+  }
+
+  /* Facts clip (not hide) with the same 2px margin, so a focused header control
+     shows its full ring; a fact that scrolls sideways insets the ring instead
+     (TerminalPage.css). */
+  .page-header-actions > * {
+    min-width: 0;
+    overflow: clip;
+    overflow-clip-margin: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .page-header-actions > .ui-badge,
+  .page-header-actions > .ui-status-badge {
+    flex: none;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Tabbed rail: tabs lead from the left, the title block holds the right edge */
+  /* ------------------------------------------------------------------------- */
+
+  /* PageHeader.tsx decides when the title leaves; until then the tabs keep their full
+     width and the title shrinks toward its minimum. */
+  .page-header.has-tabs {
+    --page-header-title-min: 8rem;
+    align-items: stretch;
+    /* The first tab's label, not its hover pill, lines up with the page inset. */
+    padding-left: calc(var(--inset-page) - var(--space-3));
+  }
+
+  .page-header-tabs {
+    display: flex;
+    flex: none;
+    align-items: stretch;
+  }
+
+  /* With the title gone the tabs take the rail (basis 0, never their own width), so
+     folding a tab into More cannot shrink the room the strip measures. */
+  .page-header.is-title-hidden .page-header-tabs {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* The strip fills the rail's height so the gold underline sits on its hairline. */
+  .page-header-tabs > .ui-route-tabs,
+  .page-header-tabs .ui-segmented-control.is-tabs {
+    width: 100%;
+    min-height: 0;
+    align-items: center;
+    padding-bottom: 0;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  .page-header.has-tabs .page-header-copy {
+    flex: 0 1 auto;
+    min-width: var(--page-header-title-min);
+    margin-left: auto;
+    overflow: hidden;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  /* Held to the block's width so a long title ellipsizes at its end; unbounded, the
+     right-aligned line overflowed leftward and the block clipped its first letters. */
+  .page-header.has-tabs .page-header-title-line {
+    max-width: 100%;
+  }
+
+  /* The title line sets the block's width; a longer subtitle ellipsizes inside it
+     instead of widening the block toward the tabs. */
+  .page-header.has-tabs .page-header-subtitle {
+    width: 0;
+    min-width: 100%;
+  }
+
+  /* `right` content of a tabbed header: one row under the rail, held to the right. */
+  .page-header-toolbar {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--inset-page);
+    border-bottom: 1px solid var(--color-border-subtle);
+    color: var(--color-fg-secondary);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+  }
+
+  @media (max-width: 760px) {
+    .page-header {
+      gap: var(--space-2);
+      padding-right: var(--space-2);
+      padding-left: calc(var(--shell-touch-target) + var(--space-3));
+    }
+
+    .page-header.has-tabs {
+      padding-left: var(--shell-touch-target);
+    }
+
+    .page-header-subtitle {
+      display: none;
+    }
+
+    .page-header-actions {
+      max-width: 45%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page-header {
+      gap: var(--space-3);
+      padding-right: var(--space-3);
+    }
+
+    .page-header-actions {
+      max-width: 55%;
+      flex: 0 1 auto;
+    }
+  }
+}

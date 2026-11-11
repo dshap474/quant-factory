@@ -1,0 +1,90 @@
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local agent/editor state
+.agents/
+.claude/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+!.env.template
+.venv/
+venv/
+
+# Python caches and tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.pyre/
+.tox/
+.nox/
+.ipynb_checkpoints/
+
+# Coverage
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Build / packaging
+build/
+dist/
+node_modules/
+site/
+.eggs/
+*.egg-info/
+pip-wheel-metadata/
+
+# Node / web artifacts
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime artifacts
+*.log
+*.pid
+*.pid.lock
+*.out
+apps/viz/.dev-state.*
+
+# Data and binary artifacts
+# The lake is local data, never committed.
+db/*
+*.parquet
+*.duckdb
+*.sqlite
+*.db
+
+# Archives never belong in git.
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# Generated charts
+input/
+output/
+tmp/
+
+
+# Local agent memory
+AGENTS.local.md
+
+# Local developer workspaces (local-only).
+.dev/

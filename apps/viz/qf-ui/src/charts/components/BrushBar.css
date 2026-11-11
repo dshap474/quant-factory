@@ -1,0 +1,176 @@
+/**
+ * Fixed 32px navigator; the track's horizontal insets line up with the plot it drives.
+ * Square-cornered window whose sides are opaque grip handles, the Highcharts navigator shape:
+ * the window draws only its top and bottom edges, so no outline shows through a handle.
+ *
+ * USAGE: imported by BrushBar.tsx.
+ */
+
+.qf-brush {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  flex: 0 0 32px;
+  height: 32px;
+  padding: 0 var(--qf-brush-inset-right, var(--qf-chart-inset, 16px)) 0
+    var(--qf-brush-inset-left, var(--qf-chart-inset, 16px));
+  background: var(--qf-chart-surface);
+}
+
+.qf-brush-track {
+  position: relative;
+  height: 7px;
+  border-radius: var(--qf-chart-radius-badge);
+  background: var(--qf-chart-state-hover);
+  overflow: visible;
+}
+
+.qf-brush-selection {
+  position: absolute;
+  top: -3px;
+  height: 14px;
+  border-radius: var(--qf-chart-radius-badge);
+  background: var(--qf-chart-state-selected);
+  border: 1px solid var(--qf-chart-border-strong);
+  border-inline-width: 0;
+}
+
+.qf-brush-selection::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 4px;
+  transform: translate(-50%, -50%);
+  border-radius: var(--qf-chart-radius-pill);
+  background: linear-gradient(
+    90deg,
+    transparent 0 35%,
+    var(--qf-chart-label) 35% 45%,
+    transparent 45% 55%,
+    var(--qf-chart-label) 55% 65%,
+    transparent 65% 100%
+  );
+  opacity: 1;
+  pointer-events: none;
+}
+
+.qf-brush-selection:hover::after {
+  opacity: 1;
+}
+
+.qf-brush-edge,
+.qf-brush-grip {
+  position: absolute;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translateY(-50%);
+  touch-action: none;
+  cursor: ew-resize;
+  z-index: var(--qf-chart-z-handle);
+}
+
+.qf-brush-edge-start {
+  left: -12px;
+}
+.qf-brush-edge-end {
+  right: -12px;
+}
+.qf-brush-grip {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  z-index: var(--qf-chart-z-control);
+}
+
+/* An opaque 8x16 handle centred on the window edge, 1px proud of the window above and
+   below, with two short grip stripes (::before) drawn over its body (::after). */
+.qf-brush-edge::before,
+.qf-brush-edge::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+}
+
+.qf-brush-edge::after {
+  z-index: var(--qf-chart-z-plot);
+  width: 8px;
+  height: 16px;
+  border: 1px solid var(--qf-chart-border-strong);
+  border-radius: var(--qf-chart-radius-badge);
+  background: var(--qf-chart-popover-surface);
+}
+
+.qf-brush-edge::before {
+  z-index: var(--qf-chart-z-mark);
+  width: 3px;
+  height: 6px;
+  border-inline: 1px solid var(--qf-chart-label);
+}
+
+.qf-brush-edge:hover::after,
+.qf-brush-edge:active::after {
+  background-color: var(--qf-chart-popover-surface);
+  background-image: linear-gradient(var(--qf-chart-state-hover), var(--qf-chart-state-hover));
+}
+
+/* Keyboard focus on a range thumb rings its visible handle, and only the handle:
+   the transparent input spans the whole track, so its own ring would box the bar. */
+.qf-brush .qf-brush-range:focus-visible {
+  outline: none;
+}
+
+/* Keyboard focus on a range thumb rings its visible handle. */
+.qf-brush:has(.qf-brush-range-start:focus-visible) .qf-brush-edge-start::after,
+.qf-brush:has(.qf-brush-range-end:focus-visible) .qf-brush-edge-end::after {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: 0;
+}
+
+/* The 24px thumbs centre on the track ends, so the input overhangs each end by 12px. */
+.qf-brush-range {
+  position: absolute;
+  left: calc(var(--qf-brush-inset-left, var(--qf-chart-inset, 16px)) - 12px);
+  top: 4px;
+  width: calc(
+    100% -
+    var(--qf-brush-inset-left, var(--qf-chart-inset, 16px)) -
+    var(--qf-brush-inset-right, var(--qf-chart-inset, 16px)) +
+    24px
+  );
+  height: 24px;
+  margin: 0;
+  background: transparent;
+  pointer-events: none;
+  appearance: none;
+}
+
+/* Hosts commonly give every input a hit-area floor; the brush owns its 24px
+   slider geometry, and a taller input hangs below the 32px bar into the frame clip. */
+.qf-brush .qf-brush-range[type="range"] {
+  min-height: 0;
+}
+
+.qf-brush-range::-webkit-slider-thumb {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: all;
+  appearance: none;
+}
+
+.qf-brush-range-start {
+  z-index: var(--qf-chart-z-thumb-start);
+}
+.qf-brush-range-end {
+  z-index: var(--qf-chart-z-thumb-end);
+}

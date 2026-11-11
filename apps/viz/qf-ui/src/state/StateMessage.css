@@ -1,0 +1,23 @@
+/**
+ * StateMessage recipe styles (.ui-state-message*).
+ *
+ * USAGE: imported by StateMessage.tsx
+ */
+
+@layer qf-components {
+  .ui-state-message {
+    padding: var(--space-3) var(--inset-surface);
+    border: 0;
+    background: transparent;
+    color: var(--color-muted-foreground);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    text-wrap: pretty;
+  }
+
+  .ui-state-message-compact {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+}

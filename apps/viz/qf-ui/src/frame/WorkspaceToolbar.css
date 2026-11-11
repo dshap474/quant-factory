@@ -1,0 +1,46 @@
+/**
+ * Master-controls band (48px, one bottom hairline): label copy on the left, actions on the right.
+ *
+ * USAGE: imported by WorkspaceToolbar.tsx.
+ */
+
+@layer qf-components {
+  .ui-workspace-toolbar {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: calc(var(--control-height) + 2 * var(--space-2));
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-2) var(--inset-page);
+    border-bottom: 1px solid var(--color-border-subtle);
+    background: var(--color-background);
+  }
+
+  .ui-workspace-toolbar-copy {
+    display: grid;
+    min-width: 0;
+    gap: var(--space-1);
+  }
+
+  .ui-workspace-toolbar-actions {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  @media (max-width: 760px) {
+    .ui-workspace-toolbar {
+      min-height: 0;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .ui-workspace-toolbar-actions .qf-chart-transform-toolbar {
+      justify-content: flex-start;
+    }
+  }
+}

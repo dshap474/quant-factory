@@ -1,0 +1,12 @@
+# Illustrative sealed version record. Status is honestly "not_tested": no run ever
+# happened, and a supported/falsified seal is valid only when its
+# HYPOTHESIS_OUTCOME.md binds a real run artifact under
+# db/research/strategies/<family>/.
+version = 1
+backtest_run_at = "2026-01-01T00:00:00Z"
+backtest_run_at_source = "seal_commit"
+phase = "recorded"        # preregistered | implemented | audited | run | recorded
+status = "not_tested"     # active | supported | falsified | inconclusive | descriptive | not_tested
+parent = "none"
+question = "Does adding a capped 30-session momentum tilt to the equal-weight book raise annualized Sharpe by at least +0.10?"
+finding = "Not tested: illustrative scaffold version sealed without a run, so no verdict exists."

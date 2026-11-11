@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "yf-client"
+version = "0.2.0"
+description = "A typed wrapper around yfinance with async support, CLI tool, and data export capabilities"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11,<3.13"
+keywords = ["yfinance", "finance", "stocks", "async", "cli", "export"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+
+dependencies = [
+    "yfinance>=0.2.18",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "click>=8.0",
+    "pandas>=1.5.0",
+    "aiofiles>=23.0",
+    "tqdm>=4.0"
+]
+
+[project.optional-dependencies]
+excel = [
+    "openpyxl>=3.0.0"
+]
+stream = [
+    "websockets>=11.0"
+]
+
+[project.scripts]
+yf-client = "yf_client.cli:main"
+
+[project.entry-points."yf_client.exporters"]
+csv = "yf_client.exporters:CSVExporter"
+json = "yf_client.exporters:JSONExporter"
+xlsx = "yf_client.exporters:ExcelExporter"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/yf_client"]

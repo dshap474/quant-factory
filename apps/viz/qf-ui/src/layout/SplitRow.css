@@ -1,0 +1,31 @@
+/**
+ * Main column beside a docked aside rail, filling a bounded host.
+ *
+ * USAGE: imported by SplitRow.tsx.
+ */
+
+@layer qf-components {
+  .ui-split-row {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .ui-split-row.is-fill {
+    flex: 1;
+  }
+
+  .ui-split-row-main {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .ui-split-row-main > .ui-toolbar {
+    flex: 0 0 auto;
+  }
+}

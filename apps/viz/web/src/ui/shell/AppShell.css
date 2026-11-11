@@ -1,0 +1,214 @@
+/**
+ * App shell recipe: theme root, primary sidebar dock and mobile drawer, and the
+ * main column (workspace header rail + scrolling route content). Geometry comes
+ * from the shell tokens (--sidebar-width is the 48px rail, --sidebar-width-expanded
+ * the expanded rail and drawer); route content carries the --inset-page edge, except
+ * around a section workspace, whose panes carry it. Below 768px the sidebar is a
+ * fixed drawer toggled by the menu button and the route content clears that button.
+ *
+ * USAGE: imported by AppShell.tsx
+ */
+
+@layer qf-components {
+  /* ---- Theme root ---- */
+  .app-shell {
+    display: flex;
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ---- Skip link: visually hidden until focused ---- */
+  .app-skip-link {
+    position: fixed;
+    top: var(--space-2);
+    left: var(--space-2);
+    z-index: var(--z-toast);
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    color: var(--color-fg-primary);
+    background: var(--color-surface-overlay);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    border-radius: var(--radius-control);
+    box-shadow: var(--shadow-overlay);
+    text-decoration: none;
+  }
+
+  .app-skip-link:focus {
+    width: auto;
+    height: auto;
+    padding: var(--space-2) var(--space-3);
+    overflow: visible;
+    clip-path: none;
+  }
+
+  /* ---- Mobile menu button and drawer overlay (shown below 768px) ----
+     Scoped under .app-shell so these beat the same-layer .ui-button-control
+     recipe (display, transition, background) regardless of stylesheet order. */
+  .app-shell .app-shell-menu-button {
+    position: fixed;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: var(--z-overlay);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--shell-touch-target);
+    height: var(--shell-touch-target);
+    translate: 0 0;
+    border-radius: var(--radius-control);
+    background: var(--color-surface-raised);
+    box-shadow: var(--shadow-raised);
+    transition: translate var(--duration-sm) var(--ease-default);
+  }
+
+  .app-shell .app-shell-menu-button.is-open {
+    translate: calc(var(--sidebar-width-expanded) - 4rem) 0;
+  }
+
+  .app-shell-menu-icon {
+    display: flex;
+    width: 1rem;
+    height: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app-shell-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-dropdown);
+    display: none;
+    background: color-mix(in oklch, var(--color-background) 75%, transparent);
+  }
+
+  /* ---- Primary sidebar dock ---- */
+  .app-sidebar {
+    position: relative;
+    z-index: var(--z-dropdown);
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    width: var(--sidebar-width-expanded);
+    min-width: var(--sidebar-width-expanded);
+    max-width: var(--sidebar-width-expanded);
+    height: 100%;
+    max-height: 100%;
+    border-inline-end: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-sunken);
+  }
+
+  .app-sidebar.collapsed {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+  }
+
+  /* ---- Main column: header rail + route content that owns the page scrollbar ---- */
+  .app-main {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    background: var(--color-background);
+  }
+
+  .app-workspace-header {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--shell-bar-height);
+    min-height: var(--shell-bar-height);
+    max-height: var(--shell-bar-height);
+    flex: 0 0 var(--shell-bar-height);
+    border-bottom: 1px solid var(--color-border-subtle);
+    background: var(--color-background);
+  }
+
+  .app-workspace-header:empty {
+    display: none;
+  }
+
+  .route-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: none;
+    /* Header to first content is one block gap; the page ends on the inset. */
+    padding: var(--gap-block) var(--inset-page) var(--inset-page);
+  }
+
+  /* A section workspace fills the route edge to edge and owns every scrollbar. */
+  @media (min-width: 768px) {
+    .route-content:has(.section-workspace) {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    /* So does a standalone terminal page: its header band stays put and its body (or, for a
+       fill page, its panes) scrolls. Left unbounded, the body is a scroll container that never
+       scrolls, and its overscroll containment swallows the wheel before it reaches the route. */
+    .route-content:has(> .terminal-page) {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+
+  /* ---- Narrow viewports: sidebar becomes a drawer; content clears the menu button ---- */
+  @media (max-width: 767px) {
+    .app-shell .app-shell-menu-button {
+      display: inline-flex;
+    }
+
+    .app-shell-overlay {
+      display: block;
+    }
+
+    .app-sidebar,
+    .app-sidebar.collapsed {
+      position: fixed;
+      width: var(--sidebar-width-expanded);
+      min-width: var(--sidebar-width-expanded);
+      max-width: var(--sidebar-width-expanded);
+      translate: -100% 0;
+    }
+
+    .app-sidebar {
+      transition: translate var(--motion-fast) var(--ease-default);
+    }
+
+    .app-sidebar.is-open {
+      translate: 0 0;
+    }
+
+    .route-content {
+      padding-top: calc(var(--inset-page) + 2.75rem);
+    }
+
+    .route-content:has(.section-workspace) {
+      padding: 2.75rem 0 0;
+    }
+  }
+}
+
+/* === Reduced motion for the host app frame (the kit's base.css owns its own classes) === */
+@layer qf-motion {
+  @media (prefers-reduced-motion: reduce) {
+    .app-theme .app-sidebar,
+    .app-theme .app-shell-menu-button {
+      transition: none;
+    }
+  }
+}

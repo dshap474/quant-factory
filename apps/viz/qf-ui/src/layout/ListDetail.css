@@ -1,0 +1,48 @@
+/**
+ * List-detail recipe: a bounded two-pane grid with a hairline between the panes; one
+ * stacked column (list capped at 40% of the height) below a 40rem container width.
+ *
+ * USAGE: imported by ListDetail.tsx.
+ */
+
+@layer qf-components {
+  .ui-list-detail {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+    container-type: inline-size;
+  }
+
+  .ui-list-detail-grid {
+    display: grid;
+    flex: 1;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 40%) minmax(0, 1fr);
+  }
+
+  .ui-list-detail-list,
+  .ui-list-detail-detail {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex-direction: column;
+  }
+
+  .ui-list-detail-list {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  @container (min-width: 40rem) {
+    .ui-list-detail-grid {
+      grid-template-columns: var(--ui-list-detail-width) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
+    }
+
+    .ui-list-detail-list {
+      border-right: 1px solid var(--color-border);
+      border-bottom: 0;
+    }
+  }
+}

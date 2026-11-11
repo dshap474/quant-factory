@@ -1,0 +1,54 @@
+/**
+ * Sort-button recipe inside table headers.
+ *
+ * USAGE: imported by SortHeader.tsx.
+ */
+
+@layer qf-components {
+  /* The header text keeps its place; the hit target is the 24px control height, which
+     fits the 28px dense and 32px default header rows. */
+  .ui-sort-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--control-height-xs);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: none;
+  }
+
+  .ui-sort-glyph {
+    font-family: var(--font-sans);
+    color: var(--color-fg-tertiary);
+  }
+
+  /* Numeric heads are right-aligned, so the glyph leads and the label's right edge sits on
+     the digits' right edge. */
+  .ui-table-head.is-numeric .ui-sort-button {
+    flex-direction: row-reverse;
+  }
+
+  /* Only the sorted column shows its glyph; the others reveal it on hover or keyboard
+     focus. Visibility keeps the glyph's width, so nothing shifts. */
+  .ui-sort-button:not(.is-active) .ui-sort-glyph {
+    visibility: hidden;
+  }
+
+  .ui-table-head:hover .ui-sort-glyph,
+  .ui-sort-button:focus-visible .ui-sort-glyph {
+    visibility: visible;
+  }
+
+  .ui-sort-button:hover,
+  .ui-sort-button.is-active,
+  .ui-sort-button:hover .ui-sort-glyph,
+  .ui-sort-button.is-active .ui-sort-glyph {
+    color: var(--color-fg-primary);
+  }
+}

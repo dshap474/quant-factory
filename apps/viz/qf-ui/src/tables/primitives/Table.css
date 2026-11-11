@@ -1,0 +1,294 @@
+/**
+ * Table recipe styles: one fixed single-line row (32, or 28 dense) with a sentence-case
+ * caption header, outer columns on the surface inset, an explicit wrap opt-in for prose cells, the sticky header row for
+ * tables inside a bounded scroll host, and the shared row-state recipe.
+ *
+ * USAGE: imported by Table.tsx.
+ */
+
+@layer qf-components {
+  /* Base head and cell recipes. These live in CSS, not as Tailwind utilities on the
+     element, so a composing stylesheet (DataTable, MetricComparisonTable) can override
+     them from the variants layer. */
+  .ui-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: var(--radius-surface);
+    overflow: clip;
+    text-align: left;
+    overflow-wrap: normal;
+  }
+
+  /* The footer is part of the table's enclosing frame. */
+  :is(.ui-surface:has(.ui-table), .data-table-frame) > .ui-pagination-band {
+    border-top-color: var(--color-border-subtle);
+  }
+
+  .ui-table-row {
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .ui-table-header > .ui-table-row {
+    border-bottom-color: var(--color-border);
+  }
+
+  .ui-table-body > .ui-table-row:last-child {
+    border-bottom: 0;
+  }
+
+  .ui-table-markup-frame {
+    margin-bottom: var(--space-4);
+  }
+
+  /* Two tones: element rows sit on the data well (the same fill as a chart card) and
+     the head row is a band one step lighter. */
+  .ui-table-body {
+    --ui-table-row-tint: transparent;
+    background: var(--color-surface-data);
+  }
+
+  .ui-table-header {
+    background: var(--color-surface-header);
+  }
+
+  .ui-table-head {
+    height: var(--table-row-height);
+    padding-inline: var(--space-3);
+    vertical-align: middle;
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 500;
+    line-height: var(--text-caption--line-height);
+    white-space: nowrap;
+    text-align: left;
+  }
+
+  /* Short cells never wrap: one line, capped at 24rem, ellipsized past it. */
+  .ui-table-cell {
+    height: var(--table-row-height);
+    padding-block: 0;
+    padding-inline: var(--space-3);
+    vertical-align: middle;
+    white-space: nowrap;
+    max-width: 24rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :where(.ui-table.is-dense) :is(.ui-table-head, .ui-table-cell) {
+    padding-inline: var(--space-2);
+  }
+
+  /* The outer columns sit on the surface inset, so table text shares the inner edge of
+     chart titles and panel content; dense tables use the compact inset. */
+  .ui-table-head:first-child,
+  .ui-table-cell:first-child {
+    padding-inline-start: var(--inset-surface);
+  }
+
+  .ui-table-head:last-child,
+  .ui-table-cell:last-child {
+    padding-inline-end: var(--inset-surface);
+  }
+
+  :where(.ui-table.is-dense) :is(.ui-table-head, .ui-table-cell):first-child {
+    padding-inline-start: var(--inset-surface-compact);
+  }
+
+  :where(.ui-table.is-dense) :is(.ui-table-head, .ui-table-cell):last-child {
+    padding-inline-end: var(--inset-surface-compact);
+  }
+
+  .ui-table-cell[data-numeric] {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Prose opt-in (`<TableCell wrap>`). The block inset centres one line in the row
+     (row height less the 1px row rule, less one line box, halved), so a short wrap cell
+     is a normal row and a long one starts its first line where a single-line row would. */
+  :is(.ui-table-cell, .ui-table-head).is-wrap {
+    white-space: normal;
+    max-width: none;
+    overflow: visible;
+    padding-block: calc((var(--ui-table-row-h) - 1px - 1lh) / 2);
+  }
+
+  .ui-table-cell.is-full-bleed {
+    padding: 0;
+    white-space: normal;
+    max-width: none;
+    overflow: visible;
+  }
+
+  /* A navigation control inherits the cell inset instead of adding a second one. */
+  .ui-table-cell > .ui-button-nav {
+    padding-inline: 0;
+  }
+
+  /* Name-plus-detail on one line (`<TableCell detail>`): the primary never shrinks, the
+     muted detail ellipsizes and carries its full text as a title. */
+  .ui-table-cell-line {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .ui-table-cell-primary {
+    flex: none;
+  }
+
+  .ui-table-cell-detail {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .ui-table-head,
+  .ui-table-cell {
+    --ui-table-row-h: var(--table-row-height);
+  }
+
+  .ui-table.is-dense .ui-table-head,
+  .ui-table.is-dense .ui-table-cell {
+    --ui-table-row-h: var(--table-row-height-compact);
+    height: var(--table-row-height-compact);
+  }
+
+  /* Controls inside a row drop one step so they fit inside it (the row keeps its 1px rule):
+     unsized recipes read --control-height, so a default cell holds 28 and a dense cell 24.
+     Plain and nav buttons, which have no unsized height of their own, take the same step;
+     an explicit `size` still wins through --ui-control-h. Inline link buttons stay text. */
+  .ui-table-cell {
+    --control-height: var(--control-height-sm);
+  }
+
+  .ui-table.is-dense .ui-table-cell {
+    --control-height: var(--control-height-xs);
+  }
+
+  .ui-table-cell .ui-button:not(.ui-button-link) {
+    min-height: var(--ui-control-h, var(--control-height));
+  }
+
+  .ui-table-sticky-head th {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: var(--color-surface-header);
+  }
+
+  /* The vertical scrollbar starts below a pinned head, whose measured height ScrollArea
+     publishes. The strip beside the head takes the head's colour only while the right-edge
+     fade is off; a fading head ends in the frame's colour, as the bare strip does. */
+  .ui-scroll-area:has(.ui-table-sticky-head) {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+
+  /* Wide tables show the same thin 6px horizontal bar as every other scroller, so a mouse
+     user can reach the columns past the right edge. The corner where the two bars meet is
+     transparent, not the browser's default white square. */
+  .ui-scroll-area:has(.ui-table-sticky-head)::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* Matches the 6px global scrollbar, so the right-edge fade stops short of it. */
+  .ui-scroll-area[data-overflow-y="true"]:has(.ui-table-sticky-head) {
+    --ui-scroll-bar-end: 6px;
+  }
+
+  .ui-scroll-area:not([data-edge-end="x"]):has(.ui-table-sticky-head)::-webkit-scrollbar:vertical {
+    background: linear-gradient(
+      to bottom,
+      var(--color-surface-header) var(--ui-scroll-inset-top),
+      transparent var(--ui-scroll-inset-top)
+    );
+  }
+
+  .ui-scroll-area:has(.ui-table-sticky-head)::-webkit-scrollbar-track:vertical {
+    margin-top: var(--ui-scroll-inset-top);
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    .ui-scroll-area:has(.ui-table-sticky-head) {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border-strong) transparent;
+    }
+  }
+
+  /* One row surface for every table. Indexed bodies mark absolute row parity so
+     virtualization and paging never shift the stripes. Group captions are not data. */
+  .ui-table-body > tr {
+    background: var(--ui-table-row-tint);
+  }
+
+  .ui-table-body:where(:not([data-indexed-rows]))
+    > :where(tr:nth-child(even of :not([data-table-group]))),
+  .ui-table-body:where([data-indexed-rows]) > :where(tr[data-zebra]) {
+    --ui-table-row-tint: var(--color-state-stripe);
+  }
+
+  /* Body rows are list rows: the pointer or keyboard highlight is the hover overlay
+     and the selected row the selected fill. */
+  .ui-table-body > tr:not([data-table-group]):is(:hover, :focus-within) {
+    --ui-table-row-tint: var(--color-state-hover);
+  }
+
+  .ui-table-body > tr[aria-selected="true"] {
+    --ui-table-row-tint: var(--color-state-selected);
+  }
+
+  .ui-table-body > tr[aria-selected="true"]:is(:hover, :focus-within) {
+    --ui-table-row-tint: var(--color-state-selected-hover);
+  }
+
+  /* The terminal flare: a hairline of brand gold on the leading edge of the highlighted
+     row. Drawn as an inset shadow on the first cell, so it survives sticky row headers. */
+  .ui-table-body > tr:not([data-table-group]):is(:hover, :focus-within, [aria-selected="true"])
+    > :first-child {
+    box-shadow: inset 1px 0 0 var(--color-brand);
+  }
+
+  /* Row link: the primary link's hit area covers the row, so the row opens it; any
+     other control in the row sits above that area and keeps its own click. */
+  .ui-table-body > tr:has(.ui-table-row-link) {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .ui-table-row-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .ui-table-row-link:focus-visible {
+    outline: none;
+  }
+
+  .ui-table-body > tr:has(.ui-table-row-link:focus-visible) {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .ui-table-body
+    > tr:has(.ui-table-row-link)
+    :is(button, a:not(.ui-table-row-link), input, select) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* A nav button filling a cell must not paint over the row's surface. */
+  .ui-table-body .ui-button-nav:hover:not(:disabled),
+  .ui-table-body .ui-button-nav:active:not(:disabled) {
+    background: transparent;
+  }
+}

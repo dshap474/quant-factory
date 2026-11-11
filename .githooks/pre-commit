@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Reject staged files larger than QF_MAX_FILE_MB (default 10). GitHub refuses
+# files over 100 MB, and big binaries belong under db/ (gitignored), not in git.
+# Bypass for one commit with `git commit --no-verify`.
+set -euo pipefail
+
+limit_mb=${QF_MAX_FILE_MB:-10}
+limit=$((limit_mb * 1024 * 1024))
+too_big=()
+
+while IFS= read -r -d '' path; do
+  size=$(git cat-file -s ":$path" 2>/dev/null || echo 0)
+  if (( size > limit )); then
+    too_big+=("$(awk -v s="$size" 'BEGIN{printf "%.1f MB", s/1048576}')  $path")
+  fi
+done < <(git diff --cached --name-only --diff-filter=AM -z)
+
+if (( ${#too_big[@]} )); then
+  echo "pre-commit: staged files exceed ${limit_mb} MB:" >&2
+  printf '  %s\n' "${too_big[@]}" >&2
+  echo "Move them under db/ (gitignored) and unstage them, or raise QF_MAX_FILE_MB." >&2
+  exit 1
+fi

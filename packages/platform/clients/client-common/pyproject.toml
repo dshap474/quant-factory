@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "client-common"
+version = "0.1.0"
+description = "Shared HTTP retry and frame helpers for quant-factory platform clients."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "httpx>=0.27.0",
+    "polars>=1.36.1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/client_common"]

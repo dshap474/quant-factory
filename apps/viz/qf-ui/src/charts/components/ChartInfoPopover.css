@@ -1,0 +1,91 @@
+/**
+ * Compact chart-title info trigger and viewport-level explanatory popover.
+ *
+ * USAGE: imported by ChartInfoPopover.tsx.
+ */
+
+.qf-chart-info {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* A 24px control (the chart control height) around the unchanged 11px glyph; the negative
+   block margin keeps the title's 20px line box, so the header does not grow. */
+.qf-chart-info-button {
+  position: relative;
+  display: inline-flex;
+  width: var(--qf-chart-control-height);
+  height: var(--qf-chart-control-height);
+  min-width: var(--qf-chart-control-height);
+  min-height: var(--qf-chart-control-height);
+  margin-block: calc((var(--qf-chart-leading-label) - var(--qf-chart-control-height)) / 2);
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--qf-chart-radius-control);
+  background: transparent;
+  color: color-mix(in oklch, var(--qf-chart-label) 72%, transparent);
+  cursor: help;
+}
+
+.qf-chart-info-button::before {
+  position: absolute;
+  inset: -8px;
+  content: "";
+}
+
+.qf-chart-info-button:hover,
+.qf-chart-info-button:focus-visible {
+  background: var(--qf-chart-state-hover);
+  color: var(--qf-chart-label);
+}
+
+.qf-chart-info-button:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: 0;
+}
+
+.qf-chart-info-popover {
+  position: fixed;
+  z-index: var(--qf-chart-z-popover);
+  display: grid;
+  overflow: auto;
+  gap: 0.75rem;
+  padding: 0.85rem 0.9rem;
+  border: 0;
+  border-radius: var(--qf-chart-radius-surface);
+  background: var(--qf-chart-popover-surface);
+  color: var(--qf-chart-tooltip-text);
+  box-shadow: var(--qf-chart-popover-shadow);
+  font-family: var(--qf-chart-font-sans);
+  pointer-events: none;
+}
+
+.qf-chart-info-title,
+.qf-chart-info-section > strong {
+  color: var(--qf-chart-strong-text);
+  font-size: var(--qf-chart-text-caption);
+  font-weight: 500;
+  line-height: var(--qf-chart-leading-caption);
+}
+
+.qf-chart-info-section {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.qf-chart-info-section > p {
+  margin: 0;
+  color: var(--qf-chart-muted-text);
+  font-family: var(--qf-chart-font-sans);
+  font-size: 12px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qf-chart-info-button {
+    transition: none;
+  }
+}

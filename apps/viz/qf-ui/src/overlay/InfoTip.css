@@ -1,0 +1,53 @@
+/**
+ * InfoTip icon trigger and compact popup. The trigger keeps its 20px footprint but
+ * its hit area is 24px: a transparent 2px ring cancelled by a -2px margin.
+ *
+ * USAGE: imported by InfoTip.tsx.
+ */
+
+@layer qf-components {
+  .ui-info-tip-trigger {
+    display: inline-flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    /* The 24px hit area keeps the 20px glyph's layout footprint (R31). */
+    margin: calc((1.25rem - 1.5rem) / 2);
+    min-width: 0;
+    min-height: 0;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    padding: 0;
+    color: var(--color-muted-foreground);
+    vertical-align: middle;
+  }
+
+  .ui-info-tip-trigger:hover,
+  .ui-info-tip-trigger[data-popup-open] {
+    color: var(--color-foreground);
+  }
+
+  .ui-info-tip-trigger:focus-visible {
+    color: var(--color-foreground);
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 0;
+  }
+
+  .ui-info-tip-trigger svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    pointer-events: none;
+  }
+
+  .ui-info-tip {
+    min-width: 0;
+    max-width: 20rem;
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-fg-primary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+}

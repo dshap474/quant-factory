@@ -1,0 +1,358 @@
+/**
+ * Sidebar shell layout styles.
+ *
+ * USAGE: imported by SidebarShell.tsx
+ */
+
+@layer qf-components {
+  .shell {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    min-height: 0;
+  }
+
+  /* The 48px rail: 8px leading inset (plus the 1px end border on the other side)
+     centers every 32px slot at x=24, and the top inset centers the brand in the
+     56px band. Identical in both states so icons never move. */
+  .shell.shell-rail {
+    position: relative;
+    padding: calc((var(--shell-bar-height) - var(--shell-slot)) / 2) calc(var(--space-2) - 1px) 0
+      var(--space-2);
+  }
+
+  /* Continue the workspace's top and bottom bar rules through the primary rail.
+     Paint inside the fixed bands so borders never change icon placement. */
+  .shell.shell-rail::before,
+  .shell.shell-rail::after {
+    position: absolute;
+    inset-inline: 0;
+    box-sizing: border-box;
+    content: "";
+    pointer-events: none;
+  }
+
+  .shell.shell-rail::before {
+    top: 0;
+    height: var(--shell-bar-height);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .shell.shell-rail::after {
+    bottom: 0;
+    height: var(--shell-footer-height);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .brand {
+    display: block;
+    min-height: var(--shell-slot);
+    padding: 0.75rem;
+    margin-bottom: calc((var(--shell-bar-height) - var(--shell-slot)) / 2);
+    font-family: var(--font-sans);
+    font-size: var(--text-section);
+    line-height: var(--text-section--line-height);
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--color-fg-primary);
+    border-radius: var(--radius-control);
+    text-decoration: none;
+    transition: none;
+  }
+
+  .shell-rail .brand {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .brand-short {
+    display: flex;
+    width: var(--shell-slot);
+    height: var(--shell-slot);
+    flex: 0 0 var(--shell-slot);
+    align-items: center;
+    justify-content: center;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: none;
+  }
+
+  .brand-leading {
+    position: relative;
+  }
+
+  .brand-suffix {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    white-space: nowrap;
+  }
+
+  .brand:hover:not(.brand-static) {
+    background: var(--color-state-hover);
+  }
+
+  .shell-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .shell-header > .brand {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+
+  .shell-header-actions {
+    flex: 0 0 auto;
+  }
+
+  /* Section-navigator header band (collapsePlacement="bar"): the 56px band shows the
+     panel title only, on the shared row text edge (12px), above a hairline. */
+  .shell-topbar {
+    box-sizing: border-box;
+    height: var(--shell-bar-height);
+    min-height: var(--shell-bar-height);
+    flex: 0 0 var(--shell-bar-height);
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-3);
+    margin: 0;
+  }
+
+  .shell-topbar-title {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-fg-primary);
+    /* The same type as the brand beside it, so the two bar titles read as one row. */
+    font-family: var(--font-sans);
+    font-size: var(--text-section);
+    line-height: var(--text-section--line-height);
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* A section title that leads home: a ghost pill on hover, its label still on the
+     column's text edge. */
+  .shell-topbar-title.is-link {
+    margin-inline: calc(-1 * var(--space-2));
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-control);
+    text-decoration: none;
+    transition: background-color var(--duration-sm) var(--ease-out);
+  }
+
+  .shell-topbar-title.is-link:hover {
+    background-color: var(--color-state-hover);
+  }
+
+  .shell-topbar-title.is-link:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  /* Section-navigator bottom bar: pinned under the scrolling list with a top hairline,
+     it holds every control: the collapse button at the docked edge, then the header and
+     trailing actions at the far edge. Controls sit 8px off the hairline and 8px off the
+     bottom, on one row with the primary rail's own collapse toggle. It is the containing
+     block for the inline search field. */
+  .shell-bottombar {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    height: var(--shell-footer-height);
+    min-height: var(--shell-footer-height);
+    flex: 0 0 var(--shell-footer-height);
+    align-items: flex-end;
+    gap: var(--space-1);
+    padding: 0 var(--space-2) var(--space-2);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .shell-bottombar > .sidebar-collapse-button {
+    flex: none;
+  }
+
+  .shell-bottombar-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--space-1);
+    margin-inline-start: auto;
+  }
+
+  .shell.collapsed .brand {
+    width: var(--shell-slot);
+  }
+
+  .controls {
+    padding: var(--space-2) var(--space-3) var(--space-3);
+    margin: 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .shell.collapsed .body {
+    overflow: visible;
+  }
+
+  .footer {
+    margin-top: auto;
+    padding: var(--space-2) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-1);
+  }
+
+  .shell.collapsed .footer {
+    padding-inline: 0;
+  }
+
+  /* The rail's collapse button sits in the bottom bar band; keep the footer
+     controls above that band's rule rather than across it. */
+  .shell.shell-rail .footer > .sidebar-collapse-button {
+    margin-top: calc(var(--shell-footer-height) - var(--shell-slot) - var(--space-1));
+  }
+
+  .footer-bar {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+  }
+
+  .footer-bar > .sidebar-collapse-button {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .footer-bar-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Rail navigation (RailNavList / RailNavLink / RailNavDivider) */
+  /* ------------------------------------------------------------------------- */
+
+  .nav-link {
+    position: relative;
+    width: 100%;
+    min-height: var(--shell-slot);
+    gap: var(--space-2);
+    padding: 0;
+    border-radius: var(--radius-control);
+    color: var(--color-fg-secondary);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+  }
+
+  .nav-link:hover {
+    background: var(--color-state-hover);
+    color: var(--color-fg-primary);
+  }
+
+  /* The rail marks the current section with the neutral selected fill only; it draws no
+     gold leading bar. The navigator's current row keeps its bar. */
+  .nav-link[aria-current="page"] {
+    background: var(--color-state-selected);
+    color: var(--color-fg-primary);
+    font-weight: 500;
+  }
+
+  .nav-link[aria-current="page"]:hover {
+    background: var(--color-state-selected-hover);
+  }
+
+  .primary-nav-list {
+    display: grid;
+    gap: var(--space-1);
+    padding-top: var(--space-2);
+  }
+
+  .nav-section-divider {
+    margin: var(--space-1) 0 0;
+    border: 0;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .shell.collapsed .nav-link {
+    width: var(--shell-slot);
+  }
+
+  .nav-icon-slot {
+    display: flex;
+    width: var(--shell-slot);
+    height: var(--shell-slot);
+    flex: 0 0 var(--shell-slot);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-label {
+    min-width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nav-hover-label {
+    position: absolute;
+    z-index: var(--z-popover);
+    top: 50%;
+    left: calc(100% + var(--space-2));
+    width: max-content;
+    max-width: 12rem;
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-fg-primary);
+    background: var(--color-surface-overlay);
+    border: 0;
+    border-radius: var(--radius-control);
+    box-shadow: var(--shadow-overlay);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 500;
+    line-height: var(--text-caption--line-height);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(0, -50%);
+    transition: none;
+  }
+
+  .nav-link:hover .nav-hover-label,
+  .nav-link:focus-visible .nav-hover-label {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+
+  /* Inside the scrolling rail body the ring sits inset; a footer link is
+     outside a scroll container and takes the control offset. */
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .footer .nav-link:focus-visible {
+    outline-offset: 0;
+  }
+}

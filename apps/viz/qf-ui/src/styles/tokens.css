@@ -1,0 +1,496 @@
+/**
+ * Design tokens: fonts, the Tailwind @theme palette, and semantic :root aliases.
+ *
+ * USAGE: imported by styles/index.css (must precede base.css so @apply can resolve tokens).
+ */
+/* Hallmark · macrostructure: Workbench · tone: terminal instrument panel · anchor hue: gold #E6C07B */
+
+/* Latin-only IBM Plex faces keep the workbench typography small.
+   font-display: block, because a wider fallback font visibly stretches text until Plex arrives. */
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-display: block;
+  font-weight: 400;
+  src: url("@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: italic;
+  font-display: block;
+  font-weight: 400;
+  src: url("@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-display: block;
+  font-weight: 500;
+  src: url("@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-display: block;
+  font-weight: 600;
+  src: url("@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-display: block;
+  font-weight: 400;
+  src: url("@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-display: block;
+  font-weight: 500;
+  src: url("@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-display: block;
+  font-weight: 600;
+  src: url("@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2") format("woff2");
+}
+
+/* ──────────────────────────────────────────────────────────
+   DESIGN SYSTEM TOKENS
+   Reference (@theme) → Semantic (:root aliases) → Component
+   This file is the single source for the visual language.
+   Change a token here; every consumer updates.
+   ────────────────────────────────────────────────────────── */
+@theme {
+  /* === Namespace resets: Tailwind's default fonts, radii, text sizes and shadows are
+     cleared so only the families, radius roles, type roles and shadow tokens below compile
+     to utilities (text-lg, rounded-md, shadow-lg and font-serif no longer exist). === */
+  --font-*: initial;
+  --radius-*: initial;
+  --text-*: initial;
+  --shadow-*: initial;
+
+  /* === Primaries (operator-owned): brand gold oklch(0.895 0.092 77). Neutrals are warm
+     sand at hue 60, chroma at most 0.006. Surfaces get lighter as they rise; elevation
+     shadows are for overlays only. === */
+
+  /* === Surfaces: warm sand neutral (hue 60, chroma 0.006); each step up is lighter.
+     Three page tones only: sunken chrome (icon rail + section navigator), the canvas,
+     and the card every chart, table and panel sits on. === */
+  --color-surface-sunken: oklch(0.155 0.006 60);
+  --color-surface-canvas: oklch(0.17 0.006 60);
+  --color-surface-raised: oklch(0.19 0.006 60);
+  /* Data well: chart plots and table bodies share the card fill; hairlines separate them. */
+  --color-surface-data: var(--color-surface-raised);
+  /* Table head band: use the control step so it stays distinct from striped data rows. */
+  --color-surface-header: var(--color-surface-control);
+  --color-surface-control: oklch(0.235 0.006 60);
+  --color-surface-overlay: oklch(0.245 0.006 60);
+
+  /* === Text ladder: four steps, nothing else === */
+  --color-fg-primary: oklch(0.93 0.003 90);
+  --color-fg-secondary: oklch(0.85 0.004 90);
+  --color-fg-tertiary: oklch(0.78 0.004 90);
+  --color-fg-disabled: oklch(0.55 0.004 90);
+
+  /* === Hairlines (white over any surface) === */
+  --color-border-subtle: rgb(255 255 255 / 0.06);
+
+  /* === Brand gold: the primary button fill, the active route-tab underline, the
+     navigator current-row bar, the text-selection tint and chart series 1
+     (--color-chart-1, the primary series of every chart). Nothing else. === */
+  --color-brand: oklch(0.895 0.092 77);
+  --color-brand-foreground: var(--color-surface-canvas);
+  --color-selection-tint: color-mix(in oklch, var(--color-brand) 28%, transparent);
+
+  /* === State overlays: translucent white over whatever surface hosts the row.
+     Hover and press never animate. === */
+  --color-state-stripe: color-mix(in oklch, var(--color-fg-primary) 2%, transparent);
+  --color-state-hover: rgb(255 255 255 / 0.06);
+  --color-state-pressed: rgb(255 255 255 / 0.12);
+  --color-state-selected: rgb(255 255 255 / 0.1);
+  --color-state-selected-hover: rgb(255 255 255 / 0.14);
+
+  /* === Focus ring: brand gold (shown only where the browser decides :focus-visible) === */
+  --color-focus-ring: var(--color-brand);
+
+  /* === Legacy shadcn aliases, repointed onto the roles above === */
+  --color-background: var(--color-surface-canvas);
+  --color-foreground: var(--color-fg-primary);
+  --color-card: var(--color-surface-raised);
+  --color-card-foreground: var(--color-fg-primary);
+  --color-popover: var(--color-surface-overlay);
+  --color-popover-foreground: var(--color-fg-primary);
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: var(--color-brand-foreground);
+  --color-secondary: var(--color-surface-control);
+  --color-secondary-foreground: var(--color-fg-primary);
+  --color-muted-foreground: var(--color-fg-tertiary);
+  --color-accent: var(--color-state-pressed);
+  --color-accent-foreground: var(--color-fg-primary);
+  --color-border: rgb(255 255 255 / 0.08);
+  --color-border-strong: rgb(255 255 255 / 0.12);
+  --color-input: var(--color-border-strong);
+  --color-ring: var(--color-focus-ring);
+  /* Alpha carrier for mask gradients (only its opacity is ever used), not a paint colour. */
+  --mask-opaque: oklch(0 0 0);
+
+  /* === Semantic status (separate from the accent) === */
+  --color-positive: var(--color-tone-success);
+  --color-negative: var(--color-tone-critical);
+  --color-info: var(--color-tone-info);
+
+  /* === Tone families (the one status vocabulary: neutral|info|success|warning|critical) ===
+     Every `tone` prop resolves to these. Text = the tone colour; surface = a 12% oklab tint
+     of it over the raised surface; border = a stronger tint. Utilities: text-tone-success,
+     bg-tone-success-surface, border-tone-success-border. Contrast is pinned in lib/tone.test.ts. */
+  --color-tone-neutral: var(--color-fg-tertiary);
+  --color-tone-neutral-surface: color-mix(
+    in oklab,
+    var(--color-tone-neutral) 12%,
+    var(--color-surface-raised)
+  );
+  --color-tone-neutral-border: color-mix(
+    in oklab,
+    var(--color-tone-neutral) 30%,
+    var(--color-surface-raised)
+  );
+  --color-tone-info: oklch(0.78 0.12 250);
+  --color-tone-info-surface: color-mix(
+    in oklab,
+    var(--color-tone-info) 12%,
+    var(--color-surface-raised)
+  );
+  --color-tone-info-border: color-mix(
+    in oklab,
+    var(--color-tone-info) 30%,
+    var(--color-surface-raised)
+  );
+  --color-tone-success: oklch(0.76 0.15 150);
+  --color-tone-success-surface: color-mix(
+    in oklab,
+    var(--color-tone-success) 12%,
+    var(--color-surface-raised)
+  );
+  --color-tone-success-border: color-mix(
+    in oklab,
+    var(--color-tone-success) 30%,
+    var(--color-surface-raised)
+  );
+  --color-tone-warning: oklch(0.8 0.13 55);
+  --color-tone-warning-surface: color-mix(
+    in oklab,
+    var(--color-tone-warning) 12%,
+    var(--color-surface-raised)
+  );
+  --color-tone-warning-border: color-mix(
+    in oklab,
+    var(--color-tone-warning) 30%,
+    var(--color-surface-raised)
+  );
+  --color-tone-critical: oklch(0.8 0.12 22);
+  --color-tone-critical-surface: color-mix(
+    in oklab,
+    var(--color-tone-critical) 12%,
+    var(--color-surface-raised)
+  );
+  --color-tone-critical-border: color-mix(
+    in oklab,
+    var(--color-tone-critical) 30%,
+    var(--color-surface-raised)
+  );
+
+  /* === Chart series rotation (20) ===
+     Built off the brand gold (series 1). No other slot sits in the yellow band (hue ~60-110),
+     so gold stays unique. Ring 1: gold, then blue, teal, violet, coral, green, pink, sky,
+     each as far in hue from the series before it as the wheel allows; orange, gold's warm
+     neighbour, waits until slot 9. Ring 2 repeats the order deeper (L ~0.63); ring 3 is pale
+     tints. Role colours (baseline, benchmark) sit outside the rotation. */
+  --color-chart-1: var(--color-primary);
+  --color-chart-2: oklch(0.76 0.12 250);
+  --color-chart-3: oklch(0.8 0.11 180);
+  --color-chart-4: oklch(0.75 0.13 300);
+  --color-chart-5: oklch(0.76 0.14 25);
+  --color-chart-6: oklch(0.8 0.13 145);
+  --color-chart-7: oklch(0.76 0.13 350);
+  --color-chart-8: oklch(0.8 0.1 220);
+  --color-chart-9: oklch(0.72 0.15 50);
+  --color-chart-10: oklch(0.63 0.13 265);
+  --color-chart-11: oklch(0.65 0.1 195);
+  --color-chart-12: oklch(0.62 0.13 315);
+  --color-chart-13: oklch(0.62 0.15 15);
+  --color-chart-14: oklch(0.65 0.13 155);
+  --color-chart-15: oklch(0.62 0.14 335);
+  --color-chart-16: oklch(0.64 0.11 235);
+  --color-chart-17: oklch(0.86 0.07 235);
+  --color-chart-18: oklch(0.88 0.08 165);
+  --color-chart-19: oklch(0.86 0.07 290);
+  --color-chart-20: oklch(0.87 0.08 40);
+
+  /* === Chart semantic tokens (one card surface: header, plot, legend rail and brush
+     share the raised fill; hairlines and spacing separate them) === */
+  --color-chart-primary: var(--color-primary);
+  --color-chart-surface: var(--color-surface-raised);
+  --color-chart-surface-raised: var(--color-surface-overlay);
+  --color-chart-axis: var(--color-border-strong);
+  /* A solid neutral data mark (regime fills), one step above the plot. */
+  --color-chart-neutral: oklch(0.33 0.006 60);
+  --color-chart-axis-muted: var(--color-chart-neutral);
+  /* Gridlines recede under the data: 7% of the text colour (Grafana 9%, shadcn ~5%). */
+  --color-chart-grid: color-mix(in oklch, var(--color-fg-primary) 7%, transparent);
+  /* Tick labels sit one step under tertiary text, as an opaque mix so canvas text stays
+     crisp (shadcn muted-foreground L 0.708). */
+  --color-chart-axis-label: color-mix(
+    in oklch,
+    var(--color-fg-tertiary) 88%,
+    var(--color-chart-surface)
+  );
+  --color-chart-benchmark: oklch(0.72 0.005 90);
+  --color-chart-candle-up: #fff;
+  --color-chart-candle-down: #787b86;
+  /* The reference version a candidate is compared against: a cool near-white, outside the
+     rotation so it never collides with a compared arm. */
+  --color-chart-baseline: oklch(0.86 0.02 250);
+  /* One crosshair for every renderer: a 1px 4/4 dashed rule at 32% of the text colour
+     (Lightweight Charts #9598A1 dashed, Grafana text.secondary dashed). */
+  --color-chart-crosshair: color-mix(in oklch, var(--color-fg-primary) 32%, transparent);
+  --color-chart-tooltip-bg: var(--color-surface-overlay);
+  --color-chart-tooltip-border: var(--color-border);
+  --color-chart-tooltip-text: var(--color-fg-primary);
+
+  /* === Spacing (Tailwind v4 utility base) === */
+  --spacing: 0.25rem;
+
+  /* === Radius roles (4 / 6 / 8 / 12, plus pill) === */
+  --radius-badge: 0.25rem;
+  --radius-control: 0.375rem;
+  --radius-surface: 0.5rem;
+  --radius-dialog: 0.75rem;
+  --radius-pill: 9999px;
+
+  /* === Typography === */
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  /* === Type roles: size / line-height / weight / tracking. Weights 400, 500 and 600 only.
+     Nothing below 11px. One overline tier (navigator group labels). === */
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+  --text-caption--font-weight: 400;
+  --text-ui-sm: 0.8125rem;
+  --text-ui-sm--line-height: 1.25rem;
+  --text-ui-sm--font-weight: 400;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.25rem;
+  --text-body--font-weight: 400;
+  --text-label: 0.875rem;
+  --text-label--line-height: 1.25rem;
+  --text-label--font-weight: 500;
+  --text-section: 1rem;
+  --text-section--line-height: 1.5rem;
+  --text-section--font-weight: 600;
+  --text-section--letter-spacing: -0.01em;
+  --text-title: 1.25rem;
+  --text-title--line-height: 1.75rem;
+  --text-title--font-weight: 600;
+  --text-title--letter-spacing: -0.01em;
+  --text-metric: 1.5rem;
+  --text-metric--line-height: 2rem;
+  --text-metric--font-weight: 600;
+  --text-metric--letter-spacing: -0.01em;
+  --text-overline: 0.6875rem;
+  --text-overline--line-height: 1rem;
+  --text-overline--font-weight: 500;
+  --text-overline--letter-spacing: 0.06em;
+  --text-prose: 0.9375rem;
+  --text-prose--line-height: 1.5rem;
+  /* Long-form reading (the Reader frame): larger body, roomy leading, a display title. */
+  --text-reading: 1rem;
+  --text-reading--line-height: 1.75rem;
+  --text-display: 1.75rem;
+  --text-display--line-height: 2.25rem;
+  --text-display--letter-spacing: -0.015em;
+  /* Acronyms in running text: capitals a step smaller and tracked, relative to the text around
+     them (Plex Sans has no small caps to switch to). */
+  --text-caps: 0.875em;
+  --text-caps--letter-spacing: 0.04em;
+
+  /* === Motion === */
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  --motion-fast: 150ms;
+  --motion-slow: 300ms;
+  --duration-micro: var(--motion-fast);
+  --duration-sm: var(--motion-fast);
+  --duration-md: var(--motion-slow);
+  --duration-lg: var(--motion-slow);
+  --ease-default: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* === Shadows === */
+  --shadow-raised: 0 0 0 1px rgb(255 255 255 / 0.06);
+  --shadow-overlay:
+    0 0 0 1px rgb(255 255 255 / 0.08), 0 2px 6px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.4);
+  --shadow-dialog: 0 0 0 1px rgb(255 255 255 / 0.1), 0 24px 48px rgb(0 0 0 / 0.5);
+}
+
+/* === Theme palettes ===
+   `data-theme` on <html> swaps the neutral hue; the default (no attribute) is the warm
+   sand above. A theme overrides only reference values: aliases, tones, chart bridges and
+   state overlays derive from them, and useChartTheme re-reads canvases when the attribute
+   changes. Brand gold stays the same in the neutral themes. A theme that changes the brand
+   must move any chart slot near the new hue so chart series 1 keeps its unique hue band;
+   amethyst swaps its violet slot for the gold it freed. Ids are listed in QF_THEMES
+   (tokens.ts). */
+@layer theme {
+  :root[data-theme="slate"] {
+    --color-surface-sunken: oklch(0.155 0.012 255);
+    --color-surface-canvas: oklch(0.17 0.012 255);
+    --color-surface-raised: oklch(0.19 0.013 255);
+    --color-surface-control: oklch(0.235 0.014 255);
+    --color-surface-overlay: oklch(0.245 0.014 255);
+    --color-fg-primary: oklch(0.93 0.006 250);
+    --color-fg-secondary: oklch(0.85 0.008 250);
+    --color-fg-tertiary: oklch(0.78 0.01 250);
+    --color-fg-disabled: oklch(0.55 0.01 250);
+    --color-chart-neutral: oklch(0.33 0.014 255);
+    --color-chart-benchmark: oklch(0.72 0.01 250);
+  }
+
+  :root[data-theme="graphite"] {
+    --color-surface-sunken: oklch(0.15 0 0);
+    --color-surface-canvas: oklch(0.165 0 0);
+    --color-surface-raised: oklch(0.185 0 0);
+    --color-surface-control: oklch(0.23 0 0);
+    --color-surface-overlay: oklch(0.24 0 0);
+    --color-fg-primary: oklch(0.93 0 0);
+    --color-fg-secondary: oklch(0.85 0 0);
+    --color-fg-tertiary: oklch(0.78 0 0);
+    --color-fg-disabled: oklch(0.55 0 0);
+    --color-chart-neutral: oklch(0.33 0 0);
+    --color-chart-benchmark: oklch(0.72 0 0);
+  }
+
+  :root[data-theme="amethyst"] {
+    /* Neutrals carry the brand hue at zero chroma, so color-mix with the brand stays violet
+       instead of interpolating through pink from hue 0. */
+    --color-surface-sunken: oklch(0.196 0 284.7);
+    --color-surface-canvas: oklch(0.218 0 284.7);
+    --color-surface-raised: oklch(0.244 0 284.7);
+    --color-surface-control: oklch(0.273 0 284.7);
+    --color-surface-overlay: oklch(0.309 0 284.7);
+    --color-fg-primary: oklch(0.967 0 284.7);
+    --color-fg-secondary: oklch(0.894 0 284.7);
+    --color-fg-tertiary: oklch(0.845 0 284.7);
+    --color-fg-disabled: oklch(0.586 0 284.7);
+    --color-brand: oklch(0.609 0.222 284.7);
+    --color-brand-foreground: oklch(0 0 0);
+    --color-tone-info: oklch(0.84 0.082 251);
+    --color-tone-success: oklch(0.85 0.133 164.5);
+    --color-tone-warning: oklch(0.859 0.15 84.7);
+    --color-tone-critical: oklch(0.805 0.112 13.5);
+    --color-chart-neutral: oklch(0.341 0 284.7);
+    --color-chart-benchmark: oklch(0.732 0 284.7);
+    --color-chart-4: oklch(0.895 0.092 77);
+  }
+}
+
+@layer base {
+  /* === Semantic aliases ===
+	   Scoped <style> blocks consume these; Tailwind utilities
+	   come directly from @theme above. No duplicate sources.
+	   ────────────────────────────────────────────────────── */
+  :root {
+    /* Text alias read by lib and extension charts */
+    --color-text: var(--color-foreground);
+
+    /* Geometry */
+    --sidebar-width: 3rem;
+    --section-nav-width: 15rem;
+    --section-nav-width-narrow: 11rem;
+    --control-height: var(--control-height-md);
+
+    /* Shell geometry: the shell owns its slot sizes so content control heights can move
+       separately. --sidebar-width-expanded is the expanded desktop rail and the mobile drawer. */
+    --shell-slot: 2rem;
+    --nav-row-height: 1.75rem;
+    --shell-bar-height: 3.5rem;
+    /* Bottom bars: one 32px slot, 8px above and below, plus the 1px top rule. Equals a
+       table's pagination band, so the two rules line up on flush pages. */
+    --shell-footer-height: calc(var(--shell-slot) + 2 * var(--space-2) + 1px);
+    --sidebar-width-expanded: 12rem;
+    --shell-touch-target: 2.5rem;
+
+    /* Insets: page edge and surface padding */
+    --inset-page: 1.5rem;
+    --inset-surface: 1rem;
+    --inset-surface-compact: 0.75rem;
+    /* A segmented track's inset and item gap: 28px items in a 32px track (B-3.6). */
+    --inset-track: 2px;
+
+    /* Gaps: the vertical rhythm */
+    --gap-stack: var(--space-2); /* 8: siblings in a stack */
+    --gap-heading: var(--space-3); /* 12: heading to its content */
+    --gap-block: var(--space-4); /* 16: block to block */
+    --gap-section: var(--space-6); /* 32: section to section */
+
+    /* Table rows */
+    --table-row-height: 2rem;
+    --table-row-height-compact: 1.75rem;
+
+    /* Control-size scale: every sized control (Button, Input, Select, SegmentedControl)
+       maps size="xs".."xl" to one of these (24 / 28 / 32 / 36 / 40; md is the default). Icon-only controls are square at the same step. */
+    --control-height-xs: 1.5rem;
+    --control-height-sm: 1.75rem;
+    --control-height-md: 2rem;
+    --control-height-lg: 2.25rem;
+    --control-height-xl: 2.5rem;
+
+    /* Stacking scale. Components use these names, never raw z-index numbers. */
+    --z-base: 0;
+    --z-lift: 1;
+    --z-raised: 10;
+    --z-sticky: 20;
+    --z-dropdown: 30;
+    --z-overlay: 50;
+    --z-popover: 60;
+    --z-toast: 100;
+
+    /* Motion scale. Only open/close (enter/exit) moves; hover and press never animate.
+       Reduced motion zeroes every duration below (see base.css). */
+    --duration-instant: 0ms;
+    --duration-control: 100ms;
+    --duration-enter: 160ms;
+    --duration-exit: 110ms;
+    --duration-emphasis: 300ms;
+    --ease-enter: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-exit: cubic-bezier(0.5, 0, 0.75, 0);
+
+    /* 4px spacing scale */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 2.5rem;
+    --space-8: 3rem;
+    --space-9: 4rem;
+  }
+
+  @media (max-width: 1023.98px) {
+    :root {
+      --inset-page: 1rem;
+    }
+  }
+}

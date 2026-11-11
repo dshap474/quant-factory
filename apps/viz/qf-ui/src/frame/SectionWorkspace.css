@@ -1,0 +1,205 @@
+/**
+ * Shared section workspace and persistent navigator styles.
+ *
+ * USAGE: imported by SectionWorkspace.tsx
+ */
+
+@layer qf-components {
+  /* ------------------------------------------------------------------------- */
+  /* Workspace and navigator geometry */
+  /* ------------------------------------------------------------------------- */
+
+  /* The workspace fills an unpadded .route-content (AppShell.css); its panes carry
+     the --inset-page edge, so no parent padding is cancelled with negative margins. */
+  .section-workspace {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .section-workspace-content {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    overflow: auto;
+    overscroll-behavior: none;
+    scrollbar-gutter: stable;
+    /* Header or toolbar to first content is one block gap; the page ends on the inset. */
+    padding: var(--gap-block) var(--inset-page) var(--inset-page);
+  }
+
+  /* Bounded content pane: the routed child owns its own overflow, so the pane reserves
+     no scrollbar gutter and its child runs to the window edge. */
+  .section-workspace-content.is-fill {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    scrollbar-gutter: auto;
+  }
+
+  .section-workspace-main {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .section-workspace-header {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--shell-bar-height);
+    min-height: var(--shell-bar-height);
+    max-height: var(--shell-bar-height);
+    flex: 0 0 var(--shell-bar-height);
+    border-bottom: 1px solid var(--color-border-subtle);
+    background: var(--color-background);
+  }
+
+  .section-workspace-toolbar {
+    width: 100%;
+    min-width: 0;
+    flex: 0 0 auto;
+    background: var(--color-background);
+  }
+
+  .section-workspace-toolbar:empty {
+    display: none;
+  }
+
+  .section-navigator {
+    width: var(--section-nav-width);
+    min-width: var(--section-nav-width);
+    max-width: var(--section-nav-width);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    max-height: 100%;
+    border-inline-end: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-sunken);
+    font-family: var(--font-sans);
+    overflow: hidden;
+  }
+
+  .section-navigator.is-narrow {
+    --section-nav-width: var(--section-nav-width-narrow);
+  }
+
+  .section-navigator-width-toggle {
+    width: var(--shell-slot);
+    height: var(--shell-slot);
+    flex: 0 0 var(--shell-slot);
+    border-radius: var(--radius-control);
+  }
+
+  .section-navigator.collapsed {
+    width: 0;
+    min-width: 0;
+    max-width: 0;
+    height: 100%;
+    max-height: 100%;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  /* An end-side rail is a pane of the workspace it sits in, not the page's primary
+     navigator, so it shares the workspace's background. */
+  .section-navigator.is-end {
+    border-inline-start: 1px solid var(--color-border-subtle);
+    border-inline-end: 0;
+    background: var(--color-background);
+  }
+
+  .section-navigator.is-strip.collapsed {
+    width: calc(var(--shell-slot) + var(--space-2));
+    min-width: calc(var(--shell-slot) + var(--space-2));
+    max-width: calc(var(--shell-slot) + var(--space-2));
+    border-inline-start: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-sunken);
+    overflow: hidden;
+  }
+
+  .section-navigator.is-strip.collapsed.is-end {
+    background: var(--color-background);
+  }
+
+  .section-navigator.is-strip.collapsed:not(.is-end) {
+    border-inline-start: 0;
+    border-inline-end: 1px solid var(--color-border-subtle);
+  }
+
+  /* The strip's title reads from the top; its expand icon sits at the foot, on the
+     bottom-bar row (8px off the bottom edge). */
+  .section-navigator-strip {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: var(--space-2);
+  }
+
+  .section-navigator-strip-label {
+    flex: 1;
+    min-height: 0;
+    padding: var(--space-3) 0;
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 500;
+    writing-mode: vertical-rl;
+  }
+
+  .section-navigator.is-end .shell-bottombar {
+    flex-direction: row-reverse;
+  }
+
+  .section-navigator.is-end .shell-bottombar > .shell-bottombar-actions {
+    margin-inline: 0 auto;
+  }
+
+  .section-navigator.collapsed .shell {
+    height: 100%;
+  }
+
+  /* Collapsed, the bottom bar holds only the shell-slot expand tile, floated over the
+     content's bottom corner exactly where the collapse button sat, so the pointer
+     never has to move to undo a collapse. */
+  .section-navigator.collapsed .shell-bottombar {
+    position: absolute;
+    z-index: var(--z-sticky);
+    inset-block: auto var(--space-2);
+    inset-inline: var(--space-2) auto;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .section-navigator.collapsed.is-end .shell-bottombar {
+    inset-inline: auto var(--space-2);
+  }
+
+  /* The shared .controls padding (8px top) keeps the first control off the header
+     hairline; the 8px side inset puts the controls on the row pills' edges. */
+  .section-navigator .controls {
+    display: grid;
+    /* A bounded column, so a switcher too wide for it collapses instead of widening it. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+    padding-inline: var(--space-2);
+  }
+
+  /* Every navigator strip spans the column and its equal segments take the tighter
+     inset; a set too wide for the column becomes a dropdown (SegmentedControl). */
+  .section-navigator .controls .ui-segmented-control-item {
+    padding-inline: var(--space-2);
+  }
+}

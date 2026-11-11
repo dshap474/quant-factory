@@ -1,0 +1,62 @@
+/**
+ * Legend collapse control (.legend-collapse-button): the inline ghost toggle and the
+ * floating raised one. Hosts place it (TimeSeriesChart pins it to the body's corner).
+ *
+ * USAGE: imported by LegendCollapseButton.tsx
+ */
+
+/* Hosts give buttons a hit-area floor; the toggle keeps its 24px box and extends the
+   hit area with a pseudo-element instead, so the header row keeps its height. */
+.legend-collapse-button.is-inline {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  min-width: 24px;
+  min-height: 24px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--qf-chart-radius-control);
+  background: transparent;
+  color: var(--qf-chart-muted-text);
+  cursor: pointer;
+}
+
+.legend-collapse-button.is-inline::before {
+  position: absolute;
+  inset: -8px;
+  content: "";
+}
+
+.legend-collapse-button.is-inline:hover {
+  background: var(--qf-chart-key-hover-surface);
+  color: var(--qf-chart-strong-text);
+}
+
+.legend-collapse-button.is-inline:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: 0;
+}
+
+/* The floating toggle sits over its positioned parent on its own raised surface. */
+.legend-collapse-button.is-floating {
+  position: absolute;
+  z-index: var(--qf-chart-z-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--qf-chart-radius-control);
+  background: var(--qf-chart-surface);
+  box-shadow: var(--qf-chart-shadow-raised);
+  color: var(--qf-chart-label);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.legend-collapse-button.is-floating:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: 0;
+}

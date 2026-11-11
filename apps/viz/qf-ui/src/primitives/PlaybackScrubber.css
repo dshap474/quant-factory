@@ -1,0 +1,144 @@
+/**
+ * PlaybackScrubber recipe styles (.ui-playback*): transport buttons, a slim slider whose
+ * elapsed part is filled, the position label and the speed control on one row; the sticky
+ * modifier pins the row to the top of its scrolling pane as a raised bar.
+ *
+ * USAGE: imported by PlaybackScrubber.tsx
+ */
+
+@layer qf-components {
+  .ui-playback {
+    --ui-playback-track: 4px;
+    --ui-playback-thumb: 12px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  /* A full-bleed toolbar pinned to the top edge of a TerminalPage body: negative margins
+     cancel the body's padding (top --gap-block, sides --inset-page) so it meets the header
+     and both pane edges, and the negative sticky offset keeps it there while scrolling
+     (sticky stops at the scroll container's padding edge). Content follows one block gap
+     below. Opaque so the charts scroll beneath it. */
+  .ui-playback--sticky {
+    --ui-playback-pad-top: var(--gap-block);
+    --ui-playback-pad-x: var(--inset-page);
+    position: sticky;
+    top: calc(-1 * var(--ui-playback-pad-top));
+    z-index: var(--z-sticky);
+    margin: calc(-1 * var(--ui-playback-pad-top)) calc(-1 * var(--ui-playback-pad-x))
+      calc(var(--gap-block) - var(--gap-section));
+    padding: var(--space-2) var(--ui-playback-pad-x);
+    border-bottom: 1px solid var(--color-border-subtle);
+    --ui-playback-bg: var(--color-surface-canvas);
+    background: var(--ui-playback-bg);
+  }
+
+  .ui-playback-transport {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .ui-playback-play {
+    border-radius: var(--radius-pill);
+  }
+
+  /* Slider: a slim track, filled up to the thumb, with a thumb that grows under the pointer. */
+  .ui-playback-range {
+    flex: 1 1 auto;
+    min-width: 8rem;
+    height: calc(var(--ui-playback-thumb) + 8px);
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .ui-playback-range::-webkit-slider-runnable-track {
+    height: var(--ui-playback-track);
+    border-radius: var(--radius-pill);
+    background: linear-gradient(
+      to right,
+      var(--color-fg-secondary) var(--ui-playback-progress, 0%),
+      var(--color-border) var(--ui-playback-progress, 0%)
+    );
+  }
+
+  .ui-playback-range::-moz-range-track {
+    height: var(--ui-playback-track);
+    border-radius: var(--radius-pill);
+    background: var(--color-border);
+  }
+
+  .ui-playback-range::-moz-range-progress {
+    height: var(--ui-playback-track);
+    border-radius: var(--radius-pill);
+    background: var(--color-fg-secondary);
+  }
+
+  .ui-playback-range::-webkit-slider-thumb {
+    width: var(--ui-playback-thumb);
+    height: var(--ui-playback-thumb);
+    margin-top: calc((var(--ui-playback-track) - var(--ui-playback-thumb)) / 2);
+    border: 2px solid var(--ui-playback-bg, var(--color-surface-raised));
+    border-radius: var(--radius-pill);
+    background: var(--color-fg-primary);
+    transition: transform 120ms ease-out;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .ui-playback-range::-moz-range-thumb {
+    width: var(--ui-playback-thumb);
+    height: var(--ui-playback-thumb);
+    border: 2px solid var(--ui-playback-bg, var(--color-surface-raised));
+    border-radius: var(--radius-pill);
+    background: var(--color-fg-primary);
+    transition: transform 120ms ease-out;
+  }
+
+  .ui-playback-range:is(:hover, :active):not(:disabled)::-webkit-slider-thumb {
+    transform: scale(1.25);
+  }
+
+  .ui-playback-range:is(:hover, :active):not(:disabled)::-moz-range-thumb {
+    transform: scale(1.25);
+  }
+
+  .ui-playback-range:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .ui-playback-range:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-control);
+  }
+
+  .ui-playback-label {
+    flex: 0 0 auto;
+    min-width: 6.5rem;
+    color: var(--color-fg-primary);
+    font-size: var(--text-ui-sm);
+    font-weight: 500;
+    line-height: var(--text-ui-sm--line-height);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Separate rules: a selector list mixing vendor pseudo-elements is dropped whole. */
+    .ui-playback-range::-webkit-slider-thumb {
+      transition: none;
+    }
+
+    .ui-playback-range::-moz-range-thumb {
+      transition: none;
+    }
+  }
+}

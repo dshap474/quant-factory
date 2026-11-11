@@ -1,0 +1,334 @@
+/**
+ * Navigator recipe: the row tree inside a section navigator. Rows are inset pills
+ * (Linear / VS Code / macOS sidebar pattern): the list sits 8px off both panel edges,
+ * hover and selection fill a --radius-control pill; the current row is marked by its
+ * fill and weight alone, never a bar. Rows use the
+ * state overlays (hover --color-state-hover, press --color-state-pressed, current
+ * --color-state-selected); the only motion is the disclosure chevron.
+ *
+ * USAGE: imported by Navigator.tsx
+ */
+
+@layer qf-components {
+  /* Symmetric pills: the label starts --nav-pad (10px) inside the pill, the same as the
+     trailing chevron or meta keeps off its right edge; the indent
+     steps by --nav-indent per depth. Glyph and leading slots sit inside that edge. */
+  .ui-navigator {
+    --nav-indent: 0.75rem;
+    --nav-lead: 1rem;
+    --nav-inset: var(--space-2);
+    --nav-pill-pad: var(--space-1);
+    --nav-pad: 0.625rem;
+  }
+
+  /* ---- Scroll area ---- */
+  /* The scroll area reserves one --nav-inset gutter on BOTH edges, so the row pills
+     sit exactly 8px off each panel edge and the scrollbar lives inside the right-hand
+     inset (a 4px thumb centred in the 8px gutter) instead of eating extra width on
+     one side only. Engines without ::-webkit-scrollbar keep their own scrollbar
+     width in both gutters and pad the rest, which stays symmetric. */
+  .ui-navigator .body {
+    scrollbar-gutter: stable both-edges;
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+
+  .ui-navigator .body::-webkit-scrollbar {
+    width: var(--nav-inset);
+  }
+
+  .ui-navigator .body::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    .ui-navigator .body {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border-strong) transparent;
+    }
+  }
+
+  /* ---- Column states ---- */
+  .ui-navigator-loading {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  .ui-navigator-message {
+    margin: var(--space-2) var(--nav-pill-pad);
+  }
+
+  .ui-navigator-children-state {
+    padding: var(--space-2) var(--nav-pill-pad);
+    padding-inline-start: calc(var(--nav-pad) + var(--nav-indent));
+  }
+
+  /* ---- Lists ---- */
+  .ui-navigator-list {
+    display: block;
+    padding: var(--space-2) 0;
+  }
+
+  .ui-navigator-items,
+  .ui-navigator-children {
+    display: grid;
+    /* One shrinkable track: an implicit `auto` column sizes to the longest row's
+       min-content and pushes rows past a narrow navigator instead of truncating. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ui-navigator-item {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ---- Groups ---- */
+  .ui-navigator-group + .ui-navigator-group {
+    margin-top: var(--space-2);
+  }
+
+  .ui-navigator-group-label {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-lift);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--nav-pad) var(--space-1);
+    background: var(--color-surface-sunken);
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-overline);
+    line-height: var(--text-overline--line-height);
+    font-weight: 500;
+    letter-spacing: var(--text-overline--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .ui-navigator-group-label.is-collapsible {
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .ui-navigator-group-label.is-collapsible > :first-child {
+    flex: 1;
+  }
+
+  .ui-navigator-group-label.is-collapsible:hover {
+    color: var(--color-fg-secondary);
+  }
+
+  .ui-navigator-group-label.is-collapsible:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .ui-navigator-group-meta {
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  /* ---- Rows ---- */
+  .ui-navigator-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: var(--nav-row-height);
+    padding-block: var(--space-1);
+    padding-inline: calc(var(--nav-pad) + var(--ui-navigator-depth, 0) * var(--nav-indent))
+      var(--nav-pad);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-fg-secondary);
+    font: inherit;
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: none;
+  }
+
+  .ui-navigator-row:hover {
+    background: var(--color-state-hover);
+    color: var(--color-fg-primary);
+  }
+
+  .ui-navigator-row:active {
+    background: var(--color-state-pressed);
+  }
+
+  /* Canonical focus ring (base.css), inset because the rows sit in a scroll
+     container; the outline follows the pill radius and composes with the
+     `.is-current` selected fill. */
+  .ui-navigator-row:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  /* Top-level rows and parents read brighter than the rows nested under them; the
+     current row is told apart by its fill and bar, not by its text. */
+  .ui-navigator-row.is-root,
+  .ui-navigator-row.is-disclosure {
+    color: var(--color-fg-primary);
+    font-weight: 500;
+  }
+
+  .ui-navigator-row.is-current {
+    background: var(--color-state-selected);
+    color: var(--color-fg-primary);
+    font-weight: 500;
+  }
+
+  .ui-navigator-row.is-current:hover {
+    background: var(--color-state-selected-hover);
+  }
+
+  /* ---- Row slots ---- */
+  .ui-navigator-chevron {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-fg-tertiary);
+    transition: transform var(--duration-sm) var(--ease-default);
+  }
+
+  /* Trailing disclosure: points right while closed, down while open. */
+  .ui-navigator-chevron.is-open {
+    transform: rotate(90deg);
+  }
+
+  .ui-navigator-glyph {
+    flex: none;
+    min-width: var(--nav-lead);
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-navigator-leading {
+    display: inline-flex;
+    flex: none;
+    min-width: var(--nav-lead);
+    align-items: center;
+  }
+
+  .ui-navigator-copy {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+    gap: 0;
+  }
+
+  .ui-navigator-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-navigator-detail {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-2);
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Status tag: caption text; a success or failure state colours the text itself. */
+  .ui-navigator-tag {
+    flex: none;
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .ui-navigator-tag[data-tone="success"] {
+    color: var(--color-tone-success);
+  }
+
+  .ui-navigator-tag[data-tone="warning"] {
+    color: var(--color-tone-warning);
+  }
+
+  .ui-navigator-tag[data-tone="critical"] {
+    color: var(--color-tone-critical);
+  }
+
+  .ui-navigator-meta {
+    flex: none;
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Row actions ---- */
+  .ui-navigator-item.has-actions {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .ui-navigator-item.has-actions > .ui-navigator-row {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ui-navigator-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: stretch;
+  }
+
+  /* Row actions are 28px squares on the control scale, centred in the row. */
+  .ui-navigator-actions > .ui-button-nav {
+    width: var(--control-height-sm);
+    height: var(--control-height-sm);
+    min-height: 0;
+    align-self: center;
+    padding: 0;
+    border-radius: var(--radius-control);
+    justify-content: center;
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-navigator-actions > .ui-button-nav:hover:not(:disabled) {
+    background-color: transparent;
+    background-image: linear-gradient(var(--color-state-hover), var(--color-state-hover));
+  }
+
+  .ui-navigator-actions > .ui-button-nav[aria-pressed="true"] {
+    background-color: transparent;
+    background-image: linear-gradient(var(--color-state-selected), var(--color-state-selected));
+    color: var(--color-fg-primary);
+  }
+}

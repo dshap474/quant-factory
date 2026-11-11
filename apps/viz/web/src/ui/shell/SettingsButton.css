@@ -1,0 +1,115 @@
+/**
+ * Sidebar settings popover styles.
+ *
+ * USAGE: imported by SettingsButton.tsx
+ */
+
+@layer qf-components {
+  .settings-wrap {
+    position: relative;
+    min-width: 0;
+  }
+
+  .settings-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-2);
+    width: 100%;
+    height: var(--shell-slot);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-fg-secondary);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    font-weight: 400;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    transition: none;
+  }
+
+  .sidebar-control-icon-slot {
+    display: flex;
+    width: var(--shell-slot);
+    height: var(--shell-slot);
+    flex: 0 0 var(--shell-slot);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .settings-button:hover {
+    background: var(--color-state-hover);
+  }
+
+  .settings-button:active:not(:disabled) {
+    background: var(--color-state-pressed);
+    color: var(--color-fg-primary);
+  }
+
+  .settings-button[aria-expanded="true"] {
+    background: var(--color-state-selected);
+    color: var(--color-fg-primary);
+  }
+
+  .settings-button:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 0;
+  }
+
+  .settings-button svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  .settings-popover {
+    position: absolute;
+    bottom: calc(100% + var(--gap-stack));
+    left: 0;
+    z-index: var(--z-popover);
+    display: grid;
+    gap: var(--gap-block);
+    width: min(19rem, calc(100vw - 2rem));
+    padding: var(--inset-surface);
+    border: 0;
+    border-radius: var(--radius-surface);
+    background: var(--color-surface-overlay);
+    color: var(--color-fg-primary);
+    box-shadow: var(--shadow-overlay);
+  }
+
+  .settings-section {
+    display: grid;
+    gap: var(--gap-stack);
+  }
+
+  .settings-section strong,
+  .settings-section span {
+    display: block;
+  }
+
+  .settings-section strong {
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: var(--text-label--font-weight);
+  }
+
+  .settings-section span:not(.sr-only) {
+    margin-top: 0;
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .settings-control-placeholder {
+    min-height: var(--shell-slot);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-raised);
+  }
+
+  .settings-select {
+    width: 100%;
+  }
+}

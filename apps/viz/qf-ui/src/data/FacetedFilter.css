@@ -1,0 +1,32 @@
+/**
+ * Faceted filter trigger (dashed border, selection badges after a rule) and list rows with counts.
+ *
+ * USAGE: imported by FacetedFilter.tsx.
+ */
+
+@layer qf-components {
+  .ui-faceted-trigger {
+    border-style: dashed;
+  }
+
+  .ui-faceted-selection {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-left: var(--space-1);
+    padding-left: var(--space-2);
+    border-left: 1px solid var(--color-border);
+  }
+
+  .ui-faceted-label {
+    flex: 1 1 auto;
+  }
+
+  .ui-faceted-count {
+    margin-left: var(--space-4);
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-variant-numeric: tabular-nums;
+  }
+}

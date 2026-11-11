@@ -1,0 +1,30 @@
+/**
+ * Toolbar recipe styles (.ui-toolbar).
+ *
+ * USAGE: imported by Toolbar.tsx
+ */
+
+@layer qf-components {
+  /* Toolbars are hairline bands, not boxed surfaces. */
+  .ui-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    border: 0;
+    border-bottom: 1px solid var(--color-border);
+    background: transparent;
+  }
+
+  /* A boxed surface right below owns the shared edge; the hairline would double it. */
+  .ui-toolbar:has(+ :is(.ui-surface:not(.ui-toolbar), .data-table-frame.is-framed)) {
+    border-bottom: 0;
+  }
+
+  /* A band spans its pane; controls sit on the pane's band inset (see Pagination band). */
+  .ui-toolbar-band {
+    flex: 0 0 auto;
+    border-radius: 0;
+    padding: var(--space-2) var(--ui-band-inset, var(--space-3));
+  }
+}

@@ -1,0 +1,715 @@
+/**
+ * Reader frame styles: reading column, sticky rail (table of contents, progress), header,
+ * relaxed document type, reference chips and their preview card.
+ *
+ * USAGE: imported by Reader.tsx
+ */
+
+@layer qf-components {
+  /* -------------------------------------------------------------------------- */
+  /* Frame: reading column with a sticky rail beside it                         */
+  /* -------------------------------------------------------------------------- */
+
+  .qf-reader {
+    --qf-reader-measure: 72ch;
+    --qf-reader-rail: 15rem;
+    container: qf-reader / inline-size;
+    min-width: 0;
+  }
+
+  .qf-reader-layout {
+    display: grid;
+    grid-template-columns: minmax(0, var(--qf-reader-measure)) var(--qf-reader-rail);
+    grid-template-areas: "column rail";
+    justify-content: start;
+    column-gap: var(--space-9);
+  }
+
+  .qf-reader[data-align="center"] .qf-reader-layout {
+    justify-content: center;
+  }
+
+  .qf-reader-column {
+    grid-area: column;
+    min-width: 0;
+    padding-block: var(--space-4) var(--space-9);
+  }
+
+  .qf-reader-rail {
+    position: sticky;
+    top: 0;
+    grid-area: rail;
+    align-self: start;
+    display: flex;
+    max-height: calc(100vh - var(--shell-bar-height) - var(--space-6));
+    flex-direction: column;
+    gap: var(--space-5);
+    /* Inline room for focus rings, which a scroll box would otherwise clip. */
+    margin-inline: calc(-1 * var(--space-1));
+    padding: var(--space-4) var(--space-1);
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .qf-reader-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  /* The document title joins the rail once the header has scrolled away. */
+  .qf-reader-rail-title {
+    display: none;
+    margin: 0;
+    color: var(--color-fg-primary);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: var(--text-label--font-weight);
+    text-wrap: balance;
+  }
+
+  .qf-reader-rail-title[data-shown] {
+    display: block;
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Table of contents: numbered markers on one vertical line                   */
+  /* -------------------------------------------------------------------------- */
+
+  .qf-reader-toc-label {
+    margin: 0;
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-overline);
+    line-height: var(--text-overline--line-height);
+    font-weight: var(--text-overline--font-weight);
+    letter-spacing: var(--text-overline--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .qf-reader-toc-label {
+    margin-bottom: var(--space-3);
+  }
+
+  .qf-reader-toc-list {
+    --qf-reader-marker: 1.25rem;
+    position: relative;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The thread through every marker's center. */
+  .qf-reader-toc-list::before {
+    position: absolute;
+    top: var(--space-3);
+    bottom: var(--space-3);
+    left: calc(var(--qf-reader-marker) / 2);
+    width: 1px;
+    background: var(--color-border-strong);
+    content: "";
+  }
+
+  .qf-reader-toc-item,
+  .qf-reader-toc-subitem {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding-block: var(--space-1);
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    text-decoration: none;
+    transition: none;
+  }
+
+  .qf-reader-toc-item:hover,
+  .qf-reader-toc-subitem:hover {
+    color: var(--color-fg-primary);
+  }
+
+  .qf-reader-toc-item:focus-visible,
+  .qf-reader-toc-subitem:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-control);
+  }
+
+  .qf-reader-toc-marker {
+    display: inline-flex;
+    width: var(--qf-reader-marker);
+    height: var(--qf-reader-marker);
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-fg-secondary);
+    background: var(--color-surface-control);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-caption);
+    line-height: 1;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .qf-reader-toc-text {
+    min-width: 0;
+    text-wrap: pretty;
+  }
+
+  .qf-reader-toc-item:hover .qf-reader-toc-marker {
+    color: var(--color-fg-primary);
+    border-color: var(--color-fg-tertiary);
+  }
+
+  .qf-reader-toc-item[data-on-path] {
+    color: var(--color-fg-primary);
+    font-weight: 500;
+  }
+
+  .qf-reader-toc-item[data-on-path] .qf-reader-toc-marker {
+    color: var(--color-surface-canvas);
+    background: var(--color-fg-primary);
+    border-color: var(--color-fg-primary);
+  }
+
+  /* Subsections of the section being read hang off the thread with a tree branch. */
+  .qf-reader-toc-sublist {
+    display: grid;
+    margin: 0 0 var(--space-1);
+    padding: 0 0 0 calc(var(--qf-reader-marker) + var(--space-3));
+    list-style: none;
+  }
+
+  .qf-reader-toc-subitem {
+    gap: var(--space-2);
+    padding-block: 1px;
+  }
+
+  .qf-reader-toc-subitem::before {
+    flex: none;
+    color: var(--color-fg-disabled);
+    content: "└";
+  }
+
+  .qf-reader-toc-subitem[aria-current="location"] {
+    color: var(--color-fg-primary);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Reading progress                                                           */
+  /* -------------------------------------------------------------------------- */
+
+  .qf-reader-progress-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .qf-reader-progress-bar > span:not(.qf-reader-progress-value) {
+    width: 4px;
+    height: 10px;
+    background: var(--color-border-strong);
+  }
+
+  .qf-reader-progress-bar > span[data-filled] {
+    background: var(--color-fg-primary);
+  }
+
+  .qf-reader-progress-value {
+    margin-left: var(--space-2);
+    color: var(--color-fg-secondary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The sequence's previous and next documents, under the progress bar. */
+  .qf-reader-rail-pager {
+    display: grid;
+    gap: var(--space-1);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .qf-reader-rail-pager .qf-reader-rail-pager-link {
+    display: flex;
+    flex-direction: column;
+    /* Inset by the rail's own inline room, so the hover wash is never clipped. */
+    padding: var(--space-2) var(--space-1);
+    margin-inline: calc(-1 * var(--space-1));
+    color: var(--color-fg-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-control);
+  }
+
+  .qf-reader-rail-pager .qf-reader-rail-pager-link:hover {
+    color: var(--color-fg-primary);
+    background: var(--color-state-hover);
+  }
+
+  .qf-reader-rail-pager-title {
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    text-wrap: pretty;
+  }
+
+  /* Narrow panes: the rail stacks above the column and scrolls with the page. */
+  @container qf-reader (max-width: 60rem) {
+    .qf-reader-layout {
+      grid-template-columns: minmax(0, var(--qf-reader-measure));
+      grid-template-areas: "rail" "column";
+    }
+
+    .qf-reader-rail {
+      position: static;
+      max-height: none;
+      margin-inline: 0;
+      padding-inline: 0;
+      padding-bottom: var(--space-4);
+      overflow: visible;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+
+    .qf-reader-rail-title,
+    .qf-reader-progress-bar {
+      display: none;
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Header: title, lede, labelled metadata                                     */
+  /* -------------------------------------------------------------------------- */
+
+  .qf-reader-header {
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .qf-reader-title {
+    margin: 0;
+    color: var(--color-fg-primary);
+    font-size: var(--text-display);
+    font-weight: 600;
+    line-height: var(--text-display--line-height);
+    letter-spacing: var(--text-display--letter-spacing);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .qf-reader-lede {
+    margin: var(--space-4) 0 0;
+    color: var(--color-fg-secondary);
+    font-size: var(--text-reading);
+    line-height: var(--text-reading--line-height);
+    text-wrap: pretty;
+  }
+
+  .qf-reader-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-8);
+    margin: var(--space-6) 0 0;
+  }
+
+  .qf-reader-meta-item {
+    display: grid;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .qf-reader-meta-item dt {
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-overline);
+    line-height: var(--text-overline--line-height);
+    font-weight: var(--text-overline--font-weight);
+    letter-spacing: var(--text-overline--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .qf-reader-meta-item dd {
+    display: flex;
+    gap: var(--space-2);
+    margin: 0;
+    color: var(--color-fg-primary);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+  }
+
+  .qf-reader-meta-item dd::before {
+    color: var(--color-fg-disabled);
+    content: "└";
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Document type inside the column                                            */
+  /* -------------------------------------------------------------------------- */
+
+  .qf-reader-body .prose-dark {
+    font-size: var(--text-reading);
+    line-height: var(--text-reading--line-height);
+  }
+
+  .qf-reader-body .prose-dark p,
+  .qf-reader-body .prose-dark ul,
+  .qf-reader-body .prose-dark ol,
+  .qf-reader-body .prose-dark blockquote {
+    margin-bottom: var(--space-4);
+  }
+
+  .qf-reader-body .prose-dark li {
+    margin-bottom: var(--space-2);
+  }
+
+  .qf-reader-body .prose-dark h2 {
+    position: relative;
+    margin-top: var(--space-9);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-title);
+    line-height: var(--text-title--line-height);
+    letter-spacing: var(--text-title--letter-spacing);
+    scroll-margin-top: var(--space-6);
+  }
+
+  .qf-reader-body .prose-dark h3 {
+    position: relative;
+    margin-top: var(--space-7);
+    margin-bottom: var(--space-2);
+    color: var(--color-fg-primary);
+    font-size: var(--text-section);
+    line-height: var(--text-section--line-height);
+    scroll-margin-top: var(--space-6);
+  }
+
+  .qf-reader-body .prose-dark > :first-child {
+    margin-top: 0;
+  }
+
+  .qf-reader-body .prose-dark strong {
+    color: var(--color-fg-primary);
+    font-weight: 600;
+  }
+
+  /* A back-of-book index (Prose layout="index"): body type, entries set solid, plain weight;
+     sub-entries are told apart by their indent. */
+  .qf-reader-body .prose-dark.prose-index {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+  .qf-reader-body .prose-index p,
+  .qf-reader-body .prose-index ul,
+  .qf-reader-body .prose-index li {
+    margin-bottom: 0;
+  }
+  .qf-reader-body .prose-index strong {
+    color: inherit;
+    font-weight: inherit;
+  }
+  .qf-reader-body .prose-index h2 {
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-1);
+  }
+  .qf-reader-body .prose-index > h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .qf-reader-body .prose-dark table {
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+  }
+
+  /* Booktabs: no frame or fills, a strong rule above and below, the head ruled off, and
+     the outer columns flush with the text column. */
+  .qf-reader-body .prose-dark .ui-table-markup-frame {
+    margin-block: var(--space-6);
+    border: 0;
+    border-block: 1px solid var(--color-border-strong);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .qf-reader-body .prose-dark :is(.ui-table-header, .ui-table-body) {
+    background: transparent;
+  }
+
+  .qf-reader-body .prose-dark .ui-table-header > .ui-table-row {
+    border-bottom-color: var(--color-border-strong);
+  }
+
+  .qf-reader-body .prose-dark .ui-table-head {
+    color: var(--color-fg-primary);
+  }
+
+  /* A quantity (1800–1862, −0.42%) never breaks across lines. */
+  .qf-reader-body .prose-dark .ui-table-cell[data-numeric] {
+    white-space: nowrap;
+  }
+
+  .qf-reader-body .prose-dark :is(.ui-table-head, .ui-table-cell):first-child {
+    padding-inline-start: 0;
+  }
+
+  .qf-reader-body .prose-dark :is(.ui-table-head, .ui-table-cell):last-child {
+    padding-inline-end: 0;
+  }
+
+  /* Acronyms (host markup: span.qf-caps) sit a step below the capitals around them. */
+  .qf-reader-body .qf-caps {
+    font-size: var(--text-caps);
+    letter-spacing: var(--text-caps--letter-spacing);
+  }
+
+  /* Equation numbers (host markup: .qf-math[data-eq], a flex row) sit in the right margin. */
+  .qf-reader-body .prose-dark .qf-math[data-eq]::after {
+    content: "(" attr(data-eq) ")";
+    flex: none;
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-ui-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .qf-reader-body .prose-dark .qf-math[id] {
+    scroll-margin-top: var(--space-6);
+  }
+
+  .qf-reader-body .prose-dark .qf-math:target {
+    background: var(--color-state-selected);
+    border-radius: var(--radius-control);
+  }
+
+  /* Opens elsewhere: a small arrow after the link text. */
+  .qf-reader-body .prose-dark a[target="_blank"]::after {
+    margin-left: var(--space-1);
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    content: "↗";
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Heading index and anchor (host markup: .qf-heading-index, .qf-heading-anchor) */
+  /* -------------------------------------------------------------------------- */
+
+  .qf-reader-body .qf-heading-index {
+    margin-right: var(--space-3);
+    color: var(--color-fg-tertiary);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* After the text, not in the left margin, which the sidebar can cover. */
+  .qf-reader-body .prose-dark .qf-heading-anchor {
+    margin-left: var(--space-2);
+    color: var(--color-fg-tertiary);
+    font-weight: 400;
+    text-decoration: none;
+    opacity: 0;
+    transition: none;
+  }
+
+  .qf-reader-body .prose-dark h2:hover .qf-heading-anchor,
+  .qf-reader-body .prose-dark h3:hover .qf-heading-anchor,
+  .qf-reader-body .prose-dark .qf-heading-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* References (host markup: a.qf-ref, a.qf-ref-source, li.qf-ref-entry;       */
+  /* and for a converted book's notes, a.qf-note-ref and ol.qf-notes)           */
+  /* -------------------------------------------------------------------------- */
+
+  /* A numbered citation: a small raised chip that previews its claim. */
+  .qf-reader-body .prose-dark a.qf-ref {
+    display: inline-flex;
+    min-width: 1.125rem;
+    height: 1rem;
+    margin-inline: 1px;
+    padding-inline: var(--space-1);
+    align-items: center;
+    justify-content: center;
+    color: var(--color-fg-secondary);
+    background: var(--color-surface-control);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-badge);
+    font-size: var(--text-overline);
+    line-height: 1;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-decoration: none;
+    vertical-align: text-top;
+  }
+
+  .qf-reader-body .prose-dark a.qf-ref:hover,
+  .qf-reader-body .prose-dark a.qf-ref:focus-visible {
+    color: var(--color-surface-canvas);
+    background: var(--color-fg-primary);
+    border-color: var(--color-fg-primary);
+  }
+
+  /* A citation that names its source: a quiet pill linking to the cited text. */
+  .qf-reader-body .prose-dark a.qf-ref-source {
+    display: inline;
+    padding: 1px var(--space-2);
+    color: var(--color-fg-tertiary);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    text-decoration: none;
+    white-space: nowrap;
+    box-decoration-break: clone;
+  }
+
+  .qf-reader-body .prose-dark a.qf-ref-source:hover {
+    color: var(--color-fg-primary);
+    border-color: var(--color-border-strong);
+  }
+
+  /* A converted book's note marks (a.qf-note-ref, previewing their note) read as marks. */
+  .qf-reader-body .prose-dark a.qf-note-ref {
+    color: var(--color-fg-secondary);
+    text-decoration: none;
+    scroll-margin-top: var(--space-6);
+  }
+
+  .qf-reader-body .prose-dark a.qf-note-ref:hover {
+    color: var(--color-fg-primary);
+  }
+
+  /* A search's words in the text (host markup: mark.qf-search-hit). */
+  .qf-reader-body .prose-dark mark.qf-search-hit {
+    background: var(--color-state-selected);
+    color: var(--color-fg-primary);
+    border-radius: var(--radius-badge);
+    scroll-margin-block: var(--space-6);
+  }
+
+  .qf-reader-body .prose-dark ol.qf-notes {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .qf-reader-body .prose-dark li.qf-ref-entry {
+    scroll-margin-top: var(--space-6);
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+  }
+
+  .qf-reader-body .prose-dark li.qf-ref-entry:target {
+    color: var(--color-fg-primary);
+  }
+
+  .qf-reader-body .prose-dark li.qf-ref-entry .qf-ref-key {
+    color: var(--color-fg-secondary);
+    font-weight: 500;
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Figures (host markup: figure > img + figcaption > .qf-figure-label)        */
+  /* -------------------------------------------------------------------------- */
+
+  /* No frame: the image sits centered in the column with its caption centered beneath. */
+  .qf-reader-body .prose-dark figure {
+    margin: var(--space-7) 0;
+    scroll-margin-top: var(--space-6);
+  }
+
+  .qf-reader-body .prose-dark figure img {
+    display: block;
+    max-width: 100%;
+    margin-inline: auto;
+    border-radius: var(--radius-control);
+  }
+
+  .qf-reader-body .prose-dark figcaption {
+    max-width: 36rem;
+    margin: var(--space-3) auto 0;
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    text-align: center;
+    text-wrap: pretty;
+  }
+
+  .qf-reader-body .qf-figure-label {
+    margin-right: var(--space-2);
+    color: var(--color-fg-secondary);
+    font-size: var(--text-overline);
+    letter-spacing: var(--text-overline--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Reference preview card                                                     */
+  /* -------------------------------------------------------------------------- */
+
+  .qf-reader-preview {
+    max-width: 24rem;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .qf-reader-preview-title {
+    margin: 0 0 var(--space-1);
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-overline);
+    line-height: var(--text-overline--line-height);
+    letter-spacing: var(--text-overline--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .qf-reader-preview-text {
+    margin: 0;
+    color: var(--color-fg-secondary);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Pager: previous and next in a sequence                                     */
+  /* -------------------------------------------------------------------------- */
+
+  .qf-reader-pager {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-9);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .qf-reader-pager .qf-reader-pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    color: var(--color-fg-primary);
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-surface);
+  }
+
+  .qf-reader-pager .qf-reader-pager-link[data-direction="next"] {
+    grid-column: 2;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .qf-reader-pager .qf-reader-pager-link:hover {
+    background: var(--color-state-hover);
+    border-color: var(--color-border-strong);
+  }
+
+  .qf-reader-pager-label {
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .qf-reader-pager-title {
+    font-size: var(--text-label);
+    font-weight: var(--text-label--font-weight);
+    line-height: var(--text-label--line-height);
+    text-wrap: balance;
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "excluded_write_operations": 4,
+  "get_operations": 226,
+  "retrieved_date": "2026-10-13",
+  "sha256": {
+    "charts-openapi.json": "0d9f697e980eadeff60664c8894cbac4c30a4b69bbed466965378dcd9697ad60",
+    "data-api-openapi.json": "7a6147a54540d2950f6c62a3e5b1d8bb56be107f77620328f46287e9a24c8e95",
+    "monitoring-openapi.json": "7826dced04d0f210ac4401d02a818726d4ee16d6ee9bf649aaeaac49046df1d9",
+    "monitoring-watchlists-openapi.json": "20d84735f5769a5f85068d6f68512d9e44c6ee35eb6a26adc2c1358607362657",
+    "token-unlocks-openapi.json": "2edb466fcccfc4c59b7ee9e01632dd6ee60619562d23adde5b12b91d7c721a63"
+  },
+  "source_urls": {
+    "charts": "https://docs.blockworks.com/api-reference/charts/openapi.json",
+    "data-api": "https://docs.blockworks.com/api-reference/data-api/openapi.json",
+    "monitoring": "https://docs.blockworks.com/api-reference/monitoring/openapi.json",
+    "monitoring-watchlists": "https://docs.blockworks.com/api-reference/monitoring/watchlists-openapi.json",
+    "token-unlocks": "https://docs.blockworks.com/api-reference/token-unlocks/openapi.json"
+  }
+}

@@ -1,0 +1,108 @@
+/**
+ * Odometer number: clipped per-digit windows over a vertical 0-9 reel, plus the up/down
+ * change flash. Digits are tabular mono at 1ch, so a changing value never shifts layout.
+ *
+ * USAGE: imported by RollingNumber.tsx.
+ */
+
+@layer qf-components {
+  .ui-rolling-number {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .ui-rolling-number-visual {
+    display: inline-flex;
+    align-items: baseline;
+  }
+
+  .ui-rolling-number-char {
+    display: inline-block;
+    white-space: pre;
+  }
+
+  .ui-rolling-number-digit {
+    position: relative;
+    display: inline-block;
+    width: 1ch;
+    height: 1em;
+    overflow: hidden;
+    line-height: 1;
+  }
+
+  /* An invisible glyph gives the inline-block a real text baseline. */
+  .ui-rolling-number-ghost {
+    visibility: hidden;
+  }
+
+  .ui-rolling-number-reel {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--duration-emphasis) var(--ease-enter);
+    will-change: transform;
+  }
+
+  .ui-rolling-number-cell {
+    display: flex;
+    height: 1em;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Change flash: the tone colour is set instantly, then eases back to the inherited text
+     colour. Two alternating keyframe names restart the animation on every change. */
+  .ui-rolling-number[data-direction="up"] {
+    --qf-rolling-flash: var(--color-tone-success);
+  }
+
+  .ui-rolling-number[data-direction="down"] {
+    --qf-rolling-flash: var(--color-tone-critical);
+  }
+
+  .ui-rolling-number[data-flash="a"] .ui-rolling-number-visual {
+    animation: qf-rolling-flash-a var(--duration-emphasis) var(--ease-exit) both;
+  }
+
+  .ui-rolling-number[data-flash="b"] .ui-rolling-number-visual {
+    animation: qf-rolling-flash-b var(--duration-emphasis) var(--ease-exit) both;
+  }
+
+  @keyframes qf-rolling-flash-a {
+    from {
+      color: var(--qf-rolling-flash);
+    }
+
+    to {
+      color: inherit;
+    }
+  }
+
+  @keyframes qf-rolling-flash-b {
+    from {
+      color: var(--qf-rolling-flash);
+    }
+
+    to {
+      color: inherit;
+    }
+  }
+}
+
+@layer qf-motion {
+  /* Reduced motion: values swap instantly and never flash. */
+  @media (prefers-reduced-motion: reduce) {
+    .ui-rolling-number-reel {
+      transition: none;
+    }
+
+    .ui-rolling-number[data-flash] .ui-rolling-number-visual {
+      animation: none;
+    }
+  }
+}

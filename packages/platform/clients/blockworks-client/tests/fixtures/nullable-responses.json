@@ -1,0 +1,7 @@
+[
+  {"spec":"data-api-openapi.json","route":"/query/tabular/catalog","body":{"error":null,"data":{"models":[]}}},
+  {"spec":"data-api-openapi.json","route":"/query/timeseries/catalog","body":{"error":null,"data":{"models":[]}}},
+  {"spec":"monitoring-watchlists-openapi.json","route":"/user-management/v1/watchlists","body":{"error":null,"data":[]}},
+  {"spec":"token-unlocks-openapi.json","route":"/token-unlocks/v1/allocations","body":{"error":null,"data":[{"asset":{"id":"synthetic-id","name":"Synthetic","slug":"synthetic","symbol":"SYN"},"totalAllocationNative":0,"cumulativeUnlockedNative":0,"unlocksRemainingNative":0,"percentOfUnlocksCompleted":0,"allocationRecipientCount":1,"totalAllocationUSD":null,"cumulativeUnlockedUSD":null,"unlocksRemainingUSD":null,"allocations":[{"allocationRecipient":"Synthetic recipient","totalAllocationNative":0,"cumulativeUnlockedNative":0,"unlocksRemainingNative":0,"percentOfUnlocksCompleted":0,"totalAllocationUSD":null,"cumulativeUnlockedUSD":null,"unlocksRemainingUSD":null,"sources":null}]}]}},
+  {"spec":"token-unlocks-openapi.json","route":"/token-unlocks/v1/assets/{assetId}/events","body":{"error":null,"data":{"asset":{"id":"synthetic-id","name":"Synthetic","slug":"synthetic","symbol":"SYN"},"unlockEvents":[{"timestamp":"2026-01-01T00:00:00Z","dailyLinearRateChange":null}]}}}
+]

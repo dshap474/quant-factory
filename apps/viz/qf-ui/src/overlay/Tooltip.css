@@ -1,0 +1,17 @@
+/**
+ * Tooltip popup: compact sans caption hint on the overlay surface.
+ *
+ * USAGE: imported by Tooltip.tsx.
+ */
+
+@layer qf-components {
+  .ui-tooltip {
+    max-width: 20rem;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-control);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    overflow-wrap: anywhere;
+  }
+}

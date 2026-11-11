@@ -1,0 +1,215 @@
+{
+  "benchmark": {
+    "id": "BTC",
+    "label": "BTC buy & hold"
+  },
+  "diagnostics": [
+    {
+      "format": "number",
+      "key": "average_daily_turnover",
+      "label": "Average daily turnover",
+      "value": 0.8
+    },
+    {
+      "format": "percent",
+      "key": "total_cost_drag",
+      "label": "Total cost drag",
+      "value": -0.25
+    },
+    {
+      "format": "percent",
+      "key": "summed_income_return",
+      "label": "Summed income return",
+      "value": -0.1
+    },
+    {
+      "format": "percent",
+      "key": "minimum_price_coverage",
+      "label": "Minimum price coverage",
+      "value": 0.9
+    },
+    {
+      "format": "percent",
+      "key": "position_stability",
+      "label": "Position stability",
+      "value": 0.5
+    },
+    {
+      "format": "text",
+      "key": "rebalanced_dates",
+      "label": "Rebalanced dates",
+      "value": "1000/1000"
+    }
+  ],
+  "disclosures": [
+    "Research only; example data.",
+    "Synthetic values for UI tests.",
+    "The control is the example baseline used by the promotion gates."
+  ],
+  "display_state": "rejected",
+  "experiment": "example-surface",
+  "gates": [
+    {
+      "format": "number",
+      "name": "Information ratio",
+      "passed": true,
+      "requirement": "candidate >= 0.50",
+      "result": 0.72
+    },
+    {
+      "format": "number",
+      "name": "IR improvement",
+      "passed": true,
+      "requirement": "candidate - control >= 0.10",
+      "result": 0.3
+    },
+    {
+      "format": "number",
+      "name": "Average turnover",
+      "passed": false,
+      "requirement": "candidate <= 1.00",
+      "result": 1.2
+    },
+    {
+      "format": "percent",
+      "name": "Maximum drawdown",
+      "passed": false,
+      "requirement": "Above the minimum",
+      "result": -0.35
+    },
+    {
+      "format": "percent",
+      "name": "Data coverage",
+      "passed": false,
+      "requirement": "At or above the threshold",
+      "result": 0.8
+    },
+    {
+      "format": "text",
+      "name": "Rebalance status",
+      "passed": true,
+      "requirement": "Full coverage",
+      "result": "1000/1000"
+    }
+  ],
+  "memory_version": "v003",
+  "metrics": {
+    "benchmark": {
+      "annualized_return": 0.2,
+      "annualized_volatility": 0.4,
+      "calmar": 0.4,
+      "ending_value": 150.0,
+      "max_drawdown": -0.5,
+      "positive_days": 0.52,
+      "sharpe": 0.5,
+      "total_return": 0.5
+    },
+    "strategy": {
+      "annualized_return": 0.3,
+      "annualized_volatility": 0.3,
+      "calmar": 0.86,
+      "ending_value": 245.0,
+      "max_drawdown": -0.35,
+      "positive_days": 0.5,
+      "sharpe": 0.72,
+      "total_return": 1.45
+    }
+  },
+  "performance": {
+    "columns": [
+      "date",
+      "strategy_daily_return",
+      "strategy_portfolio_value",
+      "benchmark_daily_return",
+      "benchmark_portfolio_value",
+      "daily_turnover",
+      "daily_cost",
+      "daily_income_return",
+      "weighted_price_coverage",
+      "position_stability",
+      "status"
+    ],
+    "path": "example/20260101T000000Z-v003-surface/surface/performance.parquet",
+    "row_count": 1000,
+    "sha256": "342edb77c95f94da5f1c2e5a397d5467ba9e09b141e69dfa182cb243cb5b3b32"
+  },
+  "provenance": [
+    {
+      "path": "db/research/strategies/example-strategy/v003/run/input_0.parquet",
+      "sha256": "8dc217238516ea8d2a97e50f3f8beb6d768bf8aebc2df92ddb3208e06b201185"
+    },
+    {
+      "path": "db/research/strategies/example-strategy/v003/run/input_1.parquet",
+      "sha256": "1c8a467d3b55944ee8fe46bdc9c88d2ac555248782a843a0108ee414564b73dc"
+    },
+    {
+      "path": "db/research/strategies/example-strategy/v003/run/input_2.parquet",
+      "sha256": "8949b047c39fa7934f617da399c72f416250fe0f908417adaeafabfa92e9b386"
+    },
+    {
+      "path": "db/research/strategies/example-strategy/v003/run/input_3.parquet",
+      "sha256": "932d8af38113591f7319ca110c87e0cea59dc1723ad9b4ade6a1715be1fd8af4"
+    }
+  ],
+  "published_at": "2026-01-01T00:00:00+00:00",
+  "run_id": "20260101T000000Z-v003-surface",
+  "schema_version": 1,
+  "state": "rejected",
+  "strategy_type": "example-strategy",
+  "summary": "Example v003 performance against BTC buy and hold.",
+  "title": "v003 strategy performance",
+  "columns": [
+    "date",
+    "strategy_daily_return",
+    "strategy_portfolio_value",
+    "benchmark_daily_return",
+    "benchmark_portfolio_value",
+    "daily_turnover",
+    "daily_cost",
+    "daily_income_return",
+    "weighted_price_coverage",
+    "position_stability",
+    "status"
+  ],
+  "data": [
+    {
+      "date": "2024-01-02",
+      "strategy_daily_return": 0.01,
+      "strategy_portfolio_value": 101.0,
+      "benchmark_daily_return": 0.005,
+      "benchmark_portfolio_value": 100.5,
+      "daily_turnover": 1.0,
+      "daily_cost": 0.001,
+      "daily_income_return": -0.0002,
+      "weighted_price_coverage": 1.0,
+      "position_stability": 0.5,
+      "status": "optimized"
+    },
+    {
+      "date": "2024-01-03",
+      "strategy_daily_return": -0.005,
+      "strategy_portfolio_value": 100.495,
+      "benchmark_daily_return": 0.002,
+      "benchmark_portfolio_value": 100.701,
+      "daily_turnover": 0.8,
+      "daily_cost": 0.0008,
+      "daily_income_return": -0.0001,
+      "weighted_price_coverage": 1.0,
+      "position_stability": 0.6,
+      "status": "optimized"
+    },
+    {
+      "date": "2024-01-04",
+      "strategy_daily_return": 0.004,
+      "strategy_portfolio_value": 100.897,
+      "benchmark_daily_return": -0.003,
+      "benchmark_portfolio_value": 100.399,
+      "daily_turnover": 1.2,
+      "daily_cost": 0.0012,
+      "daily_income_return": 0.0001,
+      "weighted_price_coverage": 1.0,
+      "position_stability": 0.55,
+      "status": "optimized"
+    }
+  ]
+}

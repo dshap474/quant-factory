@@ -1,0 +1,206 @@
+/**
+ * Segmented rail (ghost hairline track, raised thumb) and dropdown-chip styling shared by every
+ * qf-charts toolbar choice. The selected option is a raised control-surface pill with
+ * primary text, matching the app's SegmentedControl, so the data stays the brightest
+ * thing in the card; menus keep the neutral selected fill. Hover and press never
+ * animate; the thumb jumps.
+ *
+ * USAGE: imported by ChartToggleGroup.tsx.
+ */
+
+/* ---- Shared ---- */
+
+.qf-chart-toggle-group,
+.qf-chart-toggle-menu-trigger,
+.qf-chart-toggle-menu {
+  --qf-chart-toggle-height: var(--qf-chart-control-height);
+  --qf-chart-toggle-text: var(--qf-chart-muted-text);
+  --qf-chart-toggle-strong: var(--qf-chart-strong-text);
+  --qf-chart-toggle-muted: var(--qf-chart-label);
+  /* A lighter chip than the control surface, so the choice reads at a glance. */
+  --qf-chart-toggle-selected-bg: color-mix(
+    in oklch,
+    var(--qf-chart-strong-text) 14%,
+    var(--qf-chart-surface-control)
+  );
+  --qf-chart-toggle-selected-ink: var(--qf-chart-strong-text);
+
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-caption);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* ---- Rail ---- */
+
+.qf-chart-toggle-group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--qf-chart-space-2);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.qf-chart-toggle-group-label {
+  color: var(--qf-chart-label);
+  font-size: var(--qf-chart-text-caption);
+  user-select: none;
+}
+
+/* The track is the 24px control. Segments fill its full height, so each hit target is
+   24 on the control scale; the raised thumb keeps its 2px inset and draws the 20px pill. */
+.qf-chart-toggle-track {
+  position: relative;
+  display: inline-flex;
+  height: var(--qf-chart-toggle-height);
+  padding: 0 2px;
+  border-radius: var(--qf-chart-radius-control);
+  /* Ghost track: no fill, a hairline outline only, so the raised thumb is the one filled
+     shape in the toolbar. */
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--qf-chart-border);
+}
+
+.qf-chart-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 0;
+  border-radius: var(--qf-chart-radius-badge);
+  background: var(--qf-chart-toggle-selected-bg);
+  box-shadow:
+    var(--qf-chart-shadow-raised),
+    inset 0 0 0 1px var(--qf-chart-border-strong);
+  pointer-events: none;
+}
+
+.qf-chart-toggle {
+  position: relative;
+  display: inline-flex;
+  min-width: 34px;
+  height: var(--qf-chart-toggle-height);
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--qf-chart-space-2);
+  border: 0;
+  border-radius: var(--qf-chart-radius-badge);
+  background: transparent;
+  color: var(--qf-chart-toggle-text);
+  font: inherit;
+  font-weight: 500;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.qf-chart-toggle-unit {
+  margin-left: 1px;
+  color: var(--qf-chart-label);
+  font-size: var(--qf-chart-text-caption);
+}
+
+.qf-chart-toggle:hover {
+  color: var(--qf-chart-toggle-strong);
+}
+
+.qf-chart-toggle:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: 0;
+}
+
+.qf-chart-toggle[aria-pressed="true"] {
+  color: var(--qf-chart-toggle-selected-ink);
+}
+
+.qf-chart-toggle[aria-pressed="true"] .qf-chart-toggle-unit {
+  color: inherit;
+  opacity: 0.7;
+}
+
+/* ---- Menu chip ---- */
+
+.qf-chart-toggle-menu-trigger {
+  display: inline-flex;
+  height: var(--qf-chart-toggle-height);
+  min-height: 0;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px 0 var(--qf-chart-space-2);
+  border: 0;
+  border-radius: var(--qf-chart-radius-control);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--qf-chart-border);
+  color: var(--qf-chart-toggle-text);
+  cursor: pointer;
+}
+
+.qf-chart-toggle-menu-name {
+  color: var(--qf-chart-toggle-muted);
+  font-size: var(--qf-chart-text-caption);
+}
+
+.qf-chart-toggle-menu-trigger > svg {
+  color: var(--qf-chart-toggle-muted);
+}
+
+.qf-chart-toggle-menu-trigger:hover,
+.qf-chart-toggle-menu-trigger[aria-expanded="true"] {
+  background: var(--qf-chart-state-pressed);
+  color: var(--qf-chart-toggle-strong);
+}
+
+.qf-chart-toggle-menu-trigger:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: 0;
+}
+
+.qf-chart-toggle-menu-trigger[data-active="true"] {
+  background: var(--qf-chart-state-selected);
+}
+
+.qf-chart-toggle-menu-trigger[data-active="true"] .qf-chart-toggle-menu-value {
+  color: var(--qf-chart-strong-text);
+}
+
+.qf-chart-toggle-menu {
+  position: fixed;
+  z-index: var(--qf-chart-z-popover);
+  display: grid;
+  padding: var(--qf-chart-space-1);
+  border: 0;
+  border-radius: var(--qf-chart-radius-surface);
+  background: var(--qf-chart-popover-surface);
+  box-shadow: var(--qf-chart-popover-shadow);
+}
+
+.qf-chart-toggle-menu-item {
+  display: flex;
+  height: 28px;
+  min-height: 0;
+  align-items: center;
+  padding: 0 var(--qf-chart-space-2);
+  border: 0;
+  border-radius: var(--qf-chart-radius-badge);
+  background: transparent;
+  color: var(--qf-chart-toggle-text);
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.qf-chart-toggle-menu-item:hover,
+.qf-chart-toggle-menu-item:focus-visible {
+  outline: none;
+  background: var(--qf-chart-state-hover);
+  color: var(--qf-chart-toggle-strong);
+}
+
+.qf-chart-toggle-menu-item[aria-checked="true"] {
+  background: var(--qf-chart-state-selected);
+  color: var(--qf-chart-strong-text);
+}

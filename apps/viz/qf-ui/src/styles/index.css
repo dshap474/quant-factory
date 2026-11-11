@@ -1,0 +1,16 @@
+/**
+ * qf-ui stylesheet entry: design tokens, base styles, and the Tailwind class
+ * sources for every qf-ui component. Component recipes load with their component.
+ *
+ * USAGE (host's global stylesheet; the layer statement must come first so qf-ui's
+ * layers slot between Tailwind's):
+ *   @layer theme, base, qf-components, qf-variants, components, utilities, qf-motion;
+ *   @import "tailwindcss";
+ *   @import "@quant-factory/qf-ui/styles.css";
+ */
+
+@import "./tokens.css";
+@import "./base.css";
+
+/* qf-ui resolves from outside the host's package root, so Tailwind cannot auto-detect it. */
+@source "../";

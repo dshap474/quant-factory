@@ -1,0 +1,81 @@
+/**
+ * Sidebar collapse button (panel glyph): one base recipe plus the three host variants.
+ *
+ * Variants are chosen by the component's `variant` prop, never by host CSS. The bar's
+ * icon slot, the tile and the icon all sit at --shell-slot (32px), with no bleed past
+ * their row:
+ *   is-bar  — full-width footer bar with a leading --shell-slot icon slot.
+ *   is-tile — raised --shell-slot square (collapsed navigator tile).
+ *   is-icon — flat --shell-slot square inline in a header row.
+ *
+ * USAGE: imported by SidebarCollapseButton.tsx
+ */
+
+@layer qf-components {
+  .sidebar-collapse-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: var(--shell-slot);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-fg-secondary);
+    cursor: pointer;
+    transition: none;
+  }
+
+  .sidebar-collapse-icon-slot {
+    display: flex;
+    width: var(--shell-slot);
+    height: var(--shell-slot);
+    flex: 0 0 var(--shell-slot);
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Panel glyph wrapper; the glyph swaps on collapse with no transition. */
+  .sidebar-collapse-glyph {
+    display: flex;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .sidebar-collapse-button:hover {
+    background: var(--color-state-hover);
+    color: var(--color-fg-primary);
+  }
+
+  .sidebar-collapse-button:active:not(:disabled) {
+    background: var(--color-state-pressed);
+    color: var(--color-fg-primary);
+  }
+
+  .sidebar-collapse-button:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 0;
+  }
+
+  /* Variant: footer bar (default): full width with the leading 32px icon slot. */
+  .sidebar-collapse-button.is-bar {
+    width: 100%;
+    height: var(--shell-slot);
+  }
+
+  /* Variant: collapsed-navigator tile: a raised shell-slot square. */
+  .sidebar-collapse-button.is-tile {
+    width: var(--shell-slot);
+    height: var(--shell-slot);
+    flex: 0 0 var(--shell-slot);
+    background: var(--color-surface-raised);
+    box-shadow: var(--shadow-raised);
+  }
+
+  /* Variant: flat inline icon square. */
+  .sidebar-collapse-button.is-icon {
+    width: var(--shell-slot);
+    height: var(--shell-slot);
+    flex: 0 0 var(--shell-slot);
+  }
+}

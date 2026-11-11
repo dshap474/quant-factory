@@ -1,0 +1,14 @@
+/**
+ * Layout for the chart transform toolbar; button styling lives in ChartToggleGroup.css.
+ *
+ * USAGE: imported by ChartTransformToolbar.tsx.
+ */
+
+.qf-chart-transform-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+}

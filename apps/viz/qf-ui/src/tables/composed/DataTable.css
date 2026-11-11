@@ -1,0 +1,252 @@
+/**
+ * Sticky, horizontally scrollable data-table presentation.
+ *
+ * USAGE: imported by DataTable.tsx.
+ */
+
+@layer qf-components {
+  /* --------------------------------------------------------------------------- #
+   * Frame
+   * --------------------------------------------------------------------------- # */
+
+  .data-table-frame {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--color-card);
+  }
+
+  /* Head cells are the shared sentence-case caption head; column names are data and
+     stay as given. */
+  .data-table-head {
+    padding-block: 0;
+  }
+
+  .data-table-scroll th {
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 500;
+    line-height: var(--text-caption--line-height);
+    box-shadow: inset 0 -1px 0 var(--color-border);
+  }
+
+  /* One 32px row. The frame scrolls on both axes, so cells never truncate. */
+  .data-table-scroll td {
+    height: var(--table-row-height);
+    padding: 0 var(--space-3);
+    max-width: none;
+    overflow: visible;
+  }
+
+  /* `truncate: 'end'` text columns (long labels): capped, ellipsized, full text in the title. */
+  .data-table-scroll td.data-table-truncate {
+    max-width: 18rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .data-table-scroll tbody tr {
+    transition: none;
+  }
+
+  /* Virtual-window spacers are not rows: no hover tint, no zebra. */
+  .data-table-scroll tbody tr.data-table-spacer,
+  .data-table-scroll tbody tr.data-table-spacer:hover {
+    background: transparent;
+  }
+
+  .data-table-scroll tbody tr.data-table-spacer > :first-child {
+    box-shadow: none;
+  }
+
+  .data-table-scroll {
+    max-height: min(65vh, 48rem);
+  }
+
+  /* --------------------------------------------------------------------------- #
+   * Loading and empty states
+   * --------------------------------------------------------------------------- # */
+
+  /* Skeleton rows reuse the live grid so row height and columns never shift. */
+  .data-table-skeleton-bar {
+    display: block;
+    width: 100%;
+    min-width: 7ch;
+    height: 0.6em;
+    border-radius: var(--radius-badge);
+    background: var(--color-secondary);
+  }
+
+  .data-table-scroll td.data-table-emptycell {
+    height: 10rem;
+    vertical-align: middle;
+    border-bottom: 0;
+  }
+
+  /* Sticky so the message stays visible in a horizontally scrolled wide grid. */
+  .data-table-emptycell .ui-empty-state {
+    position: sticky;
+    left: 0;
+    width: min(100%, 32rem);
+    border: 0;
+    background: transparent;
+    white-space: normal;
+  }
+
+  .data-table-statebox {
+    min-height: 12rem;
+    background: var(--color-secondary);
+    opacity: 0.35;
+  }
+
+  /* --------------------------------------------------------------------------- #
+   * Dense terminal grid
+   * --------------------------------------------------------------------------- # */
+
+  .data-table-dense .data-table-head-name {
+    display: block;
+  }
+
+  .data-table-dense .data-table-head-type {
+    display: block;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.55;
+  }
+
+  /* Dimmed through the text colour, never opacity: the sticky gutter must stay opaque
+     or scrolled cells show through it. */
+  .data-table-dense .data-table-gutter {
+    padding-right: var(--space-2);
+    padding-left: var(--space-2);
+    color: color-mix(in oklch, var(--color-muted-foreground) 70%, transparent);
+    text-align: right;
+  }
+
+  /* With a pinned gutter the left scroll fade belongs on the gutter's right edge, where
+     cells slide under it, not on the table edge, where it would fade the row numbers. */
+  .data-table-dense .data-table-scroll[data-edge-start="x"]:has(.data-table-gutter) {
+    --ui-scroll-fade-start: 0px;
+  }
+
+  .data-table-dense .data-table-gutter::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: min(var(--ui-scroll-fade), var(--ui-scroll-room-start, var(--ui-scroll-fade)));
+    pointer-events: none;
+    content: "";
+    opacity: 0;
+    background: linear-gradient(to right, var(--color-surface-data), transparent);
+  }
+
+  .data-table-dense .data-table-gutter-head::after {
+    background: linear-gradient(to right, var(--color-surface-header), transparent);
+  }
+
+  .data-table-dense .data-table-scroll[data-edge-start="x"] .data-table-gutter::after {
+    opacity: 1;
+  }
+
+  .data-table-dense .data-table-gutter-head {
+    left: 0;
+  }
+
+  /* Pinned cells use the primitive's stripe/hover/selection tint over an opaque
+     data surface, so scrolled values never show through the row-number gutter. */
+  .data-table-dense td.data-table-gutter {
+    background:
+      linear-gradient(var(--ui-table-row-tint), var(--ui-table-row-tint)), var(--color-surface-data);
+  }
+
+  /* --------------------------------------------------------------------------- #
+   * Fill mode: the frame is a bounded flex column and the scroll region takes it
+   * --------------------------------------------------------------------------- # */
+
+  .data-table-frame.is-fill {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  .data-table-frame.is-fill .data-table-scroll {
+    max-height: none;
+  }
+
+  @media (max-width: 767px) {
+    .data-table-frame::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 2.5rem;
+      pointer-events: none;
+      content: "";
+      background: linear-gradient(
+        90deg,
+        transparent,
+        color-mix(in oklch, var(--color-card) 92%, transparent)
+      );
+    }
+  }
+}
+
+/* A dense data table replaces the .ui-table-head / .ui-table-cell base recipes from
+   Table.css with its own compact rhythm: character-width padding and a 28px row.
+   Declared in the variants layer so it beats the base recipe by declaration instead
+   of by being unlayered. */
+@layer qf-variants {
+  /* Columns size to their content but the grid still fills the host, so a narrow table
+     distributes the spare width instead of leaving a framed void; the scroll container
+     owns horizontal overflow. */
+  .data-table-dense .data-table-grid {
+    width: auto;
+    min-width: 100%;
+    table-layout: auto;
+  }
+
+  .data-table-dense .data-table-scroll th,
+  .data-table-dense .data-table-scroll td {
+    padding: 0 var(--space-2);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The outer data columns take the compact surface inset (the row gutter keeps its own). */
+  .data-table-dense .data-table-scroll :is(th, td):first-child:not(.data-table-gutter) {
+    padding-left: var(--inset-surface-compact);
+  }
+
+  .data-table-dense .data-table-scroll :is(th, td):last-child {
+    padding-right: var(--inset-surface-compact);
+  }
+
+  .data-table-cell {
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .data-table-dense .data-table-scroll td {
+    height: var(--table-row-height-compact);
+    line-height: var(--text-caption--line-height);
+    padding-block: 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  /* A framed table's own border closes it; the last row's rule would sit a pixel above it. */
+  .data-table-frame.is-framed.data-table-dense .data-table-scroll tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .data-table-dense .data-table-scroll th {
+    height: var(--table-row-height-compact);
+    padding-block: 0;
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    vertical-align: middle;
+  }
+}

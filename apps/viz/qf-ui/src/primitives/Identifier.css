@@ -1,0 +1,42 @@
+/**
+ * Identifier recipe (.ui-identifier): mono at the surrounding size, tabular figures,
+ * with an end-ellipsis modifier.
+ *
+ * USAGE: imported by Identifier.tsx
+ */
+
+@layer qf-components {
+  .ui-identifier {
+    color: inherit;
+    font-family: var(--font-mono);
+    font-size: inherit;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-identifier.is-truncate-end {
+    display: inline-block;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+
+  .ui-identifier-copy {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .ui-identifier-copy .ui-copy-button {
+    flex: 0 0 auto;
+    color: var(--color-fg-tertiary);
+  }
+
+  .ui-identifier-copy .ui-copy-button:hover {
+    color: var(--color-fg-primary);
+  }
+}

@@ -1,0 +1,48 @@
+/**
+ * Banner recipe (.ui-banner and its neutral/info/success/warning/critical tones).
+ * Colours come only from the tone token families in styles/tokens.css.
+ *
+ * USAGE: imported by Banner.tsx
+ */
+
+@layer qf-components {
+  .ui-banner {
+    flex: 0 0 auto;
+    border-bottom: 1px solid var(--color-tone-info-border);
+    background: var(--color-tone-info-surface);
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-tone-info);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  /* A boxed surface right below owns the shared edge; the hairline would double it. */
+  .ui-banner:has(+ :is(.ui-surface:not(.ui-toolbar), .data-table-frame.is-framed)) {
+    border-bottom-color: transparent;
+  }
+
+  .ui-banner.is-neutral {
+    border-bottom-color: var(--color-tone-neutral-border);
+    background: var(--color-tone-neutral-surface);
+    color: var(--color-tone-neutral);
+  }
+
+  .ui-banner.is-success {
+    border-bottom-color: var(--color-tone-success-border);
+    background: var(--color-tone-success-surface);
+    color: var(--color-tone-success);
+  }
+
+  .ui-banner.is-warning {
+    border-bottom-color: var(--color-tone-warning-border);
+    background: var(--color-tone-warning-surface);
+    color: var(--color-tone-warning);
+  }
+
+  .ui-banner.is-critical {
+    border-bottom-color: var(--color-tone-critical-border);
+    background: var(--color-tone-critical-surface);
+    color: var(--color-tone-critical);
+  }
+}

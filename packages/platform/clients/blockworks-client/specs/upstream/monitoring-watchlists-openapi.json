@@ -1,0 +1,885 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "OpenAPI specification for the Blockworks Watchlists API.",
+    "title": "Blockworks Watchlists API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.blockworks.com",
+      "description": "Blockworks API"
+    }
+  ],
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "paths": {
+    "/user-management/v1/watchlists": {
+      "get": {
+        "description": "Get all watchlists for the authenticated user",
+        "operationId": "ListWatchlists",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/Watchlist"
+                      },
+                      "type": "array"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "id": "8C25A83A",
+                      "title": "Layer 1 Protocols",
+                      "assetIds": [
+                        "1e31218a-e44e-4285-820c-8282ee222035",
+                        "21c795f5-1bfd-40c3-858e-e9d7e820c6d0",
+                        "b3d5d66c-26a2-404c-9325-91dc714a722b"
+                      ],
+                      "createdAt": "2024-07-12T18:22:38.311119Z",
+                      "updatedAt": "2025-12-11T19:14:00.915569Z"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Default response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "List user's watchlists",
+        "tags": [
+          "user-management/watchlist"
+        ]
+      },
+      "post": {
+        "description": "Create a new watchlist for the authenticated user",
+        "operationId": "CreateWatchlist",
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWatchlistRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Watchlist"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "id": "BA3FDA7B",
+                    "title": "DeFi Blue Chips",
+                    "assetIds": [
+                      "1e31218a-e44e-4285-820c-8282ee222035",
+                      "21c795f5-1bfd-40c3-858e-e9d7e820c6d0"
+                    ],
+                    "createdAt": "2026-03-27T14:11:02.490075Z",
+                    "updatedAt": "2026-03-27T14:11:02.490075Z"
+                  }
+                }
+              }
+            },
+            "description": "Default response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Create a new watchlist",
+        "tags": [
+          "user-management/watchlist"
+        ]
+      }
+    },
+    "/user-management/v1/watchlists/{id}": {
+      "delete": {
+        "description": "Delete a specific watchlist by ID for the authenticated user",
+        "operationId": "DeleteWatchlist",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Delete a watchlist",
+        "tags": [
+          "user-management/watchlist"
+        ]
+      },
+      "get": {
+        "description": "Get a specific watchlist by ID for the authenticated user",
+        "operationId": "GetWatchlist",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Watchlist"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "id": "8C25A83A",
+                    "title": "Layer 1 Protocols",
+                    "assetIds": [
+                      "1e31218a-e44e-4285-820c-8282ee222035",
+                      "21c795f5-1bfd-40c3-858e-e9d7e820c6d0",
+                      "b3d5d66c-26a2-404c-9325-91dc714a722b"
+                    ],
+                    "createdAt": "2024-07-12T18:22:38.311119Z",
+                    "updatedAt": "2025-12-11T19:14:00.915569Z"
+                  }
+                }
+              }
+            },
+            "description": "Default response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Get a watchlist",
+        "tags": [
+          "user-management/watchlist"
+        ]
+      },
+      "patch": {
+        "description": "Update a specific watchlist by ID for the authenticated user",
+        "operationId": "UpdateWatchlist",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWatchlistRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Watchlist"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "id": "BA3FDA7B",
+                    "title": "Updated Portfolio Name",
+                    "assetIds": [
+                      "1e31218a-e44e-4285-820c-8282ee222035",
+                      "21c795f5-1bfd-40c3-858e-e9d7e820c6d0"
+                    ],
+                    "createdAt": "2026-03-27T14:11:02.612968Z",
+                    "updatedAt": "2026-03-27T14:11:08.052905Z"
+                  }
+                }
+              }
+            },
+            "description": "Default response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Update a watchlist",
+        "tags": [
+          "user-management/watchlist"
+        ]
+      }
+    },
+    "/user-management/v1/watchlists/{id}/assets": {
+      "patch": {
+        "description": "Modify the assets in a specific watchlist by ID for the authenticated user",
+        "operationId": "ModifyWatchlistAssets",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/ModifyWatchlistAssetsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Watchlist"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "id": "BA3FDA7B",
+                    "title": "DeFi Blue Chips",
+                    "assetIds": [
+                      "1e31218a-e44e-4285-820c-8282ee222035",
+                      "21c795f5-1bfd-40c3-858e-e9d7e820c6d0",
+                      "b3d5d66c-26a2-404c-9325-91dc714a722b"
+                    ],
+                    "createdAt": "2026-03-27T14:11:02.612968Z",
+                    "updatedAt": "2026-03-27T14:11:27.836661Z"
+                  }
+                }
+              }
+            },
+            "description": "Default response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {},
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Modify watchlist assets",
+        "tags": [
+          "user-management/watchlist"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateWatchlistRequest": {
+        "properties": {
+          "assetIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "assetIds"
+        ],
+        "type": "object"
+      },
+      "ModifyWatchlistAssetsRequest": {
+        "properties": {
+          "action": {
+            "enum": [
+              "add",
+              "remove"
+            ],
+            "type": "string"
+          },
+          "assetIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "assetIds",
+          "action"
+        ],
+        "type": "object"
+      },
+      "UpdateWatchlistRequest": {
+        "properties": {
+          "assetIds": {
+            "description": "If not provided, the watchlist assets will not be updated. If empty, all assets will be removed.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": {
+            "description": "If not provided, the watchlist title will not be updated",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Watchlist": {
+        "properties": {
+          "assetIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "assetIds",
+          "createdAt",
+          "id",
+          "title",
+          "updatedAt"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "in": "header",
+        "name": "X-Blockworks-API-Key",
+        "type": "apiKey"
+      }
+    }
+  }
+}

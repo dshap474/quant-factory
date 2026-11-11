@@ -1,0 +1,28 @@
+/**
+ * Badge recipe (.ui-badge): a 20px soft-filled sans pill that never shrinks. Tone
+ * colours (border, surface, text) come from the tone utilities in Badge.tsx.
+ *
+ * USAGE: imported by Badge.tsx
+ */
+
+@layer qf-components {
+  .ui-badge {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    height: 1.25rem;
+    padding: 0 var(--space-2);
+    border: 1px solid;
+    border-radius: var(--radius-badge);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .ui-badge.is-sm {
+    height: 1rem;
+    padding: 0 4px;
+  }
+}

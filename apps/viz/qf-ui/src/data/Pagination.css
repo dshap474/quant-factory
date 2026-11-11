@@ -1,0 +1,53 @@
+/**
+ * Pagination bar recipe.
+ *
+ * USAGE: imported by Pagination.tsx.
+ */
+
+@layer qf-components {
+  .ui-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted-foreground);
+  }
+
+  /* Free-standing (not a band) under content: one block gap, so its buttons never butt
+     against the table above. Flex and grid hosts own their spacing. */
+  * + .ui-pagination:not(.ui-pagination-band) {
+    margin-top: var(--gap-block);
+  }
+
+  :is(.grid, .flex) > * + .ui-pagination:not(.ui-pagination-band) {
+    margin-top: 0;
+  }
+
+  /* Controls sit on the pane's band inset: the surface gutter by default, the page inset
+     when an edge-to-edge host sets --ui-band-inset. */
+  .ui-pagination-band {
+    flex: 0 0 auto;
+    padding: var(--space-2) var(--ui-band-inset, var(--space-3));
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ui-pagination-label {
+    margin-inline-end: auto;
+  }
+
+  .ui-pagination-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .ui-pagination .ui-pagination-jump {
+    width: 5rem;
+  }
+}

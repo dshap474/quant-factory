@@ -1,0 +1,11 @@
+/**
+ * Host stylesheet for the qf-ui standalone example: the cascade-layer order, Tailwind,
+ * and the kit's tokens + base styles. Nothing else; every recipe comes from qf-ui.
+ *
+ * USAGE: imported once from main.tsx.
+ */
+
+@layer theme, base, qf-components, qf-variants, components, utilities, qf-motion;
+
+@import "tailwindcss";
+@import "@quant-factory/qf-ui/styles.css";

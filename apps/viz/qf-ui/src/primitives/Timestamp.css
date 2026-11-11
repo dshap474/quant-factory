@@ -1,0 +1,13 @@
+/**
+ * Timestamp recipe (.ui-timestamp): sans with tabular figures, at the surrounding size.
+ *
+ * USAGE: imported by Timestamp.tsx
+ */
+
+@layer qf-components {
+  .ui-timestamp {
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}

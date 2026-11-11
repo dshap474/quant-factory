@@ -1,0 +1,32 @@
+.qf-diagram {
+  margin: 0;
+}
+
+.qf-diagram-canvas {
+  display: flex;
+  justify-content: center;
+}
+
+.qf-diagram[data-fit="width"] .qf-diagram-canvas svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.qf-diagram[data-fit="natural"] .qf-diagram-canvas {
+  width: max-content;
+}
+
+.qf-diagram[data-fit="natural"] .qf-diagram-canvas svg {
+  max-width: none !important;
+  width: auto;
+}
+
+.qf-diagram-error {
+  color: var(--qf-chart-negative);
+  font-size: var(--qf-chart-text-label);
+}
+
+.qf-diagram-error pre {
+  overflow: auto;
+  color: var(--qf-chart-muted-text);
+}

@@ -1,0 +1,141 @@
+/**
+ * Column browser recipe: one bordered card, equal columns split by hairlines, a quiet
+ * overline heading per column, and full-width selectable rows of label + meta.
+ *
+ * USAGE: imported by ColumnBrowser.tsx.
+ */
+
+@layer qf-components {
+  .ui-column-browser {
+    display: grid;
+    grid-template-columns: repeat(var(--ui-column-browser-columns, 1), minmax(0, 1fr));
+    min-width: 0;
+    max-width: 100%;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-surface-raised);
+    overflow: hidden;
+  }
+
+  .ui-column-browser-column {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ui-column-browser-column + .ui-column-browser-column {
+    border-inline-start: 1px solid var(--color-border-subtle);
+  }
+
+  /* ---- Heading: the navigator's group-label voice ---- */
+  .ui-column-browser-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-block-end: 1px solid var(--color-border-subtle);
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-overline);
+    line-height: var(--text-overline--line-height);
+    font-weight: var(--text-overline--font-weight);
+    letter-spacing: var(--text-overline--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .ui-column-browser-count {
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  /* ---- List: a fixed `rows`-tall scroll region so every column lines up ---- */
+  .ui-column-browser-list {
+    height: calc(var(--ui-column-browser-rows) * var(--control-height-sm) + 2 * var(--space-1));
+    padding: var(--space-1);
+    scroll-padding-block: var(--space-1);
+  }
+
+  .ui-column-browser-list:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .ui-column-browser-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    height: var(--control-height-sm);
+    padding-inline: var(--space-2);
+    border-radius: var(--radius-badge);
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    cursor: default;
+    user-select: none;
+  }
+
+  .ui-column-browser-option:hover {
+    background: var(--color-state-hover);
+    color: var(--color-fg-primary);
+  }
+
+  .ui-column-browser-option.is-selected {
+    background: var(--color-state-selected);
+    color: var(--color-fg-primary);
+    font-weight: 500;
+  }
+
+  .ui-column-browser-option.is-selected:hover {
+    background: var(--color-state-selected-hover);
+  }
+
+  .ui-column-browser-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-column-browser-meta {
+    flex: 0 0 auto;
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-column-browser-column.is-disabled {
+    opacity: 0.45;
+  }
+
+  .ui-column-browser-column.is-disabled .ui-column-browser-option {
+    pointer-events: none;
+  }
+
+  .ui-column-browser-empty {
+    padding: var(--space-2);
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+  }
+
+  /* Narrow hosts stack the columns; hairlines turn horizontal. */
+  @media (max-width: 720px) {
+    .ui-column-browser {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ui-column-browser-column + .ui-column-browser-column {
+      border-inline-start: 0;
+      border-block-start: 1px solid var(--color-border-subtle);
+    }
+  }
+}

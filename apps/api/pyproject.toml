@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quant-factory-db-api"
+version = "0.1.0"
+description = "Read-only FastAPI wrapper over the quant-factory data query layer."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "quant-factory-backtest",
+    "duckdb>=1.0.0",
+    "fastapi>=0.111.0",
+    "numpy>=1.26",
+    "orjson>=3.9.0",
+    "polars>=1.36.1",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.0",
+    "pyyaml>=6.0.2",
+    "quant-factory-config",
+    "quant-factory-data",
+    "quant-factory-signals",
+    "quant-factory-strategies",
+    "scipy>=1.11.0",
+    "uvicorn[standard]>=0.30.0",
+]
+
+[project.scripts]
+qf-db-api = "db_api.main:main"
+
+[tool.hatch.build]
+dev-mode-dirs = ["src"]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["src/db_api"]
+sources = ["src"]

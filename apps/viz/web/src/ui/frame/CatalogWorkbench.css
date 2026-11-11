@@ -1,0 +1,157 @@
+/**
+ * Edge-to-edge catalog workbench: the Data and Features catalog pages
+ * (`.catalog-terminal-page`) and their logical-catalog section workspace
+ * (`.catalog-terminal-workspace`), layered over qf-ui's SectionWorkspace recipe.
+ *
+ * USAGE: imported by AppShell.tsx, which hosts every catalog route
+ */
+
+@layer qf-components {
+  /* ------------------------------------------------------------------------- */
+  /* Edge-to-edge catalog workbench */
+  /* ------------------------------------------------------------------------- */
+
+  .catalog-terminal-page {
+    --catalog-surface-base: var(--color-surface-canvas);
+    --catalog-surface-raised: var(--color-surface-raised);
+    --catalog-surface-recessed: var(--color-surface-sunken);
+    --catalog-surface-active: var(--color-state-selected);
+    --catalog-divider: var(--color-border-subtle);
+    --catalog-divider-strong: var(--color-border);
+
+    min-width: 0;
+    background: var(--catalog-surface-base);
+  }
+
+  .catalog-terminal-query {
+    min-width: 0;
+  }
+
+  .catalog-terminal-workspace {
+    /* Edge-to-edge: toolbar and pagination bands share the page inset with the header. */
+    --ui-band-inset: var(--inset-page);
+
+    align-items: stretch;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .catalog-terminal-workspace .section-workspace-content {
+    display: flex;
+    height: auto;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    scrollbar-gutter: auto;
+    background: var(--catalog-surface-base);
+    padding: 0;
+  }
+
+  .catalog-terminal-workspace .catalog-terminal-content,
+  .catalog-terminal-workspace .catalog-selection,
+  .catalog-terminal-workspace .catalog-selection-layout,
+  .catalog-terminal-workspace .dataset-viewer {
+    min-height: 0;
+    flex: 1;
+  }
+
+  .catalog-terminal-workspace .catalog-terminal-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Every ancestor of the selection pane clips, so at narrow widths the stacked
+     atlas inspector was cut with no scroll anywhere to bring it back. The
+     selection pane is the element that owns `flex: 1; min-height: 0` against the
+     workspace column, so it is the one whose content actually overflows: give it
+     a scroll axis rather than a clip. Its `.catalog-selection-layout` /
+     `.dataset-viewer` children stay `flex: 1` fill children, which is what the
+     feature-workspace fill path and DatasetViewer's own internal scrolling
+     depend on. */
+  .catalog-terminal-workspace .catalog-selection {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .catalog-terminal-workspace .catalog-selection-layout,
+  .catalog-terminal-workspace .dataset-viewer {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* No padding: the chart workspace insets its own controls and charts, and its feature
+     rail runs edge to edge. */
+  .catalog-terminal-workspace .dataset-chart-content {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* A 48px toolbar band on the page edge, like WorkspaceToolbar. */
+  .catalog-terminal-workspace .dataset-viewer-contextbar {
+    min-height: calc(var(--control-height) + 2 * var(--space-2));
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-start;
+    padding-inline: var(--inset-page);
+    border-bottom: 1px solid var(--catalog-divider);
+    background: var(--catalog-surface-base);
+  }
+
+  .catalog-terminal-workspace .dataset-viewer-contextbar p {
+    margin: 0;
+  }
+
+  .catalog-terminal-workspace .dataset-table-shell {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    background: var(--color-surface-raised);
+  }
+
+  .catalog-terminal-workspace .dataset-table-shell > :first-child:not(.dataset-table-body),
+  .catalog-terminal-workspace .dataset-table-shell > :last-child {
+    background: var(--color-surface-raised);
+  }
+
+  .catalog-terminal-workspace .dataset-table-body {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .catalog-terminal-page {
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+  }
+
+  .catalog-terminal-query,
+  .catalog-terminal-workspace {
+    height: 100%;
+  }
+
+  .catalog-terminal-workspace .section-navigator,
+  .catalog-terminal-workspace .section-navigator.collapsed {
+    position: relative;
+    height: 100%;
+    max-height: 100%;
+  }
+
+  @media (max-width: 760px) {
+    /* Only the self-bounding catalog frame drops the menu-button clearance and
+       reaches the top edge; a bare fill workspace keeps the AppShell's narrow
+       padding-top. */
+    .route-content:has(.catalog-terminal-page .section-workspace.is-fill-content) {
+      padding-top: 0;
+    }
+  }
+}

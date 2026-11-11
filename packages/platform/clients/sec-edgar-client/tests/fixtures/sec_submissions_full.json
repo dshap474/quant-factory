@@ -1,0 +1,60 @@
+{
+  "cik": "0000320193",
+  "entityType": "operating",
+  "sic": "3571",
+  "sicDescription": "Electronic Computers",
+  "ownerOrg": "06 Technology",
+  "insiderTransactionForOwnerExists": 0,
+  "insiderTransactionForIssuerExists": 1,
+  "name": "Apple Inc.",
+  "tickers": ["AAPL"],
+  "exchanges": ["Nasdaq"],
+  "ein": "942404110",
+  "description": "",
+  "website": "https://www.apple.com",
+  "investorWebsite": "https://investor.apple.com",
+  "category": "Large accelerated filer",
+  "fiscalYearEnd": "0927",
+  "stateOfIncorporation": "CA",
+  "stateOfIncorporationDescription": "CA",
+  "addresses": {
+    "business": {
+      "phone": "408-996-1010"
+    }
+  },
+  "formerNames": [
+    {
+      "name": "APPLE COMPUTER INC",
+      "from": "1994-01-26",
+      "to": "2007-01-09"
+    }
+  ],
+  "filings": {
+    "recent": {
+      "accessionNumber": ["0000320193-24-000001"],
+      "filingDate": ["2024-01-26"],
+      "reportDate": ["2023-12-30"],
+      "acceptanceDateTime": ["2024-01-25T18:04:16.000Z"],
+      "act": ["34"],
+      "form": ["10-Q"],
+      "fileNumber": ["001-36743"],
+      "filmNumber": ["24543210"],
+      "items": [""],
+      "core_type": ["10-Q"],
+      "size": [1234567],
+      "isXBRL": [1],
+      "isInlineXBRL": [1],
+      "isXBRLNumeric": [1],
+      "primaryDocument": ["aapl-20231230x10q.htm"],
+      "primaryDocDescription": ["10-Q"]
+    },
+    "files": [
+      {
+        "name": "CIK0000320193-submissions-001.json",
+        "filingCount": 12,
+        "filingFrom": "2015-01-01",
+        "filingTo": "2015-12-31"
+      }
+    ]
+  }
+}

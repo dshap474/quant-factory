@@ -1,0 +1,157 @@
+/**
+ * Network graph recipe (.qf-network: links, toned circle and diamond nodes, focus dimming,
+ * a label layer above the marks, and the legend in a collapsible rail on the right).
+ *
+ * USAGE: imported by NetworkGraph.tsx
+ */
+
+.qf-network {
+  position: relative;
+  min-width: 0;
+}
+
+.qf-network-svg {
+  display: block;
+  width: 100%;
+  height: 34rem;
+  overflow: visible;
+}
+
+/* Links */
+.qf-network-links {
+  pointer-events: none;
+}
+
+.qf-network-link {
+  stroke: var(--qf-chart-border-strong);
+  stroke-width: 1;
+  stroke-opacity: 0.45;
+}
+
+.qf-network-link.is-on {
+  stroke: var(--qf-chart-muted-text);
+  stroke-opacity: 0.9;
+  stroke-width: 1.25;
+}
+
+.qf-network-link.is-off {
+  stroke-opacity: 0.06;
+}
+
+/* Nodes */
+.qf-network-mark {
+  fill: var(--node-tone);
+  stroke: var(--qf-chart-surface);
+  stroke-width: 1.5;
+}
+
+.qf-network-node {
+  cursor: pointer;
+}
+
+.qf-network-node.is-off {
+  opacity: 0.18;
+}
+
+.qf-network-node:focus-visible {
+  outline: none;
+}
+
+.qf-network-node:focus-visible .qf-network-mark {
+  stroke: var(--qf-chart-focus-ring);
+  stroke-width: 2;
+}
+
+.qf-network-node:hover .qf-network-mark {
+  stroke: var(--qf-chart-strong-text);
+}
+
+.qf-network-node.is-selected .qf-network-mark {
+  stroke: var(--qf-chart-strong-text);
+  stroke-width: 2;
+}
+
+/* Labels: their own layer above every mark, haloed against the surface. */
+.qf-network-labels {
+  pointer-events: none;
+}
+
+.qf-network-label {
+  fill: var(--qf-chart-muted-text);
+  font-size: var(--qf-chart-text-caption);
+  paint-order: stroke;
+  stroke: var(--qf-chart-surface);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.qf-network-label.is-focus {
+  fill: var(--qf-chart-strong-text);
+  font-weight: 600;
+}
+
+/* Tones (nodes and legend swatches); a `series` sets --node-tone inline instead. */
+.qf-network .tone-neutral {
+  --node-tone: var(--qf-chart-tone-neutral);
+}
+.qf-network .tone-info {
+  --node-tone: var(--qf-chart-tone-info);
+}
+.qf-network .tone-success {
+  --node-tone: var(--qf-chart-positive);
+}
+.qf-network .tone-warning {
+  --node-tone: var(--qf-chart-tone-warning);
+}
+.qf-network .tone-critical {
+  --node-tone: var(--qf-chart-negative);
+}
+
+/* Legend: a rail on the right; its toggle stays in the top-right corner, open or not. */
+.qf-network[data-legend="open"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--qf-chart-legend-width);
+}
+
+.qf-network-legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--qf-chart-space-2);
+  min-width: 0;
+  margin: 0;
+  padding: var(--qf-chart-space-1) var(--qf-chart-space-3);
+  border-left: 1px solid var(--qf-chart-border-subtle);
+  list-style: none;
+  color: var(--qf-chart-muted-text);
+  font-size: var(--qf-chart-text-caption);
+}
+
+/* The first row leaves room for the toggle beside it. */
+.qf-network-legend li:first-child {
+  padding-inline-end: calc(24px + var(--qf-chart-space-1));
+}
+
+.legend-collapse-button.is-inline.qf-network-legend-toggle {
+  position: absolute;
+  z-index: var(--qf-chart-z-control);
+  top: 0;
+  right: 0;
+}
+
+.qf-network-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--qf-chart-space-2);
+}
+
+.qf-network-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--node-tone);
+}
+
+.qf-network-swatch.is-secondary {
+  border-radius: 0;
+  transform: rotate(45deg);
+}

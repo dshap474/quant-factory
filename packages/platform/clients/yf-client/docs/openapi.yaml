@@ -1,0 +1,652 @@
+openapi: 3.0.3
+info:
+  title: yfinance (Free/Public) – OpenAPI-Style Spec
+  version: "0.2.0"
+  description: |
+    A modeling of the public / free surface of the yfinance Python library as endpoints.
+    Includes historical prices, metadata, search, options, streaming, etc.
+    Intraday lookback constraints: intervals <1d have limited history (1m ~7 days, others ~60 days).
+    No official published rate limits; behavior may change.
+servers:
+  - url: python://yfinance
+tags:
+  - name: Market Data
+  - name: Ticker
+  - name: Fundamentals
+  - name: Ownership & Analysts
+  - name: Options
+  - name: Discovery
+  - name: Streaming
+  - name: Screener
+paths:
+  /download:
+    get:
+      tags: [Market Data]
+      summary: Bulk historical price data (one or more tickers)
+      parameters:
+        - in: query
+          name: tickers
+          required: true
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+          description: One symbol or list (e.g. "AAPL", ["AAPL","MSFT"])
+        - $ref: '#/components/parameters/period'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/actions'
+        - $ref: '#/components/parameters/auto_adjust'
+        - $ref: '#/components/parameters/back_adjust'
+        - $ref: '#/components/parameters/prepost'
+        - in: query
+          name: group_by
+          schema:
+            type: string
+            enum: [column, ticker]
+            default: column
+          description: How to label/group columns when multiple tickers
+        - in: query
+          name: threads
+          schema:
+            oneOf:
+              - type: boolean
+              - type: integer
+          description: Multithreaded fetching; or specify number of threads
+        - in: query
+          name: repair
+          schema: { type: boolean, default: false }
+        - in: query
+          name: keepna
+          schema: { type: boolean, default: false }
+          description: Keep NaN rows (non-trading days etc.)
+        - in: query
+          name: rounding
+          schema: { type: boolean, default: false }
+        - in: query
+          name: timeout
+          schema: { type: integer, default: 10 }
+      responses:
+        "200":
+          description: Historical price bars for one or multiple tickers
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/PriceBar'
+
+  /ticker/{symbol}/history:
+    get:
+      tags: [Ticker, Market Data]
+      summary: Historical data for a single ticker
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/period'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/actions'
+        - $ref: '#/components/parameters/auto_adjust'
+        - $ref: '#/components/parameters/back_adjust'
+        - $ref: '#/components/parameters/prepost'
+      responses:
+        "200":
+          description: Price bars array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceBar'
+
+  /ticker/{symbol}/info:
+    get:
+      tags: [Ticker]
+      summary: Metadata / company profile
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          description: Key-value metadata about the ticker
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /ticker/{symbol}/fast_info:
+    get:
+      tags: [Ticker]
+      summary: Lightweight real-time fields
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          description: Smaller subset of live / near-live quote data
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /ticker/{symbol}/actions:
+    get:
+      tags: [Ticker]
+      summary: Corporate actions (dividends, splits)
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          description: List of action events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionEvent'
+
+  /ticker/{symbol}/dividends:
+    get:
+      tags: [Ticker]
+      summary: Dividend payments over time
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          description: Dividend series
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '##/components/schemas/Dividend'
+
+  /ticker/{symbol}/splits:
+    get:
+      tags: [Ticker]
+      summary: Split history
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          description: Split series
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Split'
+
+  /ticker/{symbol}/financials:
+    get:
+      tags: [Fundamentals]
+      summary: Annual financial statements
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /ticker/{symbol}/financials/quarterly:
+    get:
+      tags: [Fundamentals]
+      summary: Quarterly financial statements
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /ticker/{symbol}/financials/ttm:
+    get:
+      tags: [Fundamentals]
+      summary: Trailing-twelve-month financials
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /ticker/{symbol}/balance-sheet:
+    get:
+      tags: [Fundamentals]
+      summary: Annual balance sheet
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /ticker/{symbol}/balance-sheet/quarterly:
+    get:
+      tags: [Fundamentals]
+      summary: Quarterly balance sheet
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /ticker/{symbol}/cashflow:
+    get:
+      tags: [Fundamentals]
+      summary: Annual cashflow
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /ticker/{symbol}/cashflow/quarterly:
+    get:
+      tags: [Fundamentals]
+      summary: Quarterly cashflow
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /ticker/{symbol}/holders:
+    get:
+      tags: [Ownership & Analysts]
+      summary: Major / institutional / mutual fund holders
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  major_holders:
+                    type: array
+                    items: { type: object }
+                  institutional_holders:
+                    type: array
+                    items: { type: object }
+                  mutualfund_holders:
+                    type: array
+                    items: { type: object }
+
+  /ticker/{symbol}/analyst:
+    get:
+      tags: [Ownership & Analysts]
+      summary: Analyst recommendations, estimates, upgrades/downgrades, etc.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  recommendations: { type: array, items: { type: object } }
+                  recommendations_summary: { type: object, additionalProperties: true }
+                  upgrades_downgrades: { type: array, items: { type: object } }
+                  analyst_price_targets: { type: array, items: { type: object } }
+                  earnings_estimate: { type: array, items: { type: object } }
+                  revenue_estimate: { type: array, items: { type: object } }
+                  earnings_history: { type: array, items: { type: object } }
+                  eps_trend: { type: array, items: { type: object } }
+                  eps_revisions: { type: array, items: { type: object } }
+                  growth_estimates: { type: array, items: { type: object } }
+
+  /ticker/{symbol}/news:
+    get:
+      tags: [Ticker]
+      summary: Recent news
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsItem'
+
+  /ticker/{symbol}/options:
+    get:
+      tags: [Options]
+      summary: List available option expiration dates
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: date
+
+  /ticker/{symbol}/option-chain:
+    get:
+      tags: [Options]
+      summary: Full option chain for a given expiration
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - in: query
+          name: date
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Expiration date (one from `.options`)
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  calls:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OptionContract'
+                  puts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OptionContract'
+
+  /search:
+    get:
+      tags: [Discovery]
+      summary: General search (quotes + news)
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: max_results
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: news_count
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quotes:
+                    type: array
+                    items: { type: object }
+                  news:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NewsItem'
+
+  /lookup:
+    get:
+      tags: [Discovery]
+      summary: Lookup tickers by name
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { type: object }
+
+  /stream/websocket:
+    get:
+      tags: [Streaming]
+      summary: Streaming trade/quote updates via WebSocket (symbolic)
+      parameters:
+        - in: query
+          name: url
+          schema: { type: string, default: "wss://streamer.finance.yahoo.com/?version=2" }
+        - in: query
+          name: verbose
+          schema: { type: boolean, default: false }
+      responses:
+        "101":
+          description: WebSocket handshake (symbolic)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  price: { type: number }
+                  time: { type: string, format: date-time }
+                  day_volume: { type: number }
+                  change_percent: { type: number }
+
+  /screener:
+    post:
+      tags: [Screener]
+      summary: Execute predefined or custom screens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: object
+                  description: Nested logical filters (and/or/gt/lt/eq etc.)
+                predefined:
+                  type: string
+                  description: Name of predefined screener (e.g. day_gainers)
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quotes: { type: array, items: { type: object } }
+
+components:
+  parameters:
+    symbol:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        type: string
+    period:
+      name: period
+      in: query
+      schema:
+        type: string
+        enum: [1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max]
+        default: "1mo"
+      description: Use this OR `start`/`end`
+    interval:
+      name: interval
+      in: query
+      schema:
+        type: string
+        enum: [1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo]
+        default: "1d"
+      description: Intraday intervals (<1d) limited in lookback (see spec descriptions)
+    start:
+      name: start
+      in: query
+      schema:
+        type: string
+        format: date
+      description: Inclusive start date (YYYY-MM-DD) if using start/end instead of period
+    end:
+      name: end
+      in: query
+      schema:
+        type: string
+        format: date
+      description: Exclusive end date if using start/end instead of period
+    actions:
+      name: actions
+      in: query
+      schema:
+        type: boolean
+        default: false
+    auto_adjust:
+      name: auto_adjust
+      in: query
+      schema:
+        type: boolean
+        default: true
+    back_adjust:
+      name: back_adjust
+      in: query
+      schema:
+        type: boolean
+        default: false
+    prepost:
+      name: prepost
+      in: query
+      schema:
+        type: boolean
+        default: false
+
+  schemas:
+    PriceBar:
+      type: object
+      properties:
+        datetime:
+          type: string
+          format: date-time
+        open:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
+        close:
+          type: number
+        adjClose:
+          type: number
+          nullable: true
+        volume:
+          type: number
+      required:
+        - datetime
+        - open
+        - high
+        - low
+        - close
+        - volume
+
+    ActionEvent:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        type:
+          type: string
+          enum: [dividend, split]
+        value:
+          type: number
+      required:
+        - date
+        - type
+        - value
+
+    Dividend:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+      required:
+        - date
+        - amount
+
+    Split:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        ratio:
+          type: number
+      required:
+        - date
+        - ratio
+
+    OptionContract:
+      type: object
+      properties:
+        contractSymbol: { type: string }
+        strike: { type: number }
+        lastPrice: { type: number, nullable: true }
+        bid: { type: number, nullable: true }
+        ask: { type: number, nullable: true }
+        change: { type: number, nullable: true }
+        percentChange: { type: number, nullable: true }
+        volume: { type: number, nullable: true }
+        openInterest: { type: number, nullable: true }
+        impliedVolatility: { type: number, nullable: true }
+        inTheMoney: { type: boolean, nullable: true }
+        expiration:
+          type: string
+          format: date
+        contractSize: { type: string, nullable: true }
+        currency: { type: string, nullable: true }
+
+    NewsItem:
+      type: object
+      properties:
+        title: { type: string }
+        publisher: { type: string }
+        link: { type: string }
+        published: { type: string, format: date-time }
+        summary: { type: string, nullable: true }

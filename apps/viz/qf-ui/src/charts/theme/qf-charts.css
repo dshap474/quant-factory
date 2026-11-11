@@ -1,0 +1,492 @@
+/**
+ * qf-charts semantic token defaults and shared chart host styling.
+ *
+ * USAGE: import '@quant-factory/qf-ui/charts/styles.css';
+ */
+
+:root {
+  /* Every bridge reads a host --color-* token and falls back to a full colour, so a host
+     that defines nothing still renders the dark theme. */
+  --qf-chart-surface: var(--color-chart-surface, oklch(0.19 0.006 60));
+  --qf-chart-grid: var(--color-chart-grid, rgb(255 255 255 / 0.07));
+  --qf-chart-axis-label: var(--color-chart-axis-label, oklch(0.71 0.004 90));
+  --qf-chart-axis: var(--color-chart-axis, rgb(255 255 255 / 0.12));
+  --qf-chart-crosshair: var(--color-chart-crosshair, rgb(255 255 255 / 0.32));
+  --qf-chart-label: var(--color-fg-tertiary, oklch(0.78 0.004 90));
+  --qf-chart-tooltip-bg: var(--color-chart-tooltip-bg, oklch(0.245 0.006 60));
+  /* Tooltips are frosted glass: the overlay surface, a little see-through, blurred behind. */
+  --qf-chart-tooltip-glass: color-mix(in oklch, var(--qf-chart-tooltip-bg) 78%, transparent);
+  /* Tooltips glide to each new spot (and across the cursor when they flip at an edge). */
+  --qf-chart-tooltip-motion: 180ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  --qf-chart-tooltip-border: var(--color-chart-tooltip-border, rgb(255 255 255 / 0.08));
+  --qf-chart-tooltip-text: var(--color-chart-tooltip-text, oklch(0.93 0.003 90));
+  --qf-chart-benchmark: var(--color-chart-benchmark, oklch(0.72 0.005 90));
+  --qf-chart-candle-up: var(--color-chart-candle-up, #fff);
+  --qf-chart-candle-down: var(--color-chart-candle-down, #787b86);
+  --qf-chart-baseline: var(--color-chart-baseline, oklch(0.86 0.02 250));
+  --qf-chart-neutral: var(--color-chart-neutral, oklch(0.33 0.006 60));
+  --qf-chart-bitcoin-accent: var(--color-chart-primary, oklch(0.895 0.092 77));
+  --qf-chart-toolbar-border: var(--color-border, rgb(255 255 255 / 0.08));
+  /* Hairlines are translucent, so one value reads the same on every surface. */
+  --qf-chart-border-subtle: var(--color-border-subtle, rgb(255 255 255 / 0.06));
+  --qf-chart-border: var(--color-border, rgb(255 255 255 / 0.08));
+  --qf-chart-border-strong: var(--color-border-strong, rgb(255 255 255 / 0.12));
+  --qf-chart-toolbar-button-bg: var(--qf-chart-state-hover);
+  --qf-chart-toolbar-button-border: var(--color-border, rgb(255 255 255 / 0.08));
+  --qf-chart-toolbar-button-text: var(--color-fg-secondary, oklch(0.85 0.004 90));
+  --qf-chart-toolbar-button-hover-bg: var(--qf-chart-state-hover);
+  --qf-chart-toolbar-button-hover-border: var(--color-border-strong, rgb(255 255 255 / 0.12));
+  --qf-chart-toolbar-button-active-bg: var(--qf-chart-state-selected);
+  --qf-chart-toolbar-button-active-border: var(--color-border-strong, rgb(255 255 255 / 0.12));
+  --qf-chart-toolbar-button-active-text: var(--color-fg-primary, oklch(0.93 0.003 90));
+  --qf-chart-brush-label: var(--color-fg-primary, oklch(0.93 0.003 90));
+  --qf-chart-brush-label-muted: var(--color-fg-tertiary, oklch(0.78 0.004 90));
+  --qf-chart-positive: var(--color-tone-success, oklch(0.76 0.15 150));
+  --qf-chart-negative: var(--color-tone-critical, oklch(0.8 0.12 22));
+  --qf-chart-1: var(--color-chart-1, oklch(0.895 0.092 77));
+  --qf-chart-2: var(--color-chart-2, oklch(0.76 0.12 250));
+  --qf-chart-3: var(--color-chart-3, oklch(0.8 0.11 180));
+  --qf-chart-4: var(--color-chart-4, oklch(0.75 0.13 300));
+  --qf-chart-5: var(--color-chart-5, oklch(0.76 0.14 25));
+  --qf-chart-6: var(--color-chart-6, oklch(0.8 0.13 145));
+  --qf-chart-7: var(--color-chart-7, oklch(0.76 0.13 350));
+  --qf-chart-8: var(--color-chart-8, oklch(0.8 0.1 220));
+  --qf-chart-9: var(--color-chart-9, oklch(0.72 0.15 50));
+  --qf-chart-10: var(--color-chart-10, oklch(0.63 0.13 265));
+  --qf-chart-11: var(--color-chart-11, oklch(0.65 0.1 195));
+  --qf-chart-12: var(--color-chart-12, oklch(0.62 0.13 315));
+  --qf-chart-13: var(--color-chart-13, oklch(0.62 0.15 15));
+  --qf-chart-14: var(--color-chart-14, oklch(0.65 0.13 155));
+  --qf-chart-15: var(--color-chart-15, oklch(0.62 0.14 335));
+  --qf-chart-16: var(--color-chart-16, oklch(0.64 0.11 235));
+  --qf-chart-17: var(--color-chart-17, oklch(0.86 0.07 235));
+  --qf-chart-18: var(--color-chart-18, oklch(0.88 0.08 165));
+  --qf-chart-19: var(--color-chart-19, oklch(0.86 0.07 290));
+  --qf-chart-20: var(--color-chart-20, oklch(0.87 0.08 40));
+
+  /* Host tokens chart chrome depends on. Each is bridged once, with the fallback qf-charts
+     renders with when a host does not define it, so no source file reads a host variable
+     directly. */
+  --qf-chart-series-primary: var(--color-chart-1, oklch(0.895 0.092 77));
+  --qf-chart-surface-control: var(--color-surface-control, oklch(0.235 0.006 60));
+  --qf-chart-key-hover-surface: var(--qf-chart-state-hover);
+  --qf-chart-font-data: var(--font-mono, ui-monospace, "SFMono-Regular", Consolas, monospace);
+  --qf-chart-font-sans: var(--font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  --qf-chart-text-caption: var(--text-caption, 0.75rem);
+  --qf-chart-text-ui-sm: var(--text-ui-sm, 0.8125rem);
+  --qf-chart-text-label: var(--text-label, 0.875rem);
+  --qf-chart-leading-caption: var(--text-caption--line-height, 16px);
+  --qf-chart-leading-label: var(--text-label--line-height, 20px);
+  --qf-chart-focus-ring: var(--color-focus-ring, oklch(0.895 0.092 77));
+  /* R48: chart toggles sit on the 24px xs control height (bridged, not imported). */
+  --qf-chart-control-height: var(--control-height-xs, 24px);
+  --qf-chart-z-raised: var(--z-raised, 10);
+  --qf-chart-z-popover: var(--z-popover, 60);
+  /* D-5.4: chart-local stacking order inside one chart frame (named, never numeric). */
+  --qf-chart-z-plot: 0;
+  --qf-chart-z-mark: 1;
+  --qf-chart-z-control: 2;
+  --qf-chart-z-thumb-start: 3;
+  --qf-chart-z-thumb-end: 4;
+  --qf-chart-z-tooltip: 4;
+  --qf-chart-z-handle: 6;
+  --qf-chart-z-menu: 80;
+  --qf-chart-radius-badge: var(--radius-badge, 4px);
+  --qf-chart-radius-control: var(--radius-control, 6px);
+  --qf-chart-radius-surface: var(--radius-surface, 8px);
+  --qf-chart-radius-pill: var(--radius-pill, 9999px);
+  /* Tooltip series swatch corner: half the badge radius (2px), shadcn's rounded-[2px]. */
+  --qf-chart-radius-swatch: calc(var(--radius-badge, 4px) / 2);
+  --qf-chart-state-hover: var(--color-state-hover, rgb(255 255 255 / 0.06));
+  --qf-chart-state-pressed: var(--color-state-pressed, rgb(255 255 255 / 0.12));
+  --qf-chart-state-selected: var(--color-state-selected, rgb(255 255 255 / 0.1));
+  --qf-chart-shadow-raised: var(--shadow-raised, 0 0 0 1px rgb(255 255 255 / 0.06));
+  --qf-chart-tone-info: var(--color-tone-info, oklch(0.78 0.12 250));
+  --qf-chart-tone-neutral: var(--color-tone-neutral, oklch(0.78 0.004 90));
+  --qf-chart-tone-warning: var(--color-tone-warning, oklch(0.8 0.13 55));
+  --qf-chart-muted-text: var(--color-fg-secondary, oklch(0.85 0.004 90));
+  --qf-chart-strong-text: var(--color-fg-primary, oklch(0.93 0.003 90));
+  --qf-chart-popover-surface: var(--color-surface-overlay, oklch(0.245 0.006 60));
+  --qf-chart-popover-border: var(--color-border, rgb(255 255 255 / 0.08));
+  --qf-chart-popover-shadow: var(--shadow-overlay, 0 18px 48px rgb(0 0 0 / 0.34));
+
+  /* Tooltip series swatch: a 10px rounded square (shadcn h-2.5 w-2.5), under the 16px
+     caption line so rows keep their height. */
+  --qf-chart-tooltip-swatch-size: 10px;
+
+  /* Crosshair dash, shared by the canvas pointer, the SVG hover rule and the pane stack. */
+  --qf-chart-crosshair-dash: 4px;
+
+  /* Chart-card spacing: one 4px scale. Every edge of the card keeps the same inset, so
+     the title, the widest value label, the brush track and the legend text all start on
+     the same vertical lines; inner gaps step down the scale. core/geometry.ts mirrors
+     the plot insets for the geometry ECharts needs in pixels. */
+  --qf-chart-space-1: 4px;
+  --qf-chart-space-2: 8px;
+  --qf-chart-space-3: 12px;
+  --qf-chart-space-4: 16px;
+  --qf-chart-inset: var(--qf-chart-space-4);
+  --qf-chart-header-height: 40px;
+  --qf-chart-legend-width: 11.5rem;
+}
+
+.qf-chart {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.qf-chart > div,
+.qf-chart canvas,
+.qf-chart svg {
+  display: block;
+}
+
+/* The ECharts-owned child fills the labelled wrapper so sizing is unchanged. */
+.qf-chart > .qf-chart-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.qf-echarts-tooltip-host,
+.tooltip {
+  max-width: calc(100% - 24px);
+  max-height: calc(100% - 24px);
+  border-radius: var(--qf-chart-radius-surface);
+  box-shadow: var(--qf-chart-popover-shadow);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-sizing: border-box;
+  overflow: auto;
+  pointer-events: none;
+}
+
+.qf-echarts-tooltip-host {
+  padding: var(--qf-chart-space-2) var(--qf-chart-space-3);
+}
+
+.qf-chart-error {
+  position: absolute;
+  z-index: 2147483647;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: color-mix(in oklch, var(--qf-chart-tooltip-bg) 92%, transparent);
+  color: var(--qf-chart-label);
+  font-size: 14px;
+}
+
+.qf-chart-error button {
+  min-width: 0;
+  min-height: 0;
+  padding: 4px 10px;
+  border: 1px solid color-mix(in oklch, var(--qf-chart-tooltip-border) 80%, transparent);
+  border-radius: var(--qf-chart-radius-control);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.qf-chart-frame {
+  overflow: hidden;
+  border-radius: var(--qf-chart-radius-surface);
+  background: var(--qf-chart-surface);
+  box-shadow: var(--qf-chart-shadow-raised);
+}
+
+.qf-chart-frame-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--qf-chart-space-2) var(--qf-chart-space-3);
+  box-sizing: border-box;
+  min-height: var(--qf-chart-header-height);
+  /* 8px block padding holds the 40px band with 24px controls; a title-only header is
+     centred in the same band. */
+  padding: var(--qf-chart-space-2) var(--qf-chart-inset);
+  /* Full-width rule between the title/toolbar band and the plot; the legend rail's left
+     border meets it, so header, plot and legend read as three separate areas. */
+  border-bottom: 1px solid var(--qf-chart-border-subtle);
+}
+
+.qf-chart-frame-heading,
+.qf-chart-frame-labels,
+.qf-chart-frame-actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--qf-chart-space-2);
+}
+
+.qf-chart-frame-labels {
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.qf-chart-frame-title {
+  margin: 0;
+  color: var(--qf-chart-strong-text);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-label);
+  font-weight: 500;
+  letter-spacing: normal;
+  line-height: var(--qf-chart-leading-label);
+  text-wrap: balance;
+}
+
+.qf-chart-frame-subtitle {
+  color: var(--qf-chart-label);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-caption);
+  line-height: var(--qf-chart-leading-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.qf-chart-frame-title-accessory {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  margin-left: calc(var(--qf-chart-space-1) * -1);
+}
+
+.qf-chart-frame-actions {
+  max-width: 100%;
+  margin-left: auto;
+}
+
+.qf-chart-frame-body {
+  padding: 0;
+}
+
+.qf-chart-frame-footer {
+  padding: var(--qf-chart-space-3) var(--qf-chart-inset);
+  color: var(--qf-chart-label);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-caption);
+  line-height: var(--qf-chart-leading-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Plot stack: the main plot fills the frame; controls such as BrushBar keep their own height. */
+.chart-stack {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.chart-stack-main {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.chart-no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--qf-chart-label);
+  font-size: var(--qf-chart-text-label);
+}
+
+.qf-chart-legend-group {
+  display: contents;
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--qf-chart-space-2);
+  min-width: 0;
+  width: 100%;
+}
+
+.chart-legend-marker {
+  --legend-color: var(--qf-chart-series-primary);
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 16px;
+}
+
+.chart-legend-marker.solid {
+  height: 2px;
+  border-radius: var(--qf-chart-radius-pill);
+  background: var(--legend-color);
+}
+
+.chart-legend-label {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--qf-chart-muted-text);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-caption);
+  font-weight: 500;
+  line-height: var(--qf-chart-leading-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chart-legend-label-wrap {
+  position: relative;
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  outline: none;
+}
+
+.chart-legend-label-wrap > .chart-legend-label {
+  display: block;
+}
+
+.chart-legend-label-wrap:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: -2px;
+}
+
+.chart-legend-toggle {
+  appearance: none;
+  min-height: 28px;
+  padding: 0 var(--qf-chart-space-2);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: var(--qf-chart-radius-control);
+}
+
+.chart-legend-toggle:hover {
+  background: var(--qf-chart-state-hover);
+}
+
+.chart-legend-toggle:focus-visible {
+  outline: 2px solid var(--qf-chart-focus-ring);
+  outline-offset: 0;
+}
+
+/* The legend rail scrolls and clips, so its ring sits inside the control. */
+.legend-content .chart-legend-toggle:focus-visible {
+  outline-offset: -2px;
+}
+
+.chart-legend-item.is-muted,
+.chart-legend-toggle[aria-pressed="false"] {
+  opacity: 0.42;
+}
+
+.chart-legend-item.is-pinned .chart-legend-label {
+  color: var(--qf-chart-strong-text);
+}
+
+.chart-legend-label-popout {
+  position: fixed;
+  z-index: var(--qf-chart-z-popover);
+  padding: var(--qf-chart-space-2) var(--qf-chart-space-3);
+  color: var(--qf-chart-strong-text);
+  background: var(--qf-chart-popover-surface);
+  border: 1px solid var(--qf-chart-popover-border);
+  border-radius: var(--qf-chart-radius-surface);
+  box-shadow: var(--qf-chart-popover-shadow);
+  font-size: var(--qf-chart-text-label);
+  font-weight: 500;
+  line-height: 1.35;
+  pointer-events: none;
+  transform: translateY(-50%);
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.tooltip {
+  min-width: 144px;
+  max-width: 220px;
+  padding: var(--qf-chart-space-2) var(--qf-chart-space-3);
+  border: 1px solid var(--qf-chart-tooltip-border);
+  background-color: var(--qf-chart-tooltip-glass);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-caption);
+  line-height: var(--qf-chart-leading-caption);
+}
+
+.tooltip-date {
+  margin-bottom: var(--qf-chart-space-2);
+  color: var(--qf-chart-muted-text);
+  font-size: var(--qf-chart-text-caption);
+  font-weight: 500;
+  line-height: var(--qf-chart-leading-caption);
+}
+
+.tooltip-items {
+  display: flex;
+  flex-direction: column;
+  /* 6px rows (shadcn gap-1.5, Grafana 0.75 x 8px): 4px read as one block at 12px text. */
+  gap: calc(var(--qf-chart-space-1) * 1.5);
+}
+
+.tooltip-row,
+.tooltip-label-group {
+  display: flex;
+  align-items: center;
+}
+
+.tooltip-row {
+  justify-content: space-between;
+  gap: var(--qf-chart-space-3);
+}
+
+.tooltip-label-group {
+  min-width: 0;
+  gap: var(--qf-chart-space-2);
+}
+
+.tooltip-swatch {
+  width: var(--qf-chart-tooltip-swatch-size);
+  height: var(--qf-chart-tooltip-swatch-size);
+  flex-shrink: 0;
+  border-radius: var(--qf-chart-radius-swatch);
+  background: var(--tooltip-swatch);
+}
+
+.tooltip-label {
+  color: var(--qf-chart-muted-text);
+  font-size: var(--qf-chart-text-caption);
+  font-weight: 400;
+  line-height: var(--qf-chart-leading-caption);
+}
+
+.tooltip-value {
+  color: var(--qf-chart-tooltip-text);
+  font-family: var(--qf-chart-font-sans);
+  /* Medium, not semibold: colour already lifts the value over its muted label. */
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.tooltip-value.positive {
+  color: var(--qf-chart-positive);
+}
+
+.tooltip-value.negative {
+  color: var(--qf-chart-negative);
+}
+
+.tooltip-detail {
+  margin-top: var(--qf-chart-space-2);
+  color: var(--qf-chart-label);
+  font-size: var(--qf-chart-text-caption);
+  line-height: var(--qf-chart-leading-caption);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qf-chart,
+  .qf-chart *,
+  .multi-tooltip,
+  .qf-multi-pane-chart-tooltip {
+    transition-duration: 0s;
+  }
+}

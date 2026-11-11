@@ -1,0 +1,70 @@
+{
+  "name": "@quant-factory/qf-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": [
+    "**/*.css",
+    "./src/index.ts",
+    "./src/tables/index.ts",
+    "./src/command/index.ts"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles/index.css",
+    "./tables": "./src/tables/index.ts",
+    "./tables/core": "./src/tables/core/index.ts",
+    "./command": "./src/command/index.ts",
+    "./charts": "./src/charts/index.ts",
+    "./charts/orderbook": "./src/charts/orderbook/index.ts",
+    "./charts/execution": "./src/charts/execution/index.ts",
+    "./charts/lineage": "./src/charts/lineage/index.ts",
+    "./charts/network": "./src/charts/network/index.ts",
+    "./charts/diagram": "./src/charts/diagram/index.ts",
+    "./charts/core": "./src/charts/core/index.ts",
+    "./charts/geometry": "./src/charts/core/geometry.ts",
+    "./charts/renderers": "./src/charts/charts/index.ts",
+    "./charts/chrome": "./src/charts/components/index.ts",
+    "./charts/hooks": "./src/charts/hooks/index.ts",
+    "./charts/theme": "./src/charts/theme/index.ts",
+    "./charts/styles.css": "./src/charts/theme/qf-charts.css"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json --pretty false",
+    "example:build": "vite build --config examples/standalone/vite.config.ts",
+    "example:check": "tsc -p examples/standalone/tsconfig.json --pretty false && vite build --config examples/standalone/vite.config.ts",
+    "lint": "biome check src tests examples vite.config.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit --pretty false"
+  },
+  "dependencies": {
+    "@base-ui/react": "1.8.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "@radix-ui/react-select": "2.3.6",
+    "@tanstack/react-virtual": "3.14.10",
+    "cmdk": "1.1.1",
+    "echarts": "5.6.0",
+    "lucide-react": "0.454.0",
+    "mermaid": "12.2.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.3",
+    "@tailwindcss/vite": "4.3.2",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.4",
+    "jsdom": "29.1.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "tailwindcss": "4.3.2",
+    "typescript": "5.9.3",
+    "vite": "7.3.6",
+    "vitest": "4.1.10"
+  }
+}

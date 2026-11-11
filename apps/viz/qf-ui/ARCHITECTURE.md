@@ -1,0 +1,13 @@
+# qf-ui architecture
+
+The root export (`src/index.ts`) is the component kit: `styles` holds the canonical tokens and base layer (`styles/index.css`), `primitives`, `layout`, `data`, and `state` hold components, `overlay` holds Base UI popups (tooltip, popover, dialog, sheet, menu, toast), `command` holds the cmdk palette, `frame` holds page frames and the section workspace, `shell` holds the sidebar shell, tree navigator and its search and overflow popout, `lib` holds the tone vocabulary and `cn`, and `router` holds the host-router adapter and `useSearchParamState`. Components that render in-app links or navigate read the host `Link`, pathname, `useNavigate` and `useSearchParams` from `QfRouterProvider`; without a provider (or without the optional hooks) they fall back to plain anchors and the History API. Data loading stays in the host: the tree navigator takes a `useChildren` loader hook.
+
+`src/charts` is the chart engine. `core` owns the single registered ECharts runtime and instance lifecycle. `charts` converts package-owned contracts into ECharts options and composes portable chart experiences. `components` owns reusable DOM chrome and controls. `hooks` owns controlled brush and responsive state. `theme` resolves semantic CSS variables with built-in dark and light defaults.
+
+Chart dependency flow is `consumer normalization -> public chart props -> chart option construction -> QfChart lifecycle -> ECharts`. No dependency points back into an application, and nothing in the root barrel imports `src/charts`, so non-chart routes never load ECharts.
+
+Public entrypoints are the `exports` in `package.json`: the root, `styles.css`, `command`, `tables`, `tables/core`, `charts`, `charts/core`, `charts/geometry`, `charts/renderers`, `charts/chrome`, `charts/hooks`, `charts/theme`, `charts/orderbook`, `charts/execution`, `charts/lineage`, `charts/network`, `charts/diagram`, and `charts/styles.css`. Internal source paths are not supported.
+
+`MultiSeriesTimeChart` is the high-level time-series boundary. It owns normalization, dual-axis domains, benchmark treatment, legend visibility, hover, responsive plot geometry, downsampling, brushing, and reusable transforms such as trailing Z-score and EMA smoothing. Consumers enable package-owned controls declaratively and own only their query, trust-boundary validation, thin data mapping, genuinely product-specific controls, copy, route state, and dashboard layout.
+
+Heavy interactive dependencies stay off the first load by construction: toasts go through the dependency-free `overlay/toast-store.ts`, with `LazyToaster` importing the Base UI renderer on the first toast, and hosts load `CommandPalette` through a dynamic `import('@quant-factory/qf-ui/command')`.

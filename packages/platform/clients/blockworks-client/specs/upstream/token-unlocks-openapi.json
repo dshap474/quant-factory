@@ -1,0 +1,1638 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Blockworks Token Unlocks API",
+    "description": "OpenAPI specification for the Blockworks Token Unlocks API.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.blockworks.com",
+      "description": "Blockworks API"
+    }
+  ],
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Assets",
+      "description": "Coverage, unlock events, and the two timeseries views."
+    },
+    {
+      "name": "Allocations",
+      "description": "Who holds what, and how much of it has unlocked."
+    }
+  ],
+  "paths": {
+    "/token-unlocks/v1/allocations": {
+      "get": {
+        "tags": [
+          "Allocations"
+        ],
+        "summary": "Get allocations",
+        "description": "Allocation totals for one asset, broken down by recipient, with the analyst description, assumptions, and citations behind each tranche. This is the snapshot view: how much was allocated, how much has unlocked, and how much is left.",
+        "operationId": "getAllocationsByAssetIDs",
+        "parameters": [
+          {
+            "name": "assetId",
+            "in": "query",
+            "description": "Asset to look up. Accepts a slug (`solana`) or the asset UUID.",
+            "schema": {
+              "type": "string",
+              "example": "solana"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Allocation aggregates for the asset. `data` is `null` when the asset has no unlock coverage.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "`null` on success."
+                    },
+                    "data": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "$ref": "#/components/schemas/AllocationAggregate"
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "asset": {
+                        "id": "97775be0-2608-4720-b7af-f85b24c7eb2d",
+                        "name": "XRP",
+                        "slug": "xrp",
+                        "symbol": "XRP"
+                      },
+                      "genesisDate": "2012-06-01T00:00:00Z",
+                      "projectedEndDate": "2022-06-01T00:00:00Z",
+                      "totalAllocationUSD": 238697977801.6666,
+                      "totalAllocationNative": 100000000000,
+                      "cumulativeUnlockedUSD": 238697977801.6666,
+                      "cumulativeUnlockedNative": 100000000000,
+                      "unlocksRemainingUSD": 0,
+                      "unlocksRemainingNative": 0,
+                      "percentOfUnlocksCompleted": 1,
+                      "allocationRecipientCount": 3,
+                      "lastUpdatedAt": "2025-03-08T13:19:53.477266Z",
+                      "allocations": [
+                        {
+                          "allocationRecipient": "Founders",
+                          "totalAllocationUSD": 47739595560.33332,
+                          "totalAllocationNative": 20000000000,
+                          "cumulativeUnlockedUSD": 47739595560.33332,
+                          "cumulativeUnlockedNative": 20000000000,
+                          "unlocksRemainingUSD": 0,
+                          "unlocksRemainingNative": 0,
+                          "percentOfUnlocksCompleted": 1,
+                          "description": "20% allocated to founders. Chris Larsen and Jed McCaleb recieved 9.5 billion XRP each and Aurthur Britto recieved 1 billion XRP.",
+                          "assumptions": "",
+                          "sources": [
+                            {
+                              "sourceType": "Third-party Website",
+                              "source": "https://tokeninsight.com/en/coins/ripple/tokenomics"
+                            }
+                          ]
+                        },
+                        {
+                          "allocationRecipient": "Ripple",
+                          "totalAllocationUSD": 190480986285.72995,
+                          "totalAllocationNative": 79800000000,
+                          "cumulativeUnlockedUSD": 190480986285.72995,
+                          "cumulativeUnlockedNative": 79800000000,
+                          "unlocksRemainingUSD": 0,
+                          "unlocksRemainingNative": 0,
+                          "percentOfUnlocksCompleted": 1,
+                          "description": "79.8% allocated to Ripple. In December 2017 55 billion XRP were escrowed, with 1 billion XRP released per month.",
+                          "assumptions": "Monthly unlocks on the first. Ripple is a private company and not a foundation.",
+                          "sources": [
+                            {
+                              "sourceType": "Third-party Website",
+                              "source": "https://tokeninsight.com/en/coins/ripple/tokenomics"
+                            }
+                          ]
+                        },
+                        {
+                          "allocationRecipient": "Airdrop",
+                          "totalAllocationUSD": 477395955.6033332,
+                          "totalAllocationNative": 200000000,
+                          "cumulativeUnlockedUSD": 477395955.6033332,
+                          "cumulativeUnlockedNative": 200000000,
+                          "unlocksRemainingUSD": 0,
+                          "unlocksRemainingNative": 0,
+                          "percentOfUnlocksCompleted": 1,
+                          "description": "0.2% allocated to airdrop.",
+                          "assumptions": "",
+                          "sources": [
+                            {
+                              "sourceType": "Third-party Website",
+                              "source": "https://tokeninsight.com/en/coins/ripple/tokenomics"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, for example an `interval` outside the allowed set or an unparseable timestamp.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing or invalid API key, or a key without token unlock access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token-unlocks/v1/assets": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "List covered assets",
+        "description": "Every asset with token unlock coverage, with the classification fields the other endpoints key off. Filters combine with AND across parameters and OR within a comma-separated parameter. The full corpus is a few hundred assets and the response is unordered, so sort client-side if you need stable ordering.",
+        "operationId": "getFilteredAssets",
+        "parameters": [
+          {
+            "name": "assetIDs",
+            "in": "query",
+            "description": "Comma-separated asset UUIDs. Slugs are not accepted here and match nothing; use the per-asset endpoints for slug lookups.",
+            "schema": {
+              "type": "string",
+              "example": "b3d5d66c-26a2-404c-9325-91dc714a722b,1c077d6e-99c7-491c-b24d-1d359011cd81"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Comma-separated categories, matched as OR.",
+            "schema": {
+              "type": "string",
+              "example": "Networks,Financial Services"
+            }
+          },
+          {
+            "name": "sector",
+            "in": "query",
+            "description": "Comma-separated sectors, matched as OR.",
+            "schema": {
+              "type": "string",
+              "example": "Smart Contract Platform"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Comma-separated tags, matched as OR.",
+            "schema": {
+              "type": "string",
+              "example": "EVM,Proof-of-Stake"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Accepted but not currently applied. The endpoint returns the full matching set regardless of this value.",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Accepted but not currently applied. The endpoint returns the full matching set regardless of this value.",
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assets matching the filters. `data` is `null`, not `[]`, when nothing matches.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "`null` on success."
+                    },
+                    "data": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "$ref": "#/components/schemas/UnlockAsset"
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": [
+                    {
+                      "id": "b3d5d66c-26a2-404c-9325-91dc714a722b",
+                      "serialId": 6079,
+                      "symbol": "SOL",
+                      "name": "Solana",
+                      "genesisDate": "2020-04-07T00:00:00Z",
+                      "projectedEndDate": "2029-03-01T00:00:00Z",
+                      "slug": "solana",
+                      "category": "Networks",
+                      "sector": "Smart Contract Platform",
+                      "tags": [
+                        "Proof-of-Stake",
+                        "SEC Alleged Securities",
+                        "Stakeable"
+                      ],
+                      "otherInfo": "Tokens allocated to inflationary categories (Validator Rewards) are not accounted for in the unlock data below. "
+                    },
+                    {
+                      "id": "78c4b0c5-8cbe-4f05-b639-0eb942e86dd5",
+                      "serialId": 21023,
+                      "symbol": "SUI",
+                      "name": "Sui",
+                      "genesisDate": "2023-04-30T00:00:00Z",
+                      "projectedEndDate": "2030-04-28T00:00:00Z",
+                      "slug": "sui",
+                      "category": "Networks",
+                      "sector": "Smart Contract Platform",
+                      "tags": null,
+                      "otherInfo": "Sui unlock data is only supported up to 2030 (47.83% of the total allocation), as the project only released data for the next 7 years; therefore, the unlock data for Mysten Labs Treasury, Early Contributors, Community Reserve is incomplete in the vesting schedule. Furthermore, tokens allocated to inflationary categories (Stake Subsidies) are not accounted for in the unlock data below. "
+                    },
+                    {
+                      "id": "99b6a5f4-2200-4098-82fd-53d091bdee70",
+                      "serialId": 756013,
+                      "symbol": "HYPE",
+                      "name": "Hyperliquid",
+                      "genesisDate": "2024-11-29T00:00:00Z",
+                      "projectedEndDate": "2027-10-28T00:00:00Z",
+                      "slug": "hyperliquid",
+                      "category": "Marketplaces",
+                      "sector": "Exchange",
+                      "tags": [
+                        "Decentralized Exchange",
+                        "DeFi",
+                        "Perpetuals"
+                      ],
+                      "otherInfo": null
+                    },
+                    {
+                      "id": "7c435a77-5be9-4424-b5d1-1c02b968c56f",
+                      "serialId": 378,
+                      "symbol": "XLM",
+                      "name": "Stellar",
+                      "genesisDate": "2015-11-24T00:00:00Z",
+                      "projectedEndDate": "2023-04-05T00:00:00Z",
+                      "slug": "stellar",
+                      "category": "Financial Services",
+                      "sector": "Payments",
+                      "tags": null,
+                      "otherInfo": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, for example an `interval` outside the allowed set or an unparseable timestamp.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing or invalid API key, or a key without token unlock access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token-unlocks/v1/assets/{assetId}/events": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get unlock events",
+        "description": "The discrete points where an asset's unlock schedule changes: cliffs that release a tranche on a date, and changes to the daily linear vesting rate. Use this to find the next material unlock rather than to chart supply over time.",
+        "operationId": "getEvents",
+        "parameters": [
+          {
+            "name": "assetId",
+            "in": "path",
+            "description": "Asset to look up. Accepts a slug (`solana`) or the asset UUID.",
+            "schema": {
+              "type": "string",
+              "example": "solana"
+            },
+            "required": true
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "RFC 3339 timestamp. Only events at or after this time are returned.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2020-01-01T00:00:00Z"
+            }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "RFC 3339 timestamp. Only events at or before this time are returned. Future dates are valid: the schedule is projected forward.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2027-12-31T00:00:00Z"
+            }
+          },
+          {
+            "name": "unlockType",
+            "in": "query",
+            "description": "Return only cliff events or only linear rate changes. Omit for both.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CLIFF",
+                "LINEAR"
+              ],
+              "example": "CLIFF"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The asset's unlock events over the window.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "`null` on success."
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Events"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "asset": {
+                      "id": "b3d5d66c-26a2-404c-9325-91dc714a722b",
+                      "name": "Solana",
+                      "slug": "solana",
+                      "symbol": "SOL"
+                    },
+                    "unlockEvents": [
+                      {
+                        "timestamp": "2020-04-07T00:00:00Z",
+                        "cliff": {
+                          "amountNative": 8225000,
+                          "amountUSD": 1553853121.763593,
+                          "percentOfTotalAllocation": 0.017267440639892512,
+                          "allocations": [
+                            {
+                              "allocationRecipient": "Coinlist Auction Sale",
+                              "amountNative": 8200000,
+                              "amountUSD": 1549130163.9466825,
+                              "percentOfTotalAllocation": 0.017214956017886758
+                            },
+                            {
+                              "allocationRecipient": "Solana Foundation",
+                              "amountNative": 25000,
+                              "amountUSD": 4722957.816910617,
+                              "percentOfTotalAllocation": 5.248462200575231e-05
+                            }
+                          ]
+                        },
+                        "dailyLinearRateChange": null
+                      },
+                      {
+                        "timestamp": "2020-05-07T00:00:00Z",
+                        "cliff": {
+                          "amountNative": 8187500,
+                          "amountUSD": 1546768685.038227,
+                          "percentOfTotalAllocation": 0.017188713706883883,
+                          "allocations": [
+                            {
+                              "allocationRecipient": "Community Reserve",
+                              "amountNative": 8187500,
+                              "amountUSD": 1546768685.038227,
+                              "percentOfTotalAllocation": 0.017188713706883883
+                            }
+                          ]
+                        },
+                        "dailyLinearRateChange": null
+                      },
+                      {
+                        "timestamp": "2020-06-07T00:00:00Z",
+                        "cliff": {
+                          "amountNative": 8187500,
+                          "amountUSD": 1546768685.038227,
+                          "percentOfTotalAllocation": 0.017188713706883883,
+                          "allocations": [
+                            {
+                              "allocationRecipient": "Community Reserve",
+                              "amountNative": 8187500,
+                              "amountUSD": 1546768685.038227,
+                              "percentOfTotalAllocation": 0.017188713706883883
+                            }
+                          ]
+                        },
+                        "dailyLinearRateChange": null
+                      },
+                      {
+                        "timestamp": "2020-07-07T00:00:00Z",
+                        "cliff": {
+                          "amountNative": 8187500,
+                          "amountUSD": 1546768685.038227,
+                          "percentOfTotalAllocation": 0.017188713706883883,
+                          "allocations": [
+                            {
+                              "allocationRecipient": "Community Reserve",
+                              "amountNative": 8187500,
+                              "amountUSD": 1546768685.038227,
+                              "percentOfTotalAllocation": 0.017188713706883883
+                            }
+                          ]
+                        },
+                        "dailyLinearRateChange": null
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, for example an `interval` outside the allowed set or an unparseable timestamp.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing or invalid API key, or a key without token unlock access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token-unlocks/v1/assets/{assetId}/unlocks": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get unlocks timeseries",
+        "description": "How many tokens unlock per interval, in total and per recipient. This is the flow series: each snapshot covers one bucket and does not carry a running total. `interval` is required.",
+        "operationId": "getUnlocksTimeseries",
+        "parameters": [
+          {
+            "name": "assetId",
+            "in": "path",
+            "description": "Asset to look up. Accepts a slug (`solana`) or the asset UUID.",
+            "schema": {
+              "type": "string",
+              "example": "solana"
+            },
+            "required": true
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "description": "Bucket size the unlock amounts are aggregated to.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DAILY",
+                "WEEKLY",
+                "MONTHLY",
+                "QUARTERLY",
+                "YEARLY"
+              ],
+              "example": "MONTHLY"
+            },
+            "required": true
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "RFC 3339 timestamp for the start of the window.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-01-01T00:00:00Z"
+            }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "RFC 3339 timestamp for the end of the window. Future dates are valid: the schedule is projected forward.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-04-01T00:00:00Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Interval-bucketed unlock flow for the asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "`null` on success."
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Unlock"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "asset": {
+                      "id": "b3d5d66c-26a2-404c-9325-91dc714a722b",
+                      "name": "Solana",
+                      "slug": "solana",
+                      "symbol": "SOL"
+                    },
+                    "genesisDate": "2020-04-07T00:00:00Z",
+                    "projectedEndDate": "2029-03-01T00:00:00Z",
+                    "startDate": "2020-04-07T00:00:00Z",
+                    "endDate": "2021-04-07T00:00:00Z",
+                    "interval": "MONTHLY",
+                    "totalSnapshots": [
+                      {
+                        "timestamp": "2020-04-07T00:00:00Z",
+                        "unlockedInPeriodUSD": 1553853121.763593,
+                        "unlockedInPeriodNative": 8225000
+                      },
+                      {
+                        "timestamp": "2020-05-07T00:00:00Z",
+                        "unlockedInPeriodUSD": 1546768685.038227,
+                        "unlockedInPeriodNative": 8187500
+                      },
+                      {
+                        "timestamp": "2020-06-07T00:00:00Z",
+                        "unlockedInPeriodUSD": 1546768685.038227,
+                        "unlockedInPeriodNative": 8187500
+                      }
+                    ],
+                    "allocations": [
+                      {
+                        "allocationRecipient": "Team",
+                        "dailySnapshots": [
+                          {
+                            "timestamp": "2020-04-07T00:00:00Z",
+                            "unlockedInPeriodUSD": 0,
+                            "unlockedInPeriodNative": 0
+                          },
+                          {
+                            "timestamp": "2020-05-07T00:00:00Z",
+                            "unlockedInPeriodUSD": 0,
+                            "unlockedInPeriodNative": 0
+                          },
+                          {
+                            "timestamp": "2020-06-07T00:00:00Z",
+                            "unlockedInPeriodUSD": 0,
+                            "unlockedInPeriodNative": 0
+                          }
+                        ]
+                      },
+                      {
+                        "allocationRecipient": "Strategic Sale",
+                        "dailySnapshots": [
+                          {
+                            "timestamp": "2020-04-07T00:00:00Z",
+                            "unlockedInPeriodUSD": 0,
+                            "unlockedInPeriodNative": 0
+                          },
+                          {
+                            "timestamp": "2020-05-07T00:00:00Z",
+                            "unlockedInPeriodUSD": 0,
+                            "unlockedInPeriodNative": 0
+                          },
+                          {
+                            "timestamp": "2020-06-07T00:00:00Z",
+                            "unlockedInPeriodUSD": 0,
+                            "unlockedInPeriodNative": 0
+                          }
+                        ]
+                      },
+                      {
+                        "allocationRecipient": "Coinlist Auction Sale",
+                        "dailySnapshots": [
+                          {
+                            "timestamp": "2020-04-07T00:00:00Z",
+                            "unlockedInPeriodUSD": 1549130163.9466825,
+                            "unlockedInPeriodNative": 8200000
+                          },
+                          {
+                            "timestamp": "2020-05-07T00:00:00Z",
+                            "unlockedInPeriodUSD": 0,
+                            "unlockedInPeriodNative": 0
+                          },
+                          {
+                            "timestamp": "2020-06-07T00:00:00Z",
+                            "unlockedInPeriodUSD": 0,
+                            "unlockedInPeriodNative": 0
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, for example an `interval` outside the allowed set or an unparseable timestamp.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing or invalid API key, or a key without token unlock access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token-unlocks/v1/assets/{assetId}/vesting-schedule": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get vesting schedule",
+        "description": "Daily cumulative vesting state: how much has unlocked, how much is left, and what share of the allocation is complete, per day and per recipient. This is the stock series, the counterpart to the per-interval flow from the unlocks endpoint.",
+        "operationId": "getVestingScheduleTimeseries",
+        "parameters": [
+          {
+            "name": "assetId",
+            "in": "path",
+            "description": "Asset to look up. Accepts a slug (`solana`) or the asset UUID.",
+            "schema": {
+              "type": "string",
+              "example": "solana"
+            },
+            "required": true
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "RFC 3339 timestamp for the start of the window.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-01-01T00:00:00Z"
+            }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "RFC 3339 timestamp for the end of the window. Future dates are valid: the schedule is projected forward.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-02-01T00:00:00Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daily cumulative vesting state for the asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "`null` on success."
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/VestingSchedule"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "example": {
+                  "error": null,
+                  "data": {
+                    "asset": {
+                      "id": "b3d5d66c-26a2-404c-9325-91dc714a722b",
+                      "name": "Solana",
+                      "slug": "solana",
+                      "symbol": "SOL"
+                    },
+                    "genesisDate": "2020-04-07T00:00:00Z",
+                    "projectedEndDate": "2029-03-01T00:00:00Z",
+                    "startTime": "2020-04-07T00:00:00Z",
+                    "endTime": "2021-03-07T00:00:00Z",
+                    "totalDailySnapshots": [
+                      {
+                        "timestamp": "2020-04-07T00:00:00Z",
+                        "cumulativeUnlockedUSD": 1553853121.763593,
+                        "cumulativeUnlockedNative": 8225000,
+                        "unlocksRemainingUSD": 88433606755.39777,
+                        "unlocksRemainingNative": 468105000,
+                        "percentOfUnlocksCompleted": 0.017267440639892512
+                      },
+                      {
+                        "timestamp": "2020-04-08T00:00:00Z",
+                        "cumulativeUnlockedUSD": 1553853121.763593,
+                        "cumulativeUnlockedNative": 8225000,
+                        "unlocksRemainingUSD": 88433606755.39777,
+                        "unlocksRemainingNative": 468105000,
+                        "percentOfUnlocksCompleted": 0.017267440639892512
+                      },
+                      {
+                        "timestamp": "2020-04-09T00:00:00Z",
+                        "cumulativeUnlockedUSD": 1553853121.763593,
+                        "cumulativeUnlockedNative": 8225000,
+                        "unlocksRemainingUSD": 88433606755.39777,
+                        "unlocksRemainingNative": 468105000,
+                        "percentOfUnlocksCompleted": 0.017267440639892512
+                      }
+                    ],
+                    "allocations": [
+                      {
+                        "allocationRecipient": "Validator Sale",
+                        "dailySnapshots": [
+                          {
+                            "timestamp": "2020-04-07T00:00:00Z",
+                            "cumulativeUnlockedUSD": 0,
+                            "cumulativeUnlockedNative": 0,
+                            "unlocksRemainingUSD": 4892984298.319399,
+                            "unlocksRemainingNative": 25900000,
+                            "percentOfUnlocksCompleted": 0
+                          },
+                          {
+                            "timestamp": "2020-04-08T00:00:00Z",
+                            "cumulativeUnlockedUSD": 0,
+                            "cumulativeUnlockedNative": 0,
+                            "unlocksRemainingUSD": 4892984298.319399,
+                            "unlocksRemainingNative": 25900000,
+                            "percentOfUnlocksCompleted": 0
+                          },
+                          {
+                            "timestamp": "2020-04-09T00:00:00Z",
+                            "cumulativeUnlockedUSD": 0,
+                            "cumulativeUnlockedNative": 0,
+                            "unlocksRemainingUSD": 4892984298.319399,
+                            "unlocksRemainingNative": 25900000,
+                            "percentOfUnlocksCompleted": 0
+                          }
+                        ]
+                      },
+                      {
+                        "allocationRecipient": "FTX Estate",
+                        "dailySnapshots": [
+                          {
+                            "timestamp": "2020-04-07T00:00:00Z",
+                            "cumulativeUnlockedUSD": 0,
+                            "cumulativeUnlockedNative": 0,
+                            "unlocksRemainingUSD": 2234903638.962104,
+                            "unlocksRemainingNative": 11830000,
+                            "percentOfUnlocksCompleted": 0
+                          },
+                          {
+                            "timestamp": "2020-04-08T00:00:00Z",
+                            "cumulativeUnlockedUSD": 0,
+                            "cumulativeUnlockedNative": 0,
+                            "unlocksRemainingUSD": 2234903638.962104,
+                            "unlocksRemainingNative": 11830000,
+                            "percentOfUnlocksCompleted": 0
+                          },
+                          {
+                            "timestamp": "2020-04-09T00:00:00Z",
+                            "cumulativeUnlockedUSD": 0,
+                            "cumulativeUnlockedNative": 0,
+                            "unlocksRemainingUSD": 2234903638.962104,
+                            "unlocksRemainingNative": 11830000,
+                            "percentOfUnlocksCompleted": 0
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, for example an `interval` outside the allowed set or an unparseable timestamp.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing or invalid API key, or a key without token unlock access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Blockworks-API-Key"
+      }
+    },
+    "schemas": {
+      "AssetBasic": {
+        "type": "object",
+        "description": "The asset an unlock payload belongs to. The `id` is the same asset UUID the Data API and Monitoring API use, so unlock data joins to the rest of the platform without a mapping table.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Asset UUID, shared across Blockworks APIs.",
+            "example": "b3d5d66c-26a2-404c-9325-91dc714a722b"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name.",
+            "example": "Solana"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-safe identifier.",
+            "example": "solana"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Ticker symbol.",
+            "example": "SOL"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "symbol"
+        ]
+      },
+      "UnlockAsset": {
+        "type": "object",
+        "description": "An asset with token unlock coverage, including the classification fields the list endpoint filters on.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Asset UUID, shared across Blockworks APIs.",
+            "example": "1c077d6e-99c7-491c-b24d-1d359011cd81"
+          },
+          "serialId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Stable internal sequence number for the asset.",
+            "example": 609
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Ticker symbol.",
+            "example": "TRX"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name.",
+            "example": "TRON"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-safe identifier. Accepted as `assetId` on the per-asset endpoints, but not by the `assetIDs` filter here.",
+            "example": "tron"
+          },
+          "genesisDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date the token's vesting timeline begins.",
+            "example": "2017-09-13T00:00:00Z"
+          },
+          "projectedEndDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date the last scheduled unlock is projected to land. Equal to `genesisDate` for assets whose allocation unlocked at genesis.",
+            "example": "2017-09-13T00:00:00Z"
+          },
+          "category": {
+            "type": "string",
+            "description": "Top-level classification. Empty string when the asset is unclassified.",
+            "example": "Networks"
+          },
+          "sector": {
+            "type": "string",
+            "description": "Sector within the category. Empty string when the asset is unclassified.",
+            "example": "Smart Contract Platform"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "description": "Descriptive tags. `null`, not `[]`, when the asset carries none.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "EVM",
+              "Proof-of-Stake",
+              "Stakeable"
+            ]
+          },
+          "otherInfo": {
+            "type": "string",
+            "nullable": true,
+            "description": "Analyst caveat about the coverage of this asset's unlock data, for example a schedule the project has only published through a given year. `null` for most assets. Read it before treating a schedule as complete.",
+            "example": null
+          }
+        },
+        "required": [
+          "id",
+          "serialId",
+          "symbol",
+          "name",
+          "slug",
+          "category",
+          "sector"
+        ]
+      },
+      "AllocationSource": {
+        "type": "object",
+        "description": "Citation backing an allocation tranche.",
+        "properties": {
+          "sourceType": {
+            "type": "string",
+            "description": "Kind of source, for example `Third-party Website` or `Official Documentation`.",
+            "example": "Third-party Website"
+          },
+          "source": {
+            "type": "string",
+            "description": "URL or reference for the source.",
+            "example": "https://tokeninsight.com/en/coins/ripple/tokenomics"
+          }
+        }
+      },
+      "AllocationTranche": {
+        "type": "object",
+        "description": "One recipient's share of the total allocation, with the analyst notes and citations behind it.",
+        "properties": {
+          "allocationRecipient": {
+            "type": "string",
+            "description": "Recipient bucket, for example `Team`, `Community Reserve`, or `Coinlist Auction Sale`.",
+            "example": "Founders"
+          },
+          "totalAllocationUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Total tokens allocated to this recipient, valued in USD."
+          },
+          "totalAllocationNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Total tokens allocated to this recipient, in native units."
+          },
+          "cumulativeUnlockedUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Value unlocked to date, in USD."
+          },
+          "cumulativeUnlockedNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Tokens unlocked to date, in native units."
+          },
+          "unlocksRemainingUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Value still locked, in USD."
+          },
+          "unlocksRemainingNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Tokens still locked, in native units."
+          },
+          "percentOfUnlocksCompleted": {
+            "type": "number",
+            "format": "double",
+            "description": "Share of this recipient's allocation already unlocked, as a decimal fraction from 0 to 1.",
+            "example": 1
+          },
+          "description": {
+            "type": "string",
+            "description": "Analyst description of the allocation. Empty string when none was recorded."
+          },
+          "assumptions": {
+            "type": "string",
+            "description": "Assumptions the analyst applied when modeling this tranche. Empty string when none were recorded."
+          },
+          "sources": {
+            "type": "array",
+            "description": "Citations backing the tranche.",
+            "items": {
+              "$ref": "#/components/schemas/AllocationSource"
+            }
+          }
+        },
+        "required": [
+          "allocationRecipient",
+          "totalAllocationNative",
+          "cumulativeUnlockedNative",
+          "unlocksRemainingNative",
+          "percentOfUnlocksCompleted"
+        ]
+      },
+      "AllocationAggregate": {
+        "type": "object",
+        "description": "Allocation totals for one asset, plus the per-recipient breakdown.",
+        "properties": {
+          "asset": {
+            "$ref": "#/components/schemas/AssetBasic"
+          },
+          "genesisDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date the token's vesting timeline begins."
+          },
+          "projectedEndDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date the last scheduled unlock is projected to land."
+          },
+          "totalAllocationUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Total allocation across every recipient, valued in USD."
+          },
+          "totalAllocationNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Total allocation across every recipient, in native units."
+          },
+          "cumulativeUnlockedUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Value unlocked to date across every recipient, in USD."
+          },
+          "cumulativeUnlockedNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Tokens unlocked to date across every recipient, in native units."
+          },
+          "unlocksRemainingUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Value still locked across every recipient, in USD."
+          },
+          "unlocksRemainingNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Tokens still locked across every recipient, in native units."
+          },
+          "percentOfUnlocksCompleted": {
+            "type": "number",
+            "format": "double",
+            "description": "Share of the total allocation already unlocked, as a decimal fraction from 0 to 1. `1` means the schedule has fully unlocked.",
+            "example": 1
+          },
+          "allocationRecipientCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of entries in `allocations`.",
+            "example": 3
+          },
+          "lastUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the analyst team last revised this asset's allocation model."
+          },
+          "allocations": {
+            "type": "array",
+            "description": "Per-recipient breakdown.",
+            "items": {
+              "$ref": "#/components/schemas/AllocationTranche"
+            }
+          }
+        },
+        "required": [
+          "asset",
+          "allocations",
+          "allocationRecipientCount",
+          "totalAllocationNative",
+          "cumulativeUnlockedNative",
+          "unlocksRemainingNative",
+          "percentOfUnlocksCompleted"
+        ]
+      },
+      "UnlockEventAllocation": {
+        "type": "object",
+        "description": "One recipient's share of a single unlock event.",
+        "properties": {
+          "allocationRecipient": {
+            "type": "string",
+            "description": "Recipient bucket receiving these tokens.",
+            "example": "Coinlist Auction Sale"
+          },
+          "amountNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Tokens released to this recipient by the event, in native units."
+          },
+          "amountUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Value released to this recipient by the event, in USD."
+          },
+          "percentOfTotalAllocation": {
+            "type": "number",
+            "format": "double",
+            "description": "Share of the asset's total allocation this recipient's portion represents, as a decimal fraction from 0 to 1."
+          }
+        },
+        "required": [
+          "allocationRecipient",
+          "amountNative",
+          "percentOfTotalAllocation"
+        ]
+      },
+      "UnlockEventTranche": {
+        "type": "object",
+        "description": "The tokens moved by an unlock event, in total and per recipient.",
+        "properties": {
+          "amountNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Tokens released by the event, in native units."
+          },
+          "amountUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Value released by the event, in USD."
+          },
+          "percentOfTotalAllocation": {
+            "type": "number",
+            "format": "double",
+            "description": "Share of the asset's total allocation released by the event, as a decimal fraction from 0 to 1."
+          },
+          "allocations": {
+            "type": "array",
+            "description": "Per-recipient breakdown of the event.",
+            "items": {
+              "$ref": "#/components/schemas/UnlockEventAllocation"
+            }
+          }
+        },
+        "required": [
+          "amountNative",
+          "percentOfTotalAllocation",
+          "allocations"
+        ]
+      },
+      "UnlockEvent": {
+        "type": "object",
+        "description": "A dated point where the unlock schedule changes. `cliff` is populated when a discrete tranche unlocks on the date; `dailyLinearRateChange` is populated when the ongoing linear vesting rate changes. Exactly one of the two carries the event, and the other is `null`.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the event occurs. Past and future dates are both returned; the schedule is projected forward.",
+            "example": "2020-04-07T00:00:00Z"
+          },
+          "cliff": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnlockEventTranche"
+              }
+            ],
+            "nullable": true,
+            "description": "The tranche released by a cliff. `null` on events that only change the linear rate. Matched by `unlockType=CLIFF`."
+          },
+          "dailyLinearRateChange": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnlockEventTranche"
+              }
+            ],
+            "nullable": true,
+            "description": "The change in the amount vesting per day from this date forward. `null` on cliff-only events. Matched by `unlockType=LINEAR`."
+          }
+        },
+        "required": [
+          "timestamp"
+        ]
+      },
+      "Events": {
+        "type": "object",
+        "description": "An asset's unlock events over the requested window.",
+        "properties": {
+          "asset": {
+            "$ref": "#/components/schemas/AssetBasic"
+          },
+          "unlockEvents": {
+            "type": "array",
+            "description": "Events in ascending timestamp order.",
+            "items": {
+              "$ref": "#/components/schemas/UnlockEvent"
+            }
+          }
+        },
+        "required": [
+          "asset",
+          "unlockEvents"
+        ]
+      },
+      "UnlockSnapshot": {
+        "type": "object",
+        "description": "Tokens unlocked during a single interval. Flow, not a running total: use the vesting schedule for cumulative figures.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start of the interval."
+          },
+          "unlockedInPeriodUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Value unlocked during the interval, in USD."
+          },
+          "unlockedInPeriodNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Tokens unlocked during the interval, in native units."
+          }
+        },
+        "required": [
+          "timestamp",
+          "unlockedInPeriodNative"
+        ]
+      },
+      "AllocationUnlockTranche": {
+        "type": "object",
+        "description": "Per-interval unlock flow for one recipient.",
+        "properties": {
+          "allocationRecipient": {
+            "type": "string",
+            "description": "Recipient bucket.",
+            "example": "Team"
+          },
+          "dailySnapshots": {
+            "type": "array",
+            "description": "One entry per interval, on the same timestamps as `totalSnapshots`. Named `dailySnapshots` regardless of the `interval` requested.",
+            "items": {
+              "$ref": "#/components/schemas/UnlockSnapshot"
+            }
+          }
+        },
+        "required": [
+          "allocationRecipient",
+          "dailySnapshots"
+        ]
+      },
+      "Unlock": {
+        "type": "object",
+        "description": "Interval-bucketed unlock flow for one asset, in total and per recipient.",
+        "properties": {
+          "asset": {
+            "$ref": "#/components/schemas/AssetBasic"
+          },
+          "genesisDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date the token's vesting timeline begins."
+          },
+          "projectedEndDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date the last scheduled unlock is projected to land."
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start of the returned window."
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End of the returned window."
+          },
+          "interval": {
+            "type": "string",
+            "enum": [
+              "DAILY",
+              "WEEKLY",
+              "MONTHLY",
+              "QUARTERLY",
+              "YEARLY"
+            ],
+            "description": "Bucket size the snapshots are aggregated to. Echoes the requested `interval`."
+          },
+          "totalSnapshots": {
+            "type": "array",
+            "description": "Unlock flow across every recipient, one entry per interval.",
+            "items": {
+              "$ref": "#/components/schemas/UnlockSnapshot"
+            }
+          },
+          "allocations": {
+            "type": "array",
+            "description": "The same series split by recipient. The per-recipient snapshots sum to `totalSnapshots`.",
+            "items": {
+              "$ref": "#/components/schemas/AllocationUnlockTranche"
+            }
+          }
+        },
+        "required": [
+          "asset",
+          "startDate",
+          "endDate",
+          "interval",
+          "totalSnapshots",
+          "allocations"
+        ]
+      },
+      "VestingScheduleSnapshot": {
+        "type": "object",
+        "description": "Cumulative unlock state on a single day. Stock, not flow.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The day this snapshot describes."
+          },
+          "cumulativeUnlockedUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Value unlocked from genesis through this day, in USD."
+          },
+          "cumulativeUnlockedNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Tokens unlocked from genesis through this day, in native units."
+          },
+          "unlocksRemainingUSD": {
+            "type": "number",
+            "format": "double",
+            "description": "Value still locked as of this day, in USD."
+          },
+          "unlocksRemainingNative": {
+            "type": "number",
+            "format": "double",
+            "description": "Tokens still locked as of this day, in native units."
+          },
+          "percentOfUnlocksCompleted": {
+            "type": "number",
+            "format": "double",
+            "description": "Share of the allocation unlocked as of this day, as a decimal fraction from 0 to 1."
+          }
+        },
+        "required": [
+          "timestamp",
+          "cumulativeUnlockedNative",
+          "unlocksRemainingNative",
+          "percentOfUnlocksCompleted"
+        ]
+      },
+      "AllocationVestingScheduleTranche": {
+        "type": "object",
+        "description": "Daily cumulative vesting state for one recipient.",
+        "properties": {
+          "allocationRecipient": {
+            "type": "string",
+            "description": "Recipient bucket.",
+            "example": "Validator Sale"
+          },
+          "dailySnapshots": {
+            "type": "array",
+            "description": "One entry per day in the window.",
+            "items": {
+              "$ref": "#/components/schemas/VestingScheduleSnapshot"
+            }
+          }
+        },
+        "required": [
+          "allocationRecipient",
+          "dailySnapshots"
+        ]
+      },
+      "VestingSchedule": {
+        "type": "object",
+        "description": "Daily cumulative vesting state for one asset, in total and per recipient.",
+        "properties": {
+          "asset": {
+            "$ref": "#/components/schemas/AssetBasic"
+          },
+          "genesisDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date the token's vesting timeline begins."
+          },
+          "projectedEndDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date the last scheduled unlock is projected to land."
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start of the returned window."
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End of the returned window."
+          },
+          "totalDailySnapshots": {
+            "type": "array",
+            "description": "Cumulative state across every recipient, one entry per day.",
+            "items": {
+              "$ref": "#/components/schemas/VestingScheduleSnapshot"
+            }
+          },
+          "allocations": {
+            "type": "array",
+            "description": "The same series split by recipient.",
+            "items": {
+              "$ref": "#/components/schemas/AllocationVestingScheduleTranche"
+            }
+          }
+        },
+        "required": [
+          "asset",
+          "startTime",
+          "endTime",
+          "totalDailySnapshots",
+          "allocations"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "description": "Failure envelope. `error` carries the message and `data` is `null`.",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message.",
+            "example": "invalid auth mechanism"
+          },
+          "data": {
+            "nullable": true,
+            "description": "Always `null` on failure."
+          }
+        },
+        "required": [
+          "data"
+        ]
+      }
+    }
+  }
+}

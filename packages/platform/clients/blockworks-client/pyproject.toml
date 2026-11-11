@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "blockworks-client"
+version = "0.1.0"
+description = "Synchronous read-only Blockworks API client"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = ["client-common>=0.1.0", "httpx>=0.27.0"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/blockworks_client"]
+
+[tool.uv.sources]
+"client-common" = { workspace = true }
+
+[dependency-groups]
+dev = ["openapi-schema-validator>=0.6,<0.9"]

@@ -1,0 +1,22 @@
+/**
+ * Chart header note: sans caption with tabular figures in the readable label color.
+ *
+ * USAGE: imported by ChartNote.tsx.
+ */
+
+.qf-chart-note {
+  min-width: 0;
+  color: var(--qf-chart-label);
+  font-family: var(--qf-chart-font-sans);
+  font-size: var(--qf-chart-text-caption);
+  line-height: var(--qf-chart-leading-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.qf-chart-note.is-error {
+  color: var(--qf-chart-negative);
+}
+
+.qf-chart-note.is-waiting {
+  color: var(--qf-chart-tone-info);
+}

@@ -1,0 +1,248 @@
+/** Shared full-width metric comparisons. USAGE: imported by MetricComparisonTable. */
+
+@layer qf-components {
+  /* --------------------------------------------------------------------------- #
+   * Comparison layout and numeric hierarchy
+   * --------------------------------------------------------------------------- # */
+
+  /* The frame follows the table (no framed void beside a narrow comparison) up to the
+     container, then its inner ScrollArea scrolls. The pinned row labels hold the start
+     edge, so only the end fades. */
+  .metric-comparison {
+    width: fit-content;
+    max-width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-card);
+  }
+
+  .metric-comparison table {
+    width: auto;
+  }
+  .metric-comparison thead {
+    background: var(--color-surface-header);
+  }
+  .metric-comparison thead th {
+    white-space: normal;
+    vertical-align: bottom;
+  }
+  /* Value columns size to their numbers with a floor, so compared values sit close to their
+     label instead of across a stretched column. */
+  .metric-comparison thead th:not(:first-child) {
+    min-width: 7.5rem;
+  }
+  .metric-comparison thead th:not(:first-child),
+  .metric-comparison td {
+    text-align: right;
+  }
+  .metric-comparison tbody th {
+    height: auto;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: var(--text-body--line-height);
+    color: var(--color-fg-secondary);
+  }
+  .metric-comparison td {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  /* Text rows wrap inside a bounded column so numeric columns stay in view. */
+  .metric-comparison td.is-wrap {
+    white-space: normal;
+    /* A set width bounds the column's max-content, so prose cannot stretch the table. */
+    width: 14rem;
+    min-width: 12rem;
+    max-width: 20rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .metric-comparison .metric-comparison-emphasis td {
+    font-weight: 500;
+  }
+  .metric-comparison-column {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+  .metric-comparison-swatch {
+    flex-shrink: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  .metric-comparison-detail {
+    text-align: right;
+    display: block;
+    margin-top: var(--space-1);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+  .metric-comparison:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 0;
+  }
+}
+
+/* A comparison table sets its own cell rhythm and lets its row headers size to their
+   content, deliberately overriding the .ui-table-head / .ui-table-cell base recipes in
+   Table.css. Declared here so it wins by layer instead of by being unlayered. */
+@layer qf-variants {
+  .metric-comparison th,
+  .metric-comparison td {
+    height: var(--table-row-height);
+    padding: 0 var(--space-3);
+  }
+  .metric-comparison tr > :first-child {
+    padding-left: var(--inset-surface);
+  }
+  .metric-comparison tr > :last-child {
+    padding-right: var(--inset-surface);
+  }
+  /* Body cells sit at the top with the one-line inset (row height less the 1px row rule,
+     less one line box, halved): a single-line row is exactly 32 and a wrapped prose row's
+     label and values line up with its first line. */
+  .metric-comparison tbody th,
+  .metric-comparison tbody td {
+    vertical-align: top;
+    padding-block: calc((var(--table-row-height) - 1px - 1lh) / 2);
+  }
+}
+
+@layer qf-variants {
+  /* --------------------------------------------------------------------------- #
+   * Grouped ledger and pinned row labels
+   * --------------------------------------------------------------------------- # */
+
+  .metric-comparison thead th {
+    padding-block: var(--space-3) var(--space-2);
+    color: var(--color-fg-secondary);
+  }
+  .metric-comparison .metric-comparison-detail {
+    color: var(--color-fg-tertiary);
+    font-size: var(--text-caption);
+  }
+  .metric-comparison th[scope="row"],
+  .metric-comparison thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: var(--z-lift);
+    background: var(--color-card);
+  }
+  /* Pinned row labels and group captions are opaque in the data well, not on the card. */
+  .metric-comparison tbody th[scope="row"] {
+    background:
+      linear-gradient(var(--ui-table-row-tint), var(--ui-table-row-tint)), var(--color-surface-data);
+  }
+  .metric-comparison thead th:first-child {
+    background: var(--color-surface-header);
+  }
+  /* Groups separate by white space and one hairline between them, not a filled band. */
+  .metric-comparison .metric-comparison-group th {
+    padding-block: var(--space-4) var(--space-1);
+    vertical-align: bottom;
+    background: var(--color-surface-data);
+    color: var(--color-fg-secondary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 500;
+  }
+  .metric-comparison tbody + tbody .metric-comparison-group th {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  .metric-comparison-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  /* The tip trigger is one line box tall, so a row with an info icon is still 32px. */
+  .metric-comparison-label .ui-info-tip-trigger {
+    height: 1lh;
+    min-height: 0;
+  }
+  .metric-comparison .metric-comparison-emphasis th {
+    font-weight: 500;
+    color: var(--color-fg-primary);
+  }
+}
+
+@layer qf-variants {
+  /* --------------------------------------------------------------------------- #
+   * One-line column headers and the full-row highlight
+   * --------------------------------------------------------------------------- # */
+
+  /* Headers share one top edge: the name (swatch first) on line one, its detail under
+     it, so columns with and without a detail still line up. A long name ellipsizes and
+     keeps its full text in the title. */
+  .metric-comparison thead th {
+    vertical-align: top;
+    max-width: 14rem;
+  }
+  .metric-comparison .metric-comparison-column {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .metric-comparison .metric-comparison-swatch {
+    display: inline-block;
+    margin-inline-end: var(--space-2);
+  }
+  /* The pinned row labels sit on the start edge; fading them would erase the metric names. */
+  .metric-comparison > .ui-scroll-area {
+    --ui-scroll-fade-start: 0px;
+  }
+  /* Group captions are not rows: no tint, no flare. */
+  .metric-comparison tbody tr.metric-comparison-group {
+    background: transparent;
+  }
+  .metric-comparison .metric-comparison-group > th {
+    box-shadow: none;
+  }
+  /* The caption spans every column, so the label inside it pins to the left edge like
+     the row labels instead of scrolling away with the values. */
+  .metric-comparison-group-label {
+    display: inline-block;
+    position: sticky;
+    left: var(--inset-surface);
+  }
+}
+
+@layer qf-components {
+  /* --------------------------------------------------------------------------- #
+   * Rank view: relative tint from rankCellColor, readable primary text, and a
+   * text trigger that opens the compared value on hover, tap, Enter or Space
+   * --------------------------------------------------------------------------- # */
+
+  .metric-comparison td.metric-comparison-rank {
+    color: var(--color-fg-primary);
+  }
+  .metric-comparison td.metric-comparison-rank-missing {
+    color: var(--color-fg-tertiary);
+  }
+  .metric-comparison-rank-trigger {
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    cursor: help;
+    text-decoration: underline dotted var(--color-border-strong);
+    text-underline-offset: 0.2em;
+  }
+  .metric-comparison-rank-trigger:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+  .metric-comparison-rank-detail {
+    display: grid;
+    gap: var(--space-1);
+  }
+}

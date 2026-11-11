@@ -1,0 +1,250 @@
+/**
+ * Global base styles: reset, typography, focus, hit areas, scrollbars, tabular numerics,
+ * and the reduced-motion policy. No component recipes live here.
+ *
+ * USAGE: imported by styles/index.css after tokens.css.
+ */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body {
+    height: 100%;
+    overflow-x: clip;
+    overflow-y: hidden;
+  }
+
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  html {
+    overscroll-behavior: none;
+    background: var(--color-background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    min-width: 20rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  b,
+  strong {
+    font-weight: 600;
+  }
+
+  .app-theme {
+    color: var(--color-foreground);
+    background: var(--color-background);
+  }
+
+  /* === Focus indicators === */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 0;
+  }
+
+  /* Anything else the browser makes keyboard-focusable (a scroll region with no
+     focusable children, such as a code block or a log table) takes the same ring,
+     inset because such a region usually fills a clipped surface. Zero specificity,
+     so every control recipe above and below still wins. */
+  :where(:focus-visible) {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  /* Keyboard scrolling stops a little short of the scrollport edge, so a control
+     focused at the bottom of a pane shows its whole ring. */
+  :is(a, button, input, select, textarea, [tabindex]) {
+    scroll-margin-block: var(--space-2);
+  }
+
+  /* Inside clipped scroll regions the ring sits inset so it is never cut off. */
+  :is(.ui-scroll-area, .data-table-scroll, .ui-menu, .ui-select-content, .ui-command-list)
+    :is(a, button, [tabindex], [role="option"], [role="menuitem"]):focus-visible {
+    outline-offset: -2px;
+  }
+
+  /* === Focus recipe for composite controls ===
+     .qf-focus-within: a wrapper whose inner input takes keyboard focus draws the ring.
+     The inner element suppresses its own outline so exactly one ring shows. */
+  .qf-focus-within:has(:focus-visible) {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 0;
+  }
+
+  .qf-focus-within :focus-visible {
+    outline: none;
+  }
+
+  /* === Placeholders === */
+  /* Without this the UA picks its own grey, which is outside the token set. */
+  ::placeholder {
+    color: var(--color-muted-foreground);
+    opacity: 1;
+  }
+
+  /* === Shared control states === */
+  button:disabled,
+  input:disabled,
+  select:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+  }
+
+  button {
+    transition: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .section-heading {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  main p:not(.prose-dark p),
+  figcaption,
+  caption {
+    text-wrap: pretty;
+  }
+
+  /* === Selection === */
+  ::selection {
+    background: var(--color-selection-tint);
+    color: var(--color-fg-primary);
+  }
+
+  /* === Scrollbars === */
+  * {
+    scrollbar-color: var(--color-border-strong) transparent;
+    scrollbar-width: thin;
+  }
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: var(--radius-pill);
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted-foreground);
+  }
+
+  /* === Code is mono; numbers are sans with tabular figures === */
+  code,
+  pre,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-numeric],
+  output,
+  time,
+  table,
+  .metric,
+  td.numeric {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer qf-components {
+  /* === Enter/exit recipes ===
+     Keyed to Base UI's [data-starting-style] / [data-ending-style] attributes.
+     .qf-motion-pop: popovers, menus, tooltips, dialogs (fade + slight scale).
+     .qf-motion-fade: backdrops. .qf-motion-sheet-right / -bottom: sheets and toasts. */
+  .qf-motion-pop,
+  .qf-motion-fade,
+  .qf-motion-sheet-right,
+  .qf-motion-sheet-bottom {
+    transition-property: opacity, transform;
+    transition-duration: var(--duration-enter);
+    transition-timing-function: var(--ease-enter);
+  }
+
+  .qf-motion-pop[data-ending-style],
+  .qf-motion-fade[data-ending-style],
+  .qf-motion-sheet-right[data-ending-style],
+  .qf-motion-sheet-bottom[data-ending-style] {
+    transition-duration: var(--duration-exit);
+    transition-timing-function: var(--ease-exit);
+  }
+
+  .qf-motion-pop[data-starting-style],
+  .qf-motion-pop[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  .qf-motion-fade[data-starting-style],
+  .qf-motion-fade[data-ending-style] {
+    opacity: 0;
+  }
+
+  .qf-motion-sheet-right[data-starting-style],
+  .qf-motion-sheet-right[data-ending-style] {
+    transform: translateX(100%);
+  }
+
+  .qf-motion-sheet-bottom[data-starting-style],
+  .qf-motion-sheet-bottom[data-ending-style] {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@layer qf-motion {
+  /* qf-motion outranks qf-components, so these win without !important. */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --duration-control: 0ms;
+      --duration-enter: 0ms;
+      --duration-exit: 0ms;
+      --duration-emphasis: 0ms;
+    }
+
+    .qf-motion-pop,
+    .qf-motion-sheet-right,
+    .qf-motion-sheet-bottom {
+      transform: none;
+    }
+  }
+
+  /* === One reduced-motion policy for the whole production surface === */
+  @media (prefers-reduced-motion: reduce) {
+    .app-theme .ui-button,
+    .app-theme button,
+    .app-theme .ui-navigator-chevron {
+      transition: none;
+    }
+
+    .app-theme .animate-pulse {
+      animation: none;
+    }
+  }
+}

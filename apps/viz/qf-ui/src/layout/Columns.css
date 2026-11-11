@@ -1,0 +1,75 @@
+/**
+ * Explicit-track column recipe: one stacked column below the breakpoint, the caller's
+ * tracks from it, and role-named column and row gaps.
+ *
+ * USAGE: imported by Columns.tsx.
+ */
+
+@layer qf-components {
+  .ui-columns {
+    --ui-columns-gap: var(--gap-block);
+    /* Not inherited from an outer Columns: unset falls back to the column gap. */
+    --ui-columns-row-gap: initial;
+
+    display: grid;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ui-columns-row-gap, var(--ui-columns-gap)) var(--ui-columns-gap);
+  }
+
+  .ui-columns.is-always {
+    grid-template-columns: var(--ui-columns-template);
+  }
+
+  @media (min-width: 48rem) {
+    .ui-columns.is-from-md {
+      grid-template-columns: var(--ui-columns-template);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .ui-columns.is-from-lg {
+      grid-template-columns: var(--ui-columns-template);
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .ui-columns.is-from-xl {
+      grid-template-columns: var(--ui-columns-template);
+    }
+  }
+
+  /* ---- Gaps ---- */
+
+  .ui-columns.is-gap-stack {
+    --ui-columns-gap: var(--gap-stack);
+  }
+
+  .ui-columns.is-gap-heading {
+    --ui-columns-gap: var(--gap-heading);
+  }
+
+  .ui-columns.is-gap-block {
+    --ui-columns-gap: var(--gap-block);
+  }
+
+  .ui-columns.is-gap-section {
+    --ui-columns-gap: var(--gap-section);
+  }
+
+  .ui-columns.is-row-gap-stack {
+    --ui-columns-row-gap: var(--gap-stack);
+  }
+
+  .ui-columns.is-row-gap-heading {
+    --ui-columns-row-gap: var(--gap-heading);
+  }
+
+  .ui-columns.is-row-gap-block {
+    --ui-columns-row-gap: var(--gap-block);
+  }
+
+  .ui-columns.is-row-gap-section {
+    --ui-columns-row-gap: var(--gap-section);
+  }
+}

@@ -1,0 +1,167 @@
+/**
+ * Shared shadcn/Radix select geometry and semantic interaction states.
+ *
+ * USAGE: imported by Select.tsx.
+ */
+
+@layer qf-components {
+  /* -------------------------------------------------------------------------- */
+  /* Trigger                                                                    */
+  /* -------------------------------------------------------------------------- */
+
+  .ui-select-trigger {
+    display: inline-flex;
+    width: fit-content;
+    max-width: 100%;
+    min-height: var(--ui-control-h, var(--control-height));
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-control);
+    padding: 0 var(--space-3);
+    color: var(--color-fg-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    white-space: nowrap;
+    outline: none;
+  }
+
+  .ui-select-trigger.w-full {
+    width: 100%;
+  }
+
+  .ui-select-trigger.is-sm {
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .ui-select-trigger:hover:not(:disabled),
+  .ui-select-trigger[data-state="open"] {
+    border-color: var(--color-border-strong);
+  }
+
+  .ui-select-trigger:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 0;
+  }
+
+  .ui-select-trigger:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .ui-select-trigger > [data-slot="select-value"] {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ui-select-chevron {
+    flex: 0 0 auto;
+    color: var(--color-muted-foreground);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Menu                                                                       */
+  /* -------------------------------------------------------------------------- */
+
+  .ui-select-content {
+    position: relative;
+    /* Portaled: must clear dialogs and sheets (--z-overlay) that host a select. */
+    z-index: var(--z-popover);
+    max-height: var(--radix-select-content-available-height);
+    min-width: max(8rem, var(--radix-select-trigger-width));
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--radius-surface);
+    background: var(--color-surface-overlay);
+    color: var(--color-fg-primary);
+    box-shadow: var(--shadow-overlay);
+  }
+
+  .ui-select-content[data-side="bottom"] {
+    translate: 0 var(--space-1);
+  }
+
+  .ui-select-content[data-side="top"] {
+    translate: 0 calc(0px - var(--space-1));
+  }
+
+  .ui-select-viewport {
+    padding: var(--space-1);
+  }
+
+  .ui-select-item {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: var(--control-height-sm);
+    cursor: default;
+    align-items: center;
+    border-radius: var(--radius-badge);
+    padding: var(--space-1) calc(var(--space-4) + 1rem) var(--space-1) var(--space-3);
+    color: var(--color-popover-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    user-select: none;
+    outline: none;
+  }
+
+  .ui-select-item[data-highlighted],
+  .ui-select-item[data-state="checked"] {
+    color: var(--color-secondary-foreground);
+  }
+
+  .ui-select-item[data-highlighted] {
+    background: var(--color-state-hover);
+  }
+
+  .ui-select-item[data-state="checked"] {
+    background: var(--color-state-selected);
+  }
+
+  .ui-select-item[data-state="checked"][data-highlighted] {
+    background: var(--color-state-selected-hover);
+  }
+
+  .ui-select-item[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .ui-select-item-indicator {
+    position: absolute;
+    right: var(--space-2);
+    display: inline-flex;
+    width: 1rem;
+    height: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ui-select-label {
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-muted-foreground);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .ui-select-separator {
+    height: 1px;
+    margin: var(--space-1) calc(0px - var(--space-1));
+    background: var(--color-border);
+  }
+
+  .ui-select-scroll-button {
+    display: flex;
+    height: 2rem;
+    cursor: default;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-muted-foreground);
+  }
+}

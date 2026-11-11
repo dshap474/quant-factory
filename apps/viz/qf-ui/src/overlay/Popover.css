@@ -1,0 +1,31 @@
+/**
+ * Popover popup and text parts.
+ *
+ * USAGE: imported by Popover.tsx.
+ */
+
+@layer qf-components {
+  .ui-popover {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 12rem;
+    max-width: min(24rem, calc(100vw - 2rem));
+    padding: var(--inset-surface);
+  }
+
+  .ui-popover-title {
+    margin: 0;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: 600;
+  }
+
+  .ui-popover-description {
+    margin: 0;
+    color: var(--color-fg-secondary);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+}

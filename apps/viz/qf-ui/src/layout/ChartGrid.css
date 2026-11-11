@@ -1,0 +1,58 @@
+/**
+ * Between-chart grid geometry: gutters, seams, fixed/auto-fit columns, cell fill.
+ *
+ * USAGE: imported by ChartGrid.tsx.
+ */
+
+@layer qf-components {
+  .ui-chart-grid {
+    /* Two-column threshold = 2 x 519.52px + 16px gutter = 1055.04px of container width. */
+    --ui-chart-grid-min: 32.47rem;
+    --ui-chart-grid-columns: 2;
+
+    display: grid;
+    min-width: 0;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ui-chart-grid-min)), 1fr));
+    gap: var(--space-4);
+  }
+
+  .ui-chart-grid.is-fixed {
+    grid-template-columns: repeat(var(--ui-chart-grid-columns), minmax(0, 1fr));
+  }
+
+  .ui-chart-grid.is-hairline {
+    gap: 1px;
+    background: var(--color-border);
+  }
+
+  .ui-chart-grid.is-fill {
+    flex: 1;
+    min-height: 0;
+    grid-auto-rows: minmax(0, 1fr);
+  }
+
+  .ui-chart-grid-cell {
+    container: qf-chart-cell / inline-size;
+    display: grid;
+    min-width: 0;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(0, 1fr);
+  }
+
+  .ui-chart-grid.is-hairline > .ui-chart-grid-cell {
+    background: var(--color-background);
+  }
+
+  .ui-chart-grid-cell.is-target {
+    outline: 1px solid var(--color-fg-tertiary);
+    outline-offset: -1px;
+  }
+
+  /* Fill the cell when the host bounds the grid; otherwise the shell keeps its own aspect frame. */
+  .ui-chart-grid-cell > .chart-container-shell {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+  }
+}

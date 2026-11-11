@@ -1,0 +1,198 @@
+/**
+ * Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4
+ * Hallmark · genre: modern-minimal · macrostructure: compact operational index
+ * contrast: pass · tokens: existing quant-factory system · responsive: pass
+ *
+ * Compact stacked index bars for top-level collection pages. The wide row layout is
+ * driven by a container query on `.index-list`, so bars narrow inside an aside stay stacked.
+ *
+ * USAGE: imported by IndexBar.tsx
+ */
+
+@layer qf-components {
+  /* -------------------------------------------------------------------------- */
+  /* List and row                                                               */
+  /* -------------------------------------------------------------------------- */
+
+  .index-list {
+    display: grid;
+    gap: 0;
+    width: 100%;
+    border-top: 1px solid var(--color-border);
+    container-type: inline-size;
+  }
+
+  .index-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-2) var(--space-3);
+    align-items: center;
+    min-height: 3.5rem;
+    padding: var(--space-3) var(--space-3);
+    color: var(--color-foreground);
+    background: transparent;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .index-bar-link {
+    transition: none;
+  }
+
+  .index-bar-link:hover {
+    background: var(--color-secondary);
+  }
+
+  .index-bar-link:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .index-bar-link:active {
+    background: var(--color-secondary);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Content                                                                    */
+  /* -------------------------------------------------------------------------- */
+
+  .index-bar-main {
+    min-width: 0;
+  }
+
+  .index-bar-title-line {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .index-bar-title {
+    min-width: 0;
+    overflow: hidden;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 500;
+    line-height: var(--text-label--line-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .index-bar-description {
+    min-width: 0;
+    margin-top: var(--space-1);
+    overflow: hidden;
+    color: var(--color-muted-foreground);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .index-bar-side {
+    display: flex;
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 0;
+  }
+
+  .index-bar-metrics,
+  .index-bar-tags {
+    min-width: 0;
+  }
+
+  .index-bar-arrow {
+    grid-column: 2;
+    grid-row: 1;
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-muted-foreground);
+    transition: none;
+  }
+
+  .index-bar-link:hover .index-bar-arrow {
+    color: var(--color-fg-primary);
+    transform: translateX(2px);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Index chip and wrapping description                                        */
+  /* -------------------------------------------------------------------------- */
+
+  .index-bar.is-indexed {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .index-bar.is-indexed .index-bar-side {
+    grid-column: 2 / -1;
+  }
+
+  .index-bar.is-indexed .index-bar-arrow {
+    grid-column: 3;
+  }
+
+  .index-bar-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    color: var(--color-fg-tertiary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    border: 1px solid var(--color-border-strong);
+  }
+
+  .index-bar.is-wrap .index-bar-description {
+    max-width: 65ch;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Responsive                                                                 */
+  /* -------------------------------------------------------------------------- */
+
+  @container (min-width: 36rem) {
+    .index-bar {
+      /* Title keeps a floor and the side cluster is capped so it wraps instead of crushing the description. */
+      grid-template-columns: minmax(18rem, 1fr) fit-content(58%) auto;
+      gap: var(--space-4);
+    }
+
+    .index-bar.is-indexed {
+      grid-template-columns: auto minmax(14rem, 1fr) fit-content(50%) auto;
+    }
+
+    .index-bar-side,
+    .index-bar.is-indexed .index-bar-side {
+      grid-column: auto;
+      flex-wrap: wrap;
+      gap: var(--space-5);
+      justify-content: flex-end;
+    }
+
+    .index-bar-arrow,
+    .index-bar.is-indexed .index-bar-arrow {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .index-bar-link,
+    .index-bar-arrow {
+      transition: none;
+    }
+
+    .index-bar-link:hover .index-bar-arrow {
+      transform: none;
+    }
+  }
+}

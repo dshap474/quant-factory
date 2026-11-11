@@ -1,0 +1,45 @@
+/**
+ * Field recipe styles (.ui-field*).
+ *
+ * USAGE: imported by Field.tsx
+ */
+
+@layer qf-components {
+  .ui-field {
+    color: var(--color-muted-foreground);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+  }
+
+  .ui-field-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  /* Capped at the host width: the control shrinks and ellipsizes its value while
+     the label keeps its natural width. */
+  .ui-field-inline {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .ui-field-inline > .ui-field-label {
+    flex: none;
+  }
+
+  .ui-field-inline > :not(.ui-field-label) {
+    min-width: 0;
+  }
+
+  .ui-field-label {
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 500;
+  }
+}

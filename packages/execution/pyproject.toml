@@ -1,0 +1,39 @@
+# Purpose: package engine-neutral execution contracts for the quant-factory workspace.
+# USAGE: uv run --project packages/execution pytest packages/execution/tests -v
+
+# --------------------------------------------------------------------------- #
+# Build and package
+# --------------------------------------------------------------------------- #
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quant-factory-execution"
+version = "0.1.0"
+description = "Engine-neutral execution contracts, policies, and reconciliation for quant-factory."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = []
+
+# --------------------------------------------------------------------------- #
+# Editable development
+# --------------------------------------------------------------------------- #
+
+[tool.hatch.build]
+dev-mode-dirs = ["extensions", "src"]
+
+# --------------------------------------------------------------------------- #
+# Wheel
+# --------------------------------------------------------------------------- #
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/execution"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.execution/**",
+    "/AGENTS.md",
+    "/extensions/**",
+]

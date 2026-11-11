@@ -1,0 +1,83 @@
+/**
+ * Shared overlay surface, backdrop, positioner, and close-button recipes for
+ * the qf-ui overlay primitives (tooltip, popover, dialog, sheet, menu, toast).
+ * Enter/exit motion comes from the .qf-motion-* classes in styles/base.css.
+ *
+ * USAGE: imported by each overlay component.
+ */
+
+@layer qf-components {
+  /* -------------------------------------------------------------------------- */
+  /* Positioner                                                                 */
+  /* -------------------------------------------------------------------------- */
+
+  .ui-overlay-positioner {
+    z-index: var(--z-popover);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Surface                                                                    */
+  /* -------------------------------------------------------------------------- */
+
+  .ui-overlay-surface {
+    box-sizing: border-box;
+    border: 0;
+    border-radius: var(--radius-surface);
+    background: var(--color-surface-overlay);
+    color: var(--color-fg-primary);
+    box-shadow: var(--shadow-overlay);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui-sm);
+    line-height: var(--text-ui-sm--line-height);
+    outline: none;
+    transform-origin: var(--transform-origin, center);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Backdrop                                                                   */
+  /* -------------------------------------------------------------------------- */
+
+  .ui-overlay-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    background: color-mix(in oklch, var(--color-background) 60%, transparent);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Close button                                                               */
+  /* -------------------------------------------------------------------------- */
+
+  .ui-overlay-close {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    display: inline-flex;
+    width: var(--control-height-sm);
+    height: var(--control-height-sm);
+    min-width: 0;
+    min-height: 0;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    padding: 0;
+    color: var(--color-muted-foreground);
+  }
+
+  .ui-overlay-close:hover {
+    background: var(--color-state-hover);
+    color: var(--color-foreground);
+  }
+
+  .ui-overlay-close:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 0;
+  }
+
+  .ui-overlay-close svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}

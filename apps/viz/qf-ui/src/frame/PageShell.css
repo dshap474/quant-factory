@@ -1,0 +1,60 @@
+/**
+ * Page content width wrapper: full-width block, or a bounded fill column, that spaces
+ * its direct children on the page rhythm.
+ *
+ * USAGE: imported by PageShell.tsx
+ */
+
+@layer qf-components {
+  /* ------------------------------------------------------------------------- */
+  /* Shell */
+  /* ------------------------------------------------------------------------- */
+
+  .page-shell {
+    --ui-page-shell-gap: var(--gap-section);
+
+    width: 100%;
+  }
+
+  .page-shell.is-rhythm-block {
+    --ui-page-shell-gap: var(--gap-block);
+  }
+
+  .page-shell.is-fill {
+    display: flex;
+    min-height: 0;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* Rhythm */
+  /* ------------------------------------------------------------------------- */
+
+  /* The shell is the one owner of the gap between its direct children (owl rule, so
+     block flow and child widths are untouched). */
+  .page-shell > * + * {
+    margin-top: var(--ui-page-shell-gap);
+  }
+
+  /* Stacked sections take the shell rhythm instead of adding their own sibling margin
+     (Section.css / TerminalPage.css); this outranks both, so the gap is never doubled. */
+  .page-shell > :is(.ui-section, .terminal-section) + :is(.ui-section, .terminal-section) {
+    margin-top: var(--ui-page-shell-gap);
+  }
+
+  /* A toolbar or view switcher placed straight on the page (tabs above the content they
+     switch), alone or in a row with its controls, or a page header rendered in flow (no
+     workspace header rail to portal into), sits one block gap above that content; the
+     section rhythm only spaces sections. */
+  .page-shell > :is(
+      .page-header,
+      .ui-toolbar,
+      .ui-segmented-control,
+      .ui-route-tabs,
+      :not(.ui-section, .terminal-section):has(> :is(.ui-route-tabs, .ui-segmented-control.is-tabs))
+    )
+    + * {
+    margin-top: var(--gap-block);
+  }
+}

@@ -1,0 +1,13 @@
+/**
+ * Token usage recipe (.ui-token-usage): sans with tabular figures, one line.
+ *
+ * USAGE: imported by TokenUsage.tsx
+ */
+
+@layer qf-components {
+  .ui-token-usage {
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}

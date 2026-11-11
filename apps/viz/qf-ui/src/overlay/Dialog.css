@@ -1,0 +1,101 @@
+/**
+ * Dialog and Sheet popups: centred modal card and right-edge drawer.
+ * Centring uses fixed inset + auto margins (no transform) so the
+ * .qf-motion-pop enter/exit transform never fights the layout.
+ *
+ * USAGE: imported by Dialog.tsx and Sheet.tsx.
+ */
+
+@layer qf-components {
+  /* -------------------------------------------------------------------------- */
+  /* Dialog                                                                     */
+  /* -------------------------------------------------------------------------- */
+
+  .ui-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    display: grid;
+    width: calc(100vw - 2rem);
+    max-width: 32rem;
+    height: fit-content;
+    max-height: calc(100dvh - 2rem);
+    margin: auto;
+    gap: var(--gap-block);
+    overflow-y: auto;
+    padding: var(--space-6);
+    border-radius: var(--radius-dialog);
+    box-shadow: var(--shadow-dialog);
+  }
+
+  .ui-dialog.is-sm {
+    max-width: 24rem;
+  }
+
+  .ui-dialog.is-lg {
+    max-width: 44rem;
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Sheet                                                                      */
+  /* -------------------------------------------------------------------------- */
+
+  .ui-sheet {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-overlay);
+    display: flex;
+    width: min(28rem, 100vw);
+    flex-direction: column;
+    gap: var(--space-4);
+    overflow-y: auto;
+    padding: var(--space-5);
+    border-start-start-radius: var(--radius-dialog);
+    border-end-start-radius: var(--radius-dialog);
+    box-shadow: var(--shadow-dialog);
+  }
+
+  .ui-sheet.is-wide {
+    width: min(44rem, 100vw);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Shared parts                                                               */
+  /* -------------------------------------------------------------------------- */
+
+  .ui-dialog-header {
+    display: grid;
+    gap: var(--space-1);
+    padding-right: var(--control-height-sm);
+  }
+
+  .ui-dialog-title {
+    margin: 0;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-section);
+    line-height: var(--text-section--line-height);
+    font-weight: 600;
+  }
+
+  .ui-dialog-description {
+    margin: 0;
+    color: var(--color-fg-secondary);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+
+  .ui-dialog-body {
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+
+  .ui-dialog-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-2);
+  }
+}

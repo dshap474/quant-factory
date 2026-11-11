@@ -1,0 +1,106 @@
+[tool.uv.workspace]
+members = [
+    "packages/data",
+    "packages/execution",
+    "packages/production",
+    "packages/features",
+    "packages/signals",
+    "packages/strategies",
+    "packages/research",
+    "packages/platform/backtest",
+    "packages/platform/config",
+    "packages/platform/family-registry",
+    "packages/platform/ml-engine",
+    "packages/platform/signal-analysis",
+    "packages/platform/clients/coinbase-advanced-client",
+    "packages/platform/clients/fred-client",
+    "packages/platform/clients/hyperliquid-client",
+    "packages/platform/clients/sec-edgar-client",
+    "packages/platform/clients/yf-client",
+    "packages/platform/clients/client-common",
+    "packages/platform/clients/blockworks-client",
+    "apps/api",
+]
+
+[tool.uv.sources]
+"fred-client" = { workspace = true }
+"hyperliquid-client" = { workspace = true }
+"sec-edgar-client" = { workspace = true }
+"yf-client" = { workspace = true }
+"coinbase-advanced-client" = { workspace = true }
+"client-common" = { workspace = true }
+"blockworks-client" = { workspace = true }
+"quant-factory-backtest" = { workspace = true }
+"quant-factory-config" = { workspace = true }
+"quant-factory-family-registry" = { workspace = true }
+"quant-factory-data" = { workspace = true }
+"quant-factory-db-api" = { workspace = true }
+"quant-factory-execution" = { workspace = true }
+"quant-factory-features" = { workspace = true }
+"ml-engine" = { workspace = true }
+"quant-factory-signal-analysis" = { workspace = true }
+"quant-factory-research-environment" = { workspace = true }
+"quant-factory-signals" = { workspace = true }
+"quant-factory-strategies" = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "deptry>=0.25.1",
+    "freezegun>=1.2.0",
+    "hypothesis>=6.100.0",
+    "import-linter>=2.11",
+    "pip-audit>=2.10.0",
+    "psutil>=7.2.2",
+    "pytest>=8.2.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.2.1",
+    "pytest-mock>=3.12.0",
+    "pytest-timeout>=2.2.0",
+    "pytest-xdist>=3.8.0",
+    "radon>=6.0.1",
+    "requests>=2.33.0",
+    "ruff>=0.15.5",
+    "sympy>=1.14.0",
+    "ty>=0.0.26",
+    "vulture>=2.16",
+]
+
+[tool.pytest.ini_options]
+# importlib mode lets sibling family test suites share basenames
+# (e.g. two families that both ship tests/test_config.py) without
+# the prepend-mode module-name collision when collected together.
+addopts = ["--import-mode=importlib"]
+norecursedirs = [
+    ".*",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "_archive",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+src = ["packages", "apps", "tests", "scripts"]
+extend-exclude = [
+    "db",
+    "packages/research/sandbox",
+    "**/_archive",
+]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["F401"]
+
+[tool.deptry]
+exclude = [
+    "db",
+    "docs",
+    "packages/research/sandbox",
+    "tests",
+    "apps/viz",
+]
+ignore_notebooks = true
